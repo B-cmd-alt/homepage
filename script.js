@@ -17,51 +17,51 @@
   // ============================================
 
   const CONFIG = {
-    // Spark counts (auto-detected, can override)
-    sparkCountDesktop: 200,
-    sparkCountMobile: 80,
+    // Spark counts - balanced
+    sparkCountDesktop: 120,
+    sparkCountMobile: 55,
 
     // Interaction
-    interactionRadius: 100,
-    transferRatePerSec: 0.8,    // Energy transfer speed
-    colorRatePerSec: 1.5,       // Color contamination speed (more dramatic)
-    energyDecayPerSec: 0.02,    // Global energy decay
-    energyFloor: 0.15,          // Minimum energy before transfer stops
+    interactionRadius: 110,
+    transferRatePerSec: 0.6,
+    colorRatePerSec: 1.0,
+    energyDecayPerSec: 0.018,
+    energyFloor: 0.15,
 
-    // Visuals
-    baseRadiusMin: 2.0,
-    baseRadiusMax: 5.0,
-    glowMultiplier: 8,
-    lineAlphaMax: 0.4,
+    // Visuals - balanced visibility
+    baseRadiusMin: 1.8,
+    baseRadiusMax: 4.0,
+    glowMultiplier: 6,
+    lineAlphaMax: 0.25,
 
     // Flow particles
-    maxFlowParticles: 150,
-    flowParticleSpeed: 80,      // pixels per second
-    flowSpawnRate: 0.3,         // per interaction per second
+    maxFlowParticles: 100,
+    flowParticleSpeed: 60,
+    flowSpawnRate: 0.2,
 
     // Performance caps
-    maxInteractionsPerFrame: 1500,
+    maxInteractionsPerFrame: 1200,
     maxDpr: 2,
 
-    // Spawn area (0 = full screen, 0.1 = 10% padding)
+    // Spawn area
     spawnPadding: 0,
 
-    // Physics
-    maxSpeed: 30,
-    driftStrength: 15,
-    damping: 0.98,
+    // Physics - moderate movement
+    maxSpeed: 20,
+    driftStrength: 10,
+    damping: 0.97,
 
     // Lifetime
-    lifetimeMin: 5000,
-    lifetimeMax: 10000,
-    spawnRatePerSec: 8,
+    lifetimeMin: 6000,
+    lifetimeMax: 12000,
+    spawnRatePerSec: 5,
   };
 
-  // Base colors (sRGB) - vibrant and clear for light background
+  // Base colors (sRGB) - warm and visible but not overpowering
   const BASE_COLORS = [
-    [255, 160, 0],    // Amber/Gold
-    [220, 60, 20],    // Vermilion/Red-Orange
-    [120, 80, 200],   // Violet
+    [235, 170, 60],   // Warm gold
+    [210, 100, 60],   // Warm terracotta
+    [150, 110, 190],  // Soft purple
   ];
 
   // ============================================
@@ -313,11 +313,14 @@
     }
 
     getRadius() {
-      return this.baseRadius * (0.6 + 0.8 * this.energy) * this.fade;
+      // High energy = much larger (0.4 to 2.0x base size)
+      const energyScale = 0.4 + 1.6 * this.energy * this.energy;
+      return this.baseRadius * energyScale * this.fade;
     }
 
     getAlpha() {
-      return clamp(this.energy * this.fade, 0, 1);
+      // High energy = much brighter
+      return clamp(0.3 + 0.7 * this.energy, 0, 1) * this.fade;
     }
   }
 
@@ -550,15 +553,15 @@
         ctx.stroke();
       }
 
-      // Draw flow particles (more visible)
+      // Draw flow particles - balanced
       for (const particle of this.flowParticles) {
         const pos = particle.getPosition();
-        const alpha = particle.alpha;
+        const alpha = particle.alpha * 0.6;
 
         if (alpha > 0.01) {
-          // Glow around particle
+          // Small glow
           ctx.beginPath();
-          ctx.arc(pos.x, pos.y, particle.size * 3, 0, Math.PI * 2);
+          ctx.arc(pos.x, pos.y, particle.size * 2, 0, Math.PI * 2);
           ctx.fillStyle = colorToCSS(particle.color, alpha * 0.3);
           ctx.fill();
 
@@ -577,15 +580,19 @@
 
         if (alpha < 0.01 || radius < 0.5) continue;
 
-        // Outer glow (more visible)
-        const glowRadius = radius * CONFIG.glowMultiplier;
+        // Energy-based glow intensity
+        const energyBoost = spark.energy * spark.energy; // Squared for dramatic difference
+        const glowRadius = radius * CONFIG.glowMultiplier * (0.8 + 0.6 * energyBoost);
+
         const gradient = ctx.createRadialGradient(
           spark.x, spark.y, 0,
           spark.x, spark.y, glowRadius
         );
-        gradient.addColorStop(0, colorToCSS(spark.color, alpha * 0.7));
-        gradient.addColorStop(0.2, colorToCSS(spark.color, alpha * 0.35));
-        gradient.addColorStop(0.5, colorToCSS(spark.color, alpha * 0.1));
+        // High energy = much stronger glow
+        const glowIntensity = 0.3 + 0.5 * energyBoost;
+        gradient.addColorStop(0, colorToCSS(spark.color, alpha * glowIntensity));
+        gradient.addColorStop(0.2, colorToCSS(spark.color, alpha * glowIntensity * 0.5));
+        gradient.addColorStop(0.5, colorToCSS(spark.color, alpha * glowIntensity * 0.15));
         gradient.addColorStop(1, colorToCSS(spark.color, 0));
 
         ctx.beginPath();
@@ -593,16 +600,17 @@
         ctx.fillStyle = gradient;
         ctx.fill();
 
-        // Core (solid color center)
+        // Core - brighter with energy
         ctx.beginPath();
-        ctx.arc(spark.x, spark.y, radius * 1.2, 0, Math.PI * 2);
-        ctx.fillStyle = colorToCSS(spark.color, alpha * 0.9);
+        ctx.arc(spark.x, spark.y, radius, 0, Math.PI * 2);
+        ctx.fillStyle = colorToCSS(spark.color, alpha * (0.5 + 0.4 * energyBoost));
         ctx.fill();
 
-        // Bright center dot
+        // Center dot - more prominent with energy
+        const dotSize = radius * (0.3 + 0.3 * energyBoost);
         ctx.beginPath();
-        ctx.arc(spark.x, spark.y, radius * 0.5, 0, Math.PI * 2);
-        ctx.fillStyle = colorToCSS([255, 255, 255], alpha * 0.95);
+        ctx.arc(spark.x, spark.y, dotSize, 0, Math.PI * 2);
+        ctx.fillStyle = colorToCSS([255, 255, 255], alpha * (0.5 + 0.5 * energyBoost));
         ctx.fill();
 
         // Polarity ring (visible when giving)

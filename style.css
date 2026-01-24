@@ -113,9 +113,31 @@ a {
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 2rem;
+  padding: 3rem 2rem;
   position: relative;
   z-index: 1;
+}
+
+/* Subtle backdrop for text readability */
+.content::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(600px, 90vw);
+  height: auto;
+  min-height: 400px;
+  padding: 4rem;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(250, 249, 247, 0.85) 0%,
+    rgba(250, 249, 247, 0.6) 50%,
+    transparent 80%
+  );
+  border-radius: 50%;
+  z-index: -1;
+  pointer-events: none;
 }
 
 .title {
