@@ -337,9 +337,14 @@
       this.isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ||
                       window.innerWidth < 768;
 
-      this.sparkCount = this.isMobile
-        ? CONFIG.sparkCountMobile
-        : CONFIG.sparkCountDesktop;
+      // Scale spark count based on screen area for consistent density
+      const baseArea = 1920 * 1080; // Reference area
+      const screenArea = window.innerWidth * window.innerHeight;
+      const densityScale = screenArea / baseArea;
+
+      const baseCount = this.isMobile ? CONFIG.sparkCountMobile : CONFIG.sparkCountDesktop;
+      // Clamp between 30 and 300 to prevent extremes
+      this.sparkCount = Math.round(Math.max(30, Math.min(300, baseCount * densityScale)));
 
       this.sparks = [];
       this.flowParticles = [];
@@ -372,6 +377,13 @@
 
       // Rebuild spatial grid
       this.grid = new SpatialGrid(CONFIG.interactionRadius, this.width, this.height);
+
+      // Recalculate spark count based on new screen area
+      const baseArea = 1920 * 1080;
+      const screenArea = this.width * this.height;
+      const densityScale = screenArea / baseArea;
+      const baseCount = this.isMobile ? CONFIG.sparkCountMobile : CONFIG.sparkCountDesktop;
+      this.sparkCount = Math.round(Math.max(30, Math.min(300, baseCount * densityScale)));
     }
 
     spawnSpark() {
