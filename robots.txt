@@ -1,0 +1,11 @@
+# Robots.txt for bb.style
+# Allow all search engines to crawl the entire site
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://bb.style/sitemap.xml
+
+# Crawl-delay (optional, be nice to servers)
+Crawl-delay: 1
