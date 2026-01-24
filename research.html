@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Research | BB.STYLE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .page-hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+    }
+    .back-link {
+      position: fixed;
+      top: 2rem;
+      left: 2rem;
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      color: var(--ink-muted);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: color 0.3s ease;
+      z-index: 10;
+    }
+    .back-link:hover { color: var(--research-accent); }
+    .page-icon {
+      width: 120px;
+      height: 120px;
+      color: var(--research-accent);
+      margin-bottom: 2rem;
+      opacity: 0.8;
+    }
+    .page-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 8vw, 4rem);
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 1rem;
+    }
+    .page-subtitle {
+      font-size: 1.1rem;
+      color: var(--ink-muted);
+      max-width: 500px;
+    }
+    .coming-soon {
+      display: inline-block;
+      margin-top: 2rem;
+      padding: 0.75rem 1.5rem;
+      background: var(--research-bg);
+      color: var(--research-accent);
+      border-radius: 100px;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <div class="ambient-bg" aria-hidden="true">
+    <div class="gradient-layer"></div>
+    <div class="sun-glow"></div>
+  </div>
+  
+  <a href="index.html" class="back-link">← Back home</a>
+  
+  <main class="page-hero">
+    <div class="page-icon">
+      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="20" cy="20" r="12"/>
+        <line x1="29" y1="29" x2="40" y2="40" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M14 20h12"/>
+        <path d="M20 14v12"/>
+      </svg>
+    </div>
+    <h1 class="page-title">Research</h1>
+    <p class="page-subtitle">Exploring ideas, diving deep into topics, and sharing discoveries.</p>
+    <span class="coming-soon">Coming soon</span>
+  </main>
+</body>
+</html>
