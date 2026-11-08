@@ -174,10 +174,10 @@
       </p>
 
       <div class="cta">
-        <a href="https://github.com/B-cmd-alt/pipelineagent" target="_blank" rel="noopener">Code on GitHub →</a>
-        <a href="projects/pipelineagent-dashboard.html">Dashboard snapshot</a>
+        <a href="https://b-cmd-alt.github.io/pipelineagent/" target="_blank" rel="noopener">Open the live dashboard →</a>
+        <a class="quiet" href="https://github.com/B-cmd-alt/pipelineagent" target="_blank" rel="noopener">Code on GitHub</a>
       </div>
-      <p class="note">The snapshot is a frozen render from 2026-11-08; its amber-then-red staleness banner is the dashboard's own dead-man's switch reacting to the snapshot's age, which is exactly what it is for.</p>
+      <p class="note">The dashboard is re-rendered and published by the hourly Cloud Run job itself; the "Generated" stamp at the top is the loop's heartbeat, and the page turns amber, then red, if the loop stops.</p>
     </section>
 
     <p class="coda">Both projects run on one rule: the thing being evaluated never grades itself.</p>
