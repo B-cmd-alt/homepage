@@ -112,19 +112,23 @@
       </p>
 
       <div class="facts">
-        <div class="fact"><b>11 / 12</b><span>systems run end to end on one model and one embedder</span></div>
-        <div class="fact"><b>0.92–0.94</b><span>six systems from 2023–2025 tie on recall, inside the noise band</span></div>
-        <div class="fact"><b>0 → 4.3</b><span>LLM calls per memory written: two orders of magnitude of write-path cost</span></div>
-        <div class="fact"><b>0.30</b><span>temporal knowledge graph on update questions: superseded facts stay valid</span></div>
+        <div class="fact"><b>66</b><span>cells in round 2: 11 systems × 3 seeded worlds × 2 generator tiers, six axes each</span></div>
+        <div class="fact"><b>0.95–1.00</b><span>full context (2023) ties GraphRAG, Mem0 and Mastra on recall; the generations split on updates, not recall</span></div>
+        <div class="fact"><b>×39</b><span>write-path cost between the cheapest and the most expensive system that makes model calls</span></div>
+        <div class="fact"><b>9</b><span>benchmark defects the round caught in its own records and fixed before any number was reported</span></div>
       </div>
 
       <p>
-        <strong>What it shows so far.</strong> On recall, a 2023 keyword index and a 2025 agentic memory layer are
-        indistinguishable. Where the systems differ is cost, updates, deletion and robustness — which is why the
-        benchmark has six axes instead of one score. GraphRAG tops the table at 0.98, but partly on its own answer
-        prompt and 11,000 tokens per query; the model-managed-files pattern is the most expensive read path and the
-        weakest modern system; and the Generative Agents memory stream, run faithfully, is simply not built for factual
-        questions. None of the scores were tuned to make a system look good, including mine.
+        <strong>What it shows so far.</strong> Round 2 ran all six axes on 66 cells. On recall, the 2023 upper bound —
+        simply putting everything in context — is not beaten: GraphRAG, Mem0 and Mastra tie it inside the noise band,
+        while the retrieval-window systems lose on multi-session questions. The generations separate on <em>updates</em>:
+        vector RAG and BM25 serve the superseded value a third of the time, the reranker fixes it, and the temporal
+        knowledge graph is the one modern system that is worse than 2023 there. Deletion discriminates on ghost residue
+        (Generative Agents' reflections still name a deleted person 45% of the time) and on semantics (Mem0 by provenance
+        alone forgot only 61% until the adapter tracked the ids it returned). Write cost spans ×39. Two of four
+        pre-registered hypotheses held, one was falsified, one waits for the next scale. None of the scores were tuned to
+        make a system look good, including mine — and nine defects in my own benchmark were caught and fixed by reading
+        the records before any number was reported.
       </p>
 
       <div class="cta">
@@ -136,7 +140,8 @@
         human labelers and a weaker LLM judge said — your vote becomes a crowd label), <em>Ask the Memory</em> (any question,
         six systems answer live with their retrieved evidence, latency and cost) and <em>Break the Memory</em> (inject a fact,
         an update and a poisoned note, then watch which systems answer current, stale or poisoned). Round one: 90 memories,
-        25 questions. Round two (pre-registered): three replications, two model tiers, all six axes.</p>
+        25 questions, feasibility. Round two (pre-registered): three seeded worlds, two generator tiers, all six axes — the
+        evidence page carries both rounds with per-case explorers for the update, deletion and adversarial axes.</p>
     </section>
 
     <!-- ───────────────────────── PipelineAgent ───────────────────────── -->
