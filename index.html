@@ -3,48 +3,59 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
+
   <!-- Primary SEO Meta Tags -->
-  <title>BB | Home</title>
-  <meta name="title" content="BB | Software Engineer, Food Science Enthusiast & Photographer">
-  <meta name="description" content="BB (Bihan) - Engineering intelligent systems, exploring the science of cooking, and capturing moments through photography. Personal portfolio and creative space.">
-  <meta name="keywords" content="BB, Bihan, software engineer, AI, intelligent systems, food science, cooking, photography, portfolio">
-  <meta name="author" content="BB">
+  <title>Bihan Qian (BB) | AI Engineer</title>
+  <meta name="title" content="Bihan Qian (BB) | AI Engineer">
+  <meta name="description" content="Bihan Qian (BB) is an AI engineer who builds production AI systems end to end and proves their impact with measurement: an MCP agent platform used daily by 82% of a company, evals gating every release, and a forecasting system that beat the commercial vendor by 17%.">
+  <meta name="keywords" content="Bihan Qian, BB, AI engineer, MCP, AI agents, LLM evaluation, RAG, forecasting, data engineering, Denver">
+  <meta name="author" content="Bihan Qian">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://bb.style/">
-  
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+
   <!-- Open Graph / Facebook -->
-  <meta property="og:type" content="website">
+  <meta property="og:type" content="profile">
   <meta property="og:url" content="https://bb.style/">
-  <meta property="og:title" content="BB | Software Engineer, Food Science Enthusiast & Photographer">
-  <meta property="og:description" content="Engineering intelligent systems, exploring the science of cooking, and capturing moments through photography.">
+  <meta property="og:title" content="Bihan Qian (BB) | AI Engineer">
+  <meta property="og:description" content="I build production AI systems end to end and prove their impact with measurement.">
+  <meta property="og:image" content="https://bb.style/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
   <meta property="og:site_name" content="BB.STYLE">
   <meta property="og:locale" content="en_US">
-  
+
   <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary">
+  <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:url" content="https://bb.style/">
-  <meta name="twitter:title" content="BB | Software Engineer, Food Science Enthusiast & Photographer">
-  <meta name="twitter:description" content="Engineering intelligent systems, exploring the science of cooking, and capturing moments through photography.">
-  
+  <meta name="twitter:title" content="Bihan Qian (BB) | AI Engineer">
+  <meta name="twitter:description" content="I build production AI systems end to end and prove their impact with measurement.">
+  <meta name="twitter:image" content="https://bb.style/og.png">
+
   <!-- Structured Data (JSON-LD) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "Person",
-    "name": "BB",
-    "alternateName": "Bihan",
+    "name": "Bihan Qian",
+    "alternateName": "BB",
     "url": "https://bb.style",
+    "image": "https://bb.style/og.png",
     "sameAs": [
-      "https://www.linkedin.com/in/bihan-q-9a5517250/"
+      "https://www.linkedin.com/in/bihan-q-9a5517250/",
+      "https://github.com/B-cmd-alt"
     ],
-    "jobTitle": "Software Engineer",
-    "description": "Engineering intelligent systems, exploring the science of cooking, and capturing moments through photography.",
-    "knowsAbout": ["Software Engineering", "Artificial Intelligence", "AI Agents", "LLM Evaluation", "Data Infrastructure", "Food Science", "Photography"]
+    "jobTitle": "AI Engineer",
+    "description": "AI engineer who builds production AI systems end to end and proves their impact with measurement.",
+    "alumniOf": [
+      { "@type": "CollegeOrUniversity", "name": "Columbia University" },
+      { "@type": "CollegeOrUniversity", "name": "Denison University" }
+    ],
+    "knowsAbout": ["AI Engineering", "AI Agents", "Model Context Protocol", "LLM Evaluation", "Retrieval-Augmented Generation", "Time Series Forecasting", "Data Infrastructure"]
   }
   </script>
 
-  <!-- Google Analytics (GA4) - Replace G-0GNP7SNL8H with your Measurement ID -->
+  <!-- Google Analytics (GA4) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-0GNP7SNL8H"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -60,7 +71,7 @@
 
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body id="top">
 
   <!-- Animated Background - Neural Network Sparks -->
   <div class="bg-animation" aria-hidden="true">
@@ -70,27 +81,165 @@
     <div class="bg-glow"></div>
   </div>
 
-  <!-- Main Content -->
-  <main class="content">
-    <h1 class="title">BB<span class="accent">.</span></h1>
-
-    <div class="desc">
-      <p>
-        Engineering solutions with intelligent systems. Exploring the science of cooking.
-        Capturing moments through photography.
-      </p>
-    </div>
-
-    <nav class="links">
-      <a href="projects.html">Projects</a>
-      <a href="research.html">Research</a>
-      <a href="cooking.html">Cooking</a>
-      <a href="photography.html">Photography</a>
+  <header class="site-head">
+    <a class="mark" href="#top" aria-label="BB, back to top">BB<span class="accent">.</span></a>
+    <nav class="site-nav" aria-label="On this page">
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
     </nav>
+  </header>
 
-    <div class="contact">
-      Find me <a href="mailto:i@bb.style">Email</a> | <a href="https://www.linkedin.com/in/bihan-q-9a5517250/" target="_blank" rel="noopener">LinkedIn</a>
-    </div>
+  <main class="home">
+
+    <!-- ───────────────────────── Who, what, how to reach ───────────────────────── -->
+    <section class="hero">
+      <p class="kicker">AI Engineer · Denver, CO · Open to relocation</p>
+      <h1 class="name">Bihan Qian<span class="accent">.</span></h1>
+      <p class="pitch">I build production AI systems end to end, and prove their impact with <em>measurement</em>.</p>
+      <p class="intro">
+        At Guzman Energy, an energy trading company, I built the data foundation, then an MCP agent platform that
+        <strong>82% of employees use every day</strong> with evals gating every release, and a forecasting system that
+        <strong>beat the commercial vendor by 17%</strong>. M.A. in Statistics from Columbia.
+      </p>
+      <div class="cta">
+        <a class="primary" href="mailto:i@bb.style">Email me</a>
+        <a href="https://www.linkedin.com/in/bihan-q-9a5517250/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/B-cmd-alt" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </section>
+
+    <section class="facts" aria-label="Results at a glance">
+      <div class="fact"><b>82%</b><span>of employees using the agent platform daily, two months after launch</span></div>
+      <div class="fact"><b>+$330K</b><span>a year in P&amp;L from a forecasting system with 17% lower error than the commercial vendor</span></div>
+      <div class="fact"><b>36 → 87%</b><span>agent capability pass rate in 4 months, with cost per task down 68%</span></div>
+      <div class="fact"><b>3.5B+</b><span>rows of market data unified by 100+ production pipelines</span></div>
+    </section>
+
+    <!-- ───────────────────────── Experience ───────────────────────── -->
+    <section class="section" id="experience">
+      <h2 class="section-title">Experience</h2>
+
+      <article class="role">
+        <header class="role-head">
+          <h3>AI Engineer <span class="aside">(functional role)</span></h3>
+          <p class="when">Guzman Energy · Feb 2025 – Present</p>
+        </header>
+        <ul class="list">
+          <li><strong>MCP data layer.</strong> A unified MCP server that lets AI agents query 55 internal data sources
+            under each user's own identity (OAuth2/OIDC), with per-user access control and audit logs. About 130K tool
+            calls a month across all 10 departments.</li>
+          <li><strong>Evaluation harness.</strong> Every MCP tool change is gated by 54 regression tests and 76
+            capability tasks drawn from real incidents, scored by an LLM judge. Capability pass rate went from 36% to
+            87% in 4 months while cost per task fell 68%.</li>
+          <li><strong>Forecasting.</strong> An agent-driven forecasting system (Chronos-2 fine-tuned with LoRA) that
+            powers automated bid submission. In daily parallel runs against the commercial vendor: 17% lower forecast
+            MAE, +$330K a year in P&amp;L, and 99.99% on-time bid submission over 7 months.</li>
+          <li><strong>Adoption.</strong> From 0 to 82% of employees daily active in two months, through company-wide AI
+            office hours, showing each department where agents create value, and hands-on work with non-engineers
+            building their own pipelines, dashboards and analytics.</li>
+          <li><strong>RAG.</strong> Hybrid BM25 + vector retrieval with cross-encoder reranking over the internal
+            knowledge base. Recall@10 from 0.35 to 0.96, MRR@10 from 0.25 to 0.78.</li>
+          <li><strong>Internal apps.</strong> 8 production apps designed, built and launched as the sole developer in
+            6 months (TypeScript, FastAPI, CloudSQL, GCP), each designed with its end users: 103 users, 90% retention.</li>
+        </ul>
+      </article>
+
+      <article class="role">
+        <header class="role-head">
+          <h3>Data Engineer</h3>
+          <p class="when">Guzman Energy · Apr 2024 – Feb 2025</p>
+        </header>
+        <ul class="list">
+          <li><strong>Data foundation.</strong> 100+ idempotent production pipelines unifying the trading desk's market
+            data (SCADA, OASIS transmission, NAESB e-tags, nodal prices, revenue meters; 3.5B+ rows) into one governed
+            BigQuery source used daily by 74+ employees. 40+ of them have run two years unchanged, and the company's
+            AI layer now runs on it.</li>
+          <li><strong>Reliable and cheap to run.</strong> Schema contract tests on every pipeline, partitioned tables
+            to cap scan cost, CI/CD with automated code review across 237 Cloud Run services, and alerting that
+            surfaces production failures in under a minute. About 100 urgent data incidents a year, resolved in about
+            30 minutes on average.</li>
+        </ul>
+      </article>
+    </section>
+
+    <!-- ───────────────────────── Projects ───────────────────────── -->
+    <section class="section" id="projects">
+      <h2 class="section-title">Projects</h2>
+
+      <div class="cards">
+        <article class="card">
+          <p class="kicker">AI agents · evaluation</p>
+          <h3>Memory System Evaluator</h3>
+          <p>
+            An open benchmark of agent-memory systems (Mem0, Zep/Graphiti, GraphRAG, A-MEM and more) on one model, one
+            embedder and one calibrated LLM judge. <strong>None beats plain full context on recall, while write cost
+            varies 39×.</strong>
+          </p>
+          <div class="cta">
+            <a href="https://memory-evaluator-862698383291.us-central1.run.app" target="_blank" rel="noopener">Try it live →</a>
+            <a class="quiet" href="projects/memory-evaluator.html">Evidence</a>
+            <a class="quiet" href="https://github.com/B-cmd-alt/memory-evaluator" target="_blank" rel="noopener">Code</a>
+          </div>
+        </article>
+
+        <article class="card">
+          <p class="kicker">Data infrastructure · autonomous agents</p>
+          <h3>PipelineAgent</h3>
+          <p>
+            A self-evolving repair agent for data pipelines. It watches live data feeds hourly, repairs broken
+            pipelines through its own gated pull requests, and <strong>turns real incidents into new replay
+            evals</strong>, with weekly self-injected faults re-testing the loop.
+          </p>
+          <div class="cta">
+            <a href="https://b-cmd-alt.github.io/pipelineagent/" target="_blank" rel="noopener">Live dashboard →</a>
+            <a class="quiet" href="https://github.com/B-cmd-alt/pipelineagent" target="_blank" rel="noopener">Code</a>
+          </div>
+        </article>
+      </div>
+
+      <a class="more" href="projects.html">Read the full write-ups, with the evidence →</a>
+    </section>
+
+    <!-- ───────────────────────── Skills + education ───────────────────────── -->
+    <section class="section split">
+      <div>
+        <h2 class="section-title">Skills</h2>
+        <dl class="defs">
+          <dt>LLM systems</dt>
+          <dd>Claude/OpenAI APIs, tool calling, MCP, RAG, evals, context management, sandboxed execution, LoRA
+            fine-tuning, event-driven pipelines</dd>
+          <dt>Tools &amp; languages</dt>
+          <dd>Python, TypeScript, SQL, React, Node.js, GCP, AWS, REST, OAuth, OTel, Claude Code, Codex</dd>
+        </dl>
+      </div>
+      <div>
+        <h2 class="section-title">Education</h2>
+        <div class="school">
+          <h3>Columbia University</h3>
+          <p>M.A., Statistics · 2022 – 2023</p>
+        </div>
+        <div class="school">
+          <h3>Denison University</h3>
+          <p>B.A., Mathematics, magna cum laude · 2017 – 2020</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───────────────────────── Contact ───────────────────────── -->
+    <section class="section contact" id="contact">
+      <h2 class="section-title">Get in touch<span class="accent">.</span></h2>
+      <p>
+        I'm based in Denver and open to relocation. Email is the fastest way to reach me.
+      </p>
+      <div class="cta">
+        <a class="primary" href="mailto:i@bb.style">i@bb.style</a>
+        <a href="https://www.linkedin.com/in/bihan-q-9a5517250/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/B-cmd-alt" target="_blank" rel="noopener">GitHub</a>
+      </div>
+      <p class="aside">Off the clock: the science of cooking, and photography.</p>
+    </section>
+
   </main>
 
   <script src="script.js"></script>
