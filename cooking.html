@@ -10,8 +10,9 @@
   <meta name="description" content="BB's cooking space - A space for flavors, recipes, food science exploration, and the joy of creating in the kitchen.">
   <meta name="keywords" content="BB cooking, food science, recipes, kitchen, culinary exploration">
   <meta name="author" content="BB">
-  <meta name="robots" content="noindex, follow">
+  <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://bb.style/cooking.html">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
   
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
@@ -37,70 +38,40 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <style>
     .page-hero {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 2rem;
+      min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 2rem; position: relative; z-index: 1;
     }
     .back-link {
-      position: fixed;
-      top: 2rem;
-      left: 2rem;
-      font-family: var(--font-body);
-      font-size: 0.9rem;
-      color: var(--ink-muted);
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      transition: color 0.3s ease;
-      z-index: 10;
+      position: fixed; top: 1.5rem; left: 1.5rem; z-index: 10;
+      font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-muted);
+      border-bottom: 1px solid transparent; transition: all 0.2s ease;
     }
-    .back-link:hover { color: var(--cooking-accent); }
-    .page-icon {
-      width: 120px;
-      height: 120px;
-      color: var(--cooking-accent);
-      margin-bottom: 2rem;
-      opacity: 0.8;
-    }
-    .page-title {
-      font-family: var(--font-display);
-      font-size: clamp(2.5rem, 8vw, 4rem);
-      font-weight: 600;
-      color: var(--ink);
-      margin-bottom: 1rem;
-    }
-    .page-subtitle {
-      font-size: 1.1rem;
-      color: var(--ink-muted);
-      max-width: 500px;
-    }
+    .back-link:hover { color: var(--accent); border-bottom-color: var(--accent); }
+    .page-icon { width: 88px; height: 88px; color: var(--accent); margin-bottom: 1.6rem; }
+    .page-title { font-family: var(--font-display); font-size: clamp(2.6rem, 8vw, 4.5rem); font-weight: 700; line-height: 1; margin-bottom: 1.2rem; }
+    .page-subtitle { font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.9; color: var(--text-muted); max-width: 480px; text-wrap: balance; }
     .coming-soon {
-      display: inline-block;
-      margin-top: 2rem;
-      padding: 0.75rem 1.5rem;
-      background: var(--cooking-bg);
-      color: var(--cooking-accent);
-      border-radius: 100px;
-      font-size: 0.85rem;
-      font-weight: 500;
+      display: inline-block; margin-top: 2rem; padding: 0.45rem 1rem;
+      border: 1.5px solid var(--accent); border-radius: 100px;
+      font-family: var(--font-mono); font-size: 0.8rem; font-weight: 500; color: var(--text);
     }
+    .nav-foot { margin-top: 3rem; }
+    @media (max-width: 480px) { .back-link { top: 1rem; left: 1rem; } }
   </style>
 </head>
 <body>
-  <div class="ambient-bg" aria-hidden="true">
-    <div class="gradient-layer"></div>
-    <div class="sun-glow"></div>
+  <div class="bg-animation" aria-hidden="true">
+    <div class="bg-texture"></div>
+    <div class="bg-grid"></div>
+    <canvas id="nn-canvas"></canvas>
+    <div class="bg-glow"></div>
   </div>
   
-  <a href="index.html" class="back-link">← Back home</a>
+  <a href="index.html" class="back-link">← bb.style</a>
   
   <main class="page-hero">
     <div class="page-icon">
@@ -113,9 +84,17 @@
         <line x1="32" y1="6" x2="32" y2="10"/>
       </svg>
     </div>
-    <h1 class="page-title">Cooking</h1>
+    <h1 class="page-title">Cooking<span class="accent">.</span></h1>
     <p class="page-subtitle">A space for flavors, recipes, and the joy of creating in the kitchen.</p>
     <span class="coming-soon">Coming soon</span>
+
+    <nav class="links nav-foot">
+      <a href="projects.html">Projects</a>
+      <a href="research.html">Research</a>
+      <a href="photography.html">Photography</a>
+    </nav>
   </main>
+
+  <script src="script.js"></script>
 </body>
 </html>

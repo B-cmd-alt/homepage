@@ -345,6 +345,17 @@ a:focus-visible {
   border-bottom-color: var(--accent-ink);
 }
 
+/* Phones: five links sit as two tidy rows */
+@media (max-width: 480px) {
+  .links {
+    gap: 1.1rem 1.6rem;
+  }
+
+  .links a {
+    font-size: 0.95rem;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   #nn-canvas {
     visibility: hidden;
