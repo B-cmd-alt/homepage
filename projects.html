@@ -79,7 +79,7 @@
     <section class="project" id="memory-evaluator">
       <div class="kicker">AI agents · evaluation · 2025–2026</div>
       <h2>Memory System Evaluator</h2>
-      <p class="tagline">Ten agent-memory systems, one model, one embedder, one calibrated judge — and every number traceable to the case that produced it.</p>
+      <p class="tagline">Eleven agent-memory systems, one model, one embedder, one calibrated judge — and every number traceable to the case that produced it.</p>
 
       <p>
         <strong>The question.</strong> Every memory vendor reports a benchmark score, and the scores do not survive
@@ -89,8 +89,8 @@
       </p>
       <p>
         <strong>What I built.</strong> An OpenAI-compatible shim so that Mem0, Zep/Graphiti, A-MEM and Microsoft GraphRAG run
-        on exactly the same generator and embedding model as the baselines; adapters for ten systems spanning
-        2023 → 2026 (BM25, vector RAG, hybrid + reranker, GraphRAG, Mem0, Graphiti, A-MEM, and faithful
+        on exactly the same generator and embedding model as the baselines; adapters for eleven systems spanning
+        2023 → 2026 (full context, BM25, vector RAG, hybrid + reranker, GraphRAG, Mem0, Graphiti, A-MEM, and faithful
         re-implementations of Generative Agents, Mastra Observational Memory and the Anthropic memory tool);
         a self-built benchmark, <em>SixAxis</em>, that takes the core of LongMemEval, MemoryAgentBench, BEAM, ConvoMem,
         Memora, MemOps, ForgetEval and MemDelta and fixes each one's documented flaw — gold answers carry evidence
@@ -145,9 +145,10 @@
         can without ever being allowed to grade its own work.
       </p>
       <p>
-        <strong>What I built.</strong> A fleet of seven real, free, genuinely flaky public feeds (NWS, Open-Meteo, USGS,
-        FRED, GitHub Status, CoinGecko, Ontario's grid operator) running hourly on Cloud Run into an append-only,
-        vintage-stamped warehouse. Three out-of-band detectors — write recency, head lag, flat value — each returning
+        <strong>What I built.</strong> A fleet of eight live feeds running hourly on Cloud Run into an append-only,
+        vintage-stamped warehouse: seven real, free, genuinely flaky public sources (NWS, Open-Meteo, USGS, FRED,
+        GitHub Status, CoinGecko, Ontario's grid operator) and a canary, the project's own published data, that a
+        weekly self-test breaks on purpose. Three out-of-band detectors — write recency, head lag, flat value — each returning
         exactly <code>OK</code>, <code>BREACH</code> or <code>UNKNOWN</code>, where <code>UNKNOWN</code> is rendered amber and
         never green. A findings ledger with explicit dispositions, a dead-man's switch whose heartbeat carries the hash of
         the running code (so "committed" and "deployed" cannot silently diverge), and a policy test that refuses any pull
@@ -158,7 +159,7 @@
       </p>
 
       <div class="facts">
-        <div class="fact"><b>7</b><span>public feeds, hourly, append-only with vintages</span></div>
+        <div class="fact"><b>8</b><span>live feeds, hourly, append-only with vintages</span></div>
         <div class="fact"><b>3</b><span>detector axes that read data, never exit codes</span></div>
         <div class="fact"><b>&lt; $2</b><span>per month, steady state, on Cloud Run</span></div>
         <div class="fact"><b>hour 1</b><span>first real breach: FRED began timing out from the cloud</span></div>
