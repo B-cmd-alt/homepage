@@ -356,8 +356,52 @@ a:focus-visible {
   }
 }
 
+/* What the homepage background is doing */
+.bg-note {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 1.1rem;
+  z-index: 1;
+  padding: 0 1rem;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  line-height: 1.7;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.bg-note span {
+  display: block;
+  width: fit-content;     /* the box is the text, so the background can measure it */
+  margin: 0 auto;
+}
+
+.bg-formula {
+  color: var(--text);
+  letter-spacing: 0.02em;
+}
+
+.bg-formula sup,
+.bg-formula sub {
+  font-size: 0.75em;
+  line-height: 0;
+}
+
+.bg-legend {
+  opacity: 0.85;
+}
+
+@media (max-width: 700px), (max-height: 640px) {
+  .bg-note .bg-legend {
+    display: none;
+  }
+}
+
+/* A canvas marked data-still draws one still frame itself; any other is hidden */
 @media (prefers-reduced-motion: reduce) {
-  #nn-canvas {
+  #nn-canvas:not([data-still]) {
     visibility: hidden;
   }
 }

@@ -25,6 +25,12 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://bb.style/blog.html</loc>
+    <lastmod>2026-11-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://bb.style/research.html</loc>
     <lastmod>2026-11-16</lastmod>
     <changefreq>monthly</changefreq>

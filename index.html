@@ -73,11 +73,11 @@
 </head>
 <body>
 
-  <!-- Animated Background - Neural Network Sparks -->
+  <!-- Animated background: sparks as tokens, exchanging energy by self-attention (attention.js) -->
   <div class="bg-animation" aria-hidden="true">
     <div class="bg-texture"></div>
     <div class="bg-grid"></div>
-    <canvas id="nn-canvas"></canvas>
+    <canvas id="nn-canvas" data-still></canvas>
     <div class="bg-glow"></div>
   </div>
 
@@ -97,6 +97,7 @@
       <a href="projects.html">Projects</a>
       <a href="experience.html">Experience</a>
       <a href="research.html">Research</a>
+      <a href="blog.html">Blog</a>
       <a href="cooking.html">Cooking</a>
       <a href="photography.html">Photography</a>
     </nav>
@@ -106,6 +107,12 @@
     </div>
   </main>
 
-  <script src="script.js"></script>
+  <!-- What the background is doing, for anyone who wonders -->
+  <p class="bg-note" aria-hidden="true">
+    <span class="bg-formula">Attention(Q, K, V) = softmax(QK<sup>T</sup> / √d<sub>k</sub>) · V</span>
+    <span class="bg-legend">each spark is a token · each line an attention weight · observe → attend → act → a new spark is born</span>
+  </p>
+
+  <script src="attention.js"></script>
 </body>
 </html>

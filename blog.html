@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Blog | Bihan Qian (BB)</title>
+  <meta name="title" content="Blog | Bihan Qian (BB)">
+  <meta name="description" content="Write-ups by Bihan Qian (BB) on building and measuring AI systems: how LLM judges fail on memory benchmarks, a benchmark for agent memory, and a pipeline agent that repairs itself.">
+  <meta name="keywords" content="Bihan Qian, BB, blog, LLM evaluation, LLM-as-judge, agent memory, benchmark, autonomous agents, data pipelines">
+  <meta name="author" content="Bihan Qian">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://bb.style/blog.html">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://bb.style/blog.html">
+  <meta property="og:title" content="Blog | Bihan Qian (BB)">
+  <meta property="og:description" content="Write-ups on building and measuring AI systems.">
+  <meta property="og:image" content="https://bb.style/og.png">
+  <meta property="og:site_name" content="BB.STYLE">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Blog | Bihan Qian (BB)">
+  <meta name="twitter:description" content="Write-ups on building and measuring AI systems.">
+  <meta name="twitter:image" content="https://bb.style/og.png">
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-0GNP7SNL8H"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-0GNP7SNL8H');
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .back-link {
+      position: fixed; top: 1.5rem; left: 1.5rem; z-index: 10;
+      font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-muted);
+      border-bottom: 1px solid transparent; transition: all 0.2s ease;
+    }
+    .back-link:hover { color: var(--accent); border-bottom-color: var(--accent); }
+    .page { position: relative; z-index: 1; max-width: 760px; margin: 0 auto; padding: 7rem 1.5rem 5rem; }
+    .page-title { font-family: var(--font-display); font-size: clamp(2.6rem, 8vw, 4.5rem); font-weight: 700; line-height: 1; margin-bottom: 1rem; }
+    .lede { font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.9; color: var(--text-muted); max-width: 600px; margin-bottom: 3rem; }
+    .post { padding: 2rem 0; border-top: 1px solid var(--rule); }
+    .post:last-of-type { border-bottom: 1px solid var(--rule); }
+    .post h2 { font-family: var(--font-display); font-size: clamp(1.4rem, 3.6vw, 1.8rem); font-weight: 700; line-height: 1.2; margin-bottom: 0.7rem; }
+    .post h2 a { transition: color 0.2s ease; }
+    .post h2 a:hover { color: var(--accent-ink); }
+    .post p { font-family: var(--font-mono); font-size: 0.88rem; line-height: 1.85; color: var(--text-muted); max-width: 640px; }
+    .post .read { display: inline-block; margin-top: 0.9rem; font-family: var(--font-mono); font-size: 0.82rem; font-weight: 500; padding-bottom: 0.15rem; border-bottom: 1.5px solid var(--accent); transition: color 0.2s ease; }
+    .post .read:hover { color: var(--accent-ink); }
+    .nav-foot { text-align: center; margin-top: 3rem; }
+    @media (max-width: 480px) { .page { padding-top: 5.5rem; } .back-link { top: 1rem; left: 1rem; } }
+  </style>
+</head>
+<body>
+
+  <div class="bg-animation" aria-hidden="true">
+    <div class="bg-texture"></div>
+    <div class="bg-grid"></div>
+    <canvas id="nn-canvas"></canvas>
+    <div class="bg-glow"></div>
+  </div>
+
+  <a href="index.html" class="back-link">← bb.style</a>
+
+  <main class="page">
+    <h1 class="page-title">Blog<span class="accent">.</span></h1>
+    <p class="lede">
+      Write-ups on building and measuring AI systems. For now these are the long-form notes that live
+      beside each project's code; each one opens the full text.
+    </p>
+
+    <article class="post">
+      <div class="kicker">Evaluation · Memory System Evaluator</div>
+      <h2><a href="https://github.com/B-cmd-alt/memory-evaluator/blob/main/docs/JUDGE_METHODOLOGY.md" target="_blank" rel="noopener">Three layered failure modes of LLM-as-judge for memory benchmarks</a></h2>
+      <p>
+        A soft LLM judge scores "I don't have enough information" as fully correct, inflating results by 6–22
+        points. The usual fix has blind spots of its own. And two LLM judges can agree with each other at
+        κ = 0.85 while agreeing with a careful human at only κ = 0.50. Ends with a judge protocol that reaches
+        κ = 0.87 against human labels.
+      </p>
+      <a class="read" href="https://github.com/B-cmd-alt/memory-evaluator/blob/main/docs/JUDGE_METHODOLOGY.md" target="_blank" rel="noopener">Read →</a>
+    </article>
+
+    <article class="post">
+      <div class="kicker">Benchmark design · Memory System Evaluator</div>
+      <h2><a href="https://github.com/B-cmd-alt/memory-evaluator/blob/main/BENCHMARK_DESIGN.md" target="_blank" rel="noopener">SixAxis: a self-built memory benchmark that takes the core of each existing one</a></h2>
+      <p>
+        Six axes: recall, update and forgetting, deletion, adversarial memory, cost, invariance. Everything in
+        it is either inherited from a named benchmark, with the reason, or a fix for a documented flaw, with the
+        source. Written and pre-registered before any new system was run.
+      </p>
+      <a class="read" href="https://github.com/B-cmd-alt/memory-evaluator/blob/main/BENCHMARK_DESIGN.md" target="_blank" rel="noopener">Read →</a>
+    </article>
+
+    <article class="post">
+      <div class="kicker">Results · Memory System Evaluator</div>
+      <h2><a href="https://github.com/B-cmd-alt/memory-evaluator/blob/main/docs/ROUND2_RESULTS.md" target="_blank" rel="noopener">SixAxis round 2: results</a></h2>
+      <p>
+        Eleven systems, three seeded worlds, two generator tiers. On recall, simply putting everything in
+        context is not beaten; the generations separate on updates instead. Per-axis tables, the verdict on
+        each pre-registered hypothesis, and the nine corrections the round forced on the benchmark itself.
+      </p>
+      <a class="read" href="https://github.com/B-cmd-alt/memory-evaluator/blob/main/docs/ROUND2_RESULTS.md" target="_blank" rel="noopener">Read →</a>
+    </article>
+
+    <article class="post">
+      <div class="kicker">Autonomous agents · PipelineAgent</div>
+      <h2><a href="https://github.com/B-cmd-alt/pipelineagent/blob/main/ops/DRILL.md" target="_blank" rel="noopener">Live drill: prove the automatic repair loop end to end</a></h2>
+      <p>
+        A controlled failure injected on the deployed job, which has to travel the whole path: archived bytes,
+        detector, finding, triage, replay, model patch, pull request, gate, merge, deploy, verification.
+        Nothing is simulated; the only unreal thing is the cause.
+      </p>
+      <a class="read" href="https://github.com/B-cmd-alt/pipelineagent/blob/main/ops/DRILL.md" target="_blank" rel="noopener">Read →</a>
+    </article>
+
+    <article class="post">
+      <div class="kicker">System design · PipelineAgent</div>
+      <h2><a href="https://github.com/B-cmd-alt/pipelineagent/blob/main/DESIGN.md" target="_blank" rel="noopener">PipelineAgent: design</a></h2>
+      <p>
+        An autonomous detection-and-repair agent for data pipelines, paired with a dashboard that shows what
+        broke, what the agent did about it, and whether the thing doing the watching is itself alive.
+      </p>
+      <a class="read" href="https://github.com/B-cmd-alt/pipelineagent/blob/main/DESIGN.md" target="_blank" rel="noopener">Read →</a>
+    </article>
+
+    <nav class="links nav-foot">
+      <a href="index.html">Home</a>
+      <a href="projects.html">Projects</a>
+      <a href="experience.html">Experience</a>
+      <a href="research.html">Research</a>
+    </nav>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
