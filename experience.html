@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Experience | Bihan Qian (BB)</title>
+  <meta name="title" content="Experience | Bihan Qian (BB)">
+  <meta name="description" content="Bihan Qian (BB), AI engineer: an MCP agent platform used daily by 82% of a company with evals gating every release, a forecasting system that beat the commercial vendor by 17%, and the data foundation underneath both.">
+  <meta name="keywords" content="Bihan Qian, BB, AI engineer, experience, MCP, AI agents, LLM evaluation, RAG, forecasting, data engineering">
+  <meta name="author" content="Bihan Qian">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://bb.style/experience.html">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+
+  <meta property="og:type" content="profile">
+  <meta property="og:url" content="https://bb.style/experience.html">
+  <meta property="og:title" content="Experience | Bihan Qian (BB)">
+  <meta property="og:description" content="AI engineer. Production AI systems end to end, with their impact measured.">
+  <meta property="og:image" content="https://bb.style/og.png">
+  <meta property="og:site_name" content="BB.STYLE">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Experience | Bihan Qian (BB)">
+  <meta name="twitter:description" content="AI engineer. Production AI systems end to end, with their impact measured.">
+  <meta name="twitter:image" content="https://bb.style/og.png">
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-0GNP7SNL8H"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-0GNP7SNL8H');
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .back-link {
+      position: fixed; top: 1.5rem; left: 1.5rem; z-index: 10;
+      font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-muted);
+      border-bottom: 1px solid transparent; transition: all 0.2s ease;
+    }
+    .back-link:hover { color: var(--accent); border-bottom-color: var(--accent); }
+    .page { position: relative; z-index: 1; max-width: 760px; margin: 0 auto; padding: 7rem 1.5rem 5rem; }
+    .page-title { font-family: var(--font-display); font-size: clamp(2.6rem, 8vw, 4.5rem); font-weight: 700; line-height: 1; margin-bottom: 1rem; }
+    .lede { font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.9; color: var(--text-muted); max-width: 600px; margin-bottom: 2.5rem; }
+    .facts { grid-template-columns: repeat(4, 1fr); margin: 0 0 3.5rem; }
+    /* Low optical size keeps the hairlines of %, + and → readable at this size */
+    .fact b { font-size: clamp(1.35rem, 5vw, 1.65rem); font-variation-settings: 'opsz' 10; white-space: nowrap; margin-bottom: 0.3rem; }
+    .role { padding: 2.2rem 0; border-top: 1px solid var(--rule); }
+    .role-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0.2rem 1.5rem; margin-bottom: 1rem; }
+    .role-head h2 { font-family: var(--font-display); font-size: clamp(1.5rem, 4vw, 1.9rem); font-weight: 700; line-height: 1.2; }
+    .role-head h2 small { font-family: var(--font-mono); font-size: 0.75rem; font-weight: 400; color: var(--text-muted); }
+    .when { font-family: var(--font-mono); font-size: 0.82rem; color: var(--text); }
+    .list { margin-bottom: 0; }
+    .list li { margin-bottom: 0.6rem; }
+    .list strong { color: var(--text); font-weight: 500; }
+    .split { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 2rem 2.5rem; padding: 2.2rem 0; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+    .split h2 { font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; margin-bottom: 0.9rem; }
+    .split dt { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text); margin-bottom: 0.25rem; }
+    .split dd, .split p { font-family: var(--font-mono); font-size: 0.86rem; line-height: 1.8; color: var(--text-muted); }
+    .split dd + dt, .split p + p { margin-top: 0.9rem; }
+    .split p b { display: block; font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; line-height: 1.4; color: var(--text); }
+    .reach { justify-content: center; margin-top: 3rem; }
+    .nav-foot { text-align: center; margin-top: 3rem; }
+    @media (max-width: 640px) { .facts { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 480px) { .page { padding-top: 5.5rem; } .back-link { top: 1rem; left: 1rem; } }
+  </style>
+</head>
+<body>
+
+  <div class="bg-animation" aria-hidden="true">
+    <div class="bg-texture"></div>
+    <div class="bg-grid"></div>
+    <canvas id="nn-canvas"></canvas>
+    <div class="bg-glow"></div>
+  </div>
+
+  <a href="index.html" class="back-link">← bb.style</a>
+
+  <main class="page">
+    <div class="kicker">Bihan Qian · AI Engineer · Denver, CO · Open to relocation</div>
+    <h1 class="page-title">Experience<span class="accent">.</span></h1>
+    <p class="lede">
+      I build production AI systems end to end, and prove their impact with measurement.
+      At an energy trading company I built the data foundation first, then the AI layer that runs on it.
+    </p>
+
+    <section class="facts" aria-label="Results at a glance">
+      <div class="fact"><b>82%</b><span>of employees using the agent platform daily, two months after launch</span></div>
+      <div class="fact"><b>+$330K</b><span>a year in P&amp;L from a forecast with 17% lower error than the vendor's</span></div>
+      <div class="fact"><b>36 → 87%</b><span>agent capability pass rate in 4 months, cost per task down 68%</span></div>
+      <div class="fact"><b>3.5B+</b><span>rows of market data unified by 100+ production pipelines</span></div>
+    </section>
+
+    <!-- ───────────────────────── AI Engineer ───────────────────────── -->
+    <section class="role">
+      <header class="role-head">
+        <h2>AI Engineer <small>(functional role)</small></h2>
+        <p class="when">Guzman Energy · Feb 2025 – Present</p>
+      </header>
+      <ul class="list">
+        <li><strong>MCP data layer.</strong> A unified MCP server that lets AI agents query 55 internal data sources
+          under each user's own identity (OAuth2/OIDC), with per-user access control and audit logs. About 130K tool
+          calls a month across all 10 departments.</li>
+        <li><strong>Evaluation harness.</strong> Every MCP tool change is gated by 54 regression tests and 76
+          capability tasks drawn from real incidents, scored by an LLM judge. Capability pass rate went from 36% to
+          87% in 4 months while cost per task fell 68%.</li>
+        <li><strong>Forecasting.</strong> An agent-driven forecasting system (Chronos-2 fine-tuned with LoRA) that
+          powers automated bid submission. In daily parallel runs against the commercial vendor: 17% lower forecast
+          MAE, +$330K a year in P&amp;L, and 99.99% on-time bid submission over 7 months.</li>
+        <li><strong>Adoption.</strong> From 0 to 82% of employees daily active in two months, through company-wide AI
+          office hours, showing each department where agents create value, and hands-on work with non-engineers
+          building their own pipelines, dashboards and analytics.</li>
+        <li><strong>RAG.</strong> Hybrid BM25 + vector retrieval with cross-encoder reranking over the internal
+          knowledge base. Recall@10 from 0.35 to 0.96, MRR@10 from 0.25 to 0.78.</li>
+        <li><strong>Internal apps.</strong> 8 production apps designed, built and launched as the sole developer in
+          6 months (TypeScript, FastAPI, CloudSQL, GCP), each designed with its end users: 103 users, 90% retention.</li>
+      </ul>
+    </section>
+
+    <!-- ───────────────────────── Data Engineer ───────────────────────── -->
+    <section class="role">
+      <header class="role-head">
+        <h2>Data Engineer</h2>
+        <p class="when">Guzman Energy · Apr 2024 – Feb 2025</p>
+      </header>
+      <ul class="list">
+        <li><strong>Data foundation.</strong> 100+ idempotent production pipelines unifying the trading desk's market
+          data (SCADA, OASIS transmission, NAESB e-tags, nodal prices, revenue meters; 3.5B+ rows) into one governed
+          BigQuery source used daily by 74+ employees. 40+ of them have run two years unchanged, and the company's
+          AI layer now runs on it.</li>
+        <li><strong>Reliable and cheap to run.</strong> Schema contract tests on every pipeline, partitioned tables
+          to cap scan cost, CI/CD with automated code review across 237 Cloud Run services, and alerting that
+          surfaces production failures in under a minute. About 100 urgent data incidents a year, resolved in about
+          30 minutes on average.</li>
+      </ul>
+    </section>
+
+    <!-- ───────────────────────── Skills + education ───────────────────────── -->
+    <section class="split">
+      <div>
+        <h2>Skills</h2>
+        <dl>
+          <dt>LLM systems</dt>
+          <dd>Claude/OpenAI APIs, tool calling, MCP, RAG, evals, context management, sandboxed execution, LoRA
+            fine-tuning, event-driven pipelines</dd>
+          <dt>Tools &amp; languages</dt>
+          <dd>Python, TypeScript, SQL, React, Node.js, GCP, AWS, REST, OAuth, OTel, Claude Code, Codex</dd>
+        </dl>
+      </div>
+      <div>
+        <h2>Education</h2>
+        <p><b>Columbia University</b>M.A., Statistics · 2022 – 2023</p>
+        <p><b>Denison University</b>B.A., Mathematics, magna cum laude · 2017 – 2020</p>
+      </div>
+    </section>
+
+    <div class="cta reach">
+      <a class="primary" href="mailto:i@bb.style">Email me</a>
+      <a href="https://www.linkedin.com/in/bihan-q-9a5517250/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/B-cmd-alt" target="_blank" rel="noopener">GitHub</a>
+    </div>
+
+    <nav class="links nav-foot">
+      <a href="index.html">Home</a>
+      <a href="projects.html">Projects</a>
+    </nav>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
