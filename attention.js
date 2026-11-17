@@ -1,5 +1,5 @@
 /**
- * Attention field: the homepage background.
+ * Attention field: the background of every page.
  *
  * The idea is the one the spark field always had: sparks are born, give and receive energy, and die.
  * What changed is the rule for who gives to whom. It is scaled dot-product attention:
@@ -17,6 +17,10 @@
  * The new token's embedding is the residual sum x + Σ wᵢ·vᵢ, and a tiny feed-forward net turns the
  * attention output into the direction of the step. A token that keeps giving its energy away fades
  * and dies. The mouse pointer is a token too: move it near a head and the head attends to it.
+ *
+ * Heads and their lines keep to the space the page's text leaves free: around the centred block on
+ * the home page, in the side margins of a reading column. Where the text leaves no room (a phone, a
+ * narrow window) the field runs "quiet": anywhere, dimmed, without labels.
  */
 
 (() => {
@@ -389,25 +393,34 @@
       this.canvas.style.height = this.height + 'px';
       this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
+      this.layout();
+    }
+
+    // Everything that depends on the size of the screen and on where the page's text is
+    layout() {
       const small = this.width < 700;
       this.scale = small ? 0.72 : 1;
-      this.headCount = small ? 2 : 3;
       this.contextRadius = CFG.contextRadius * (small ? 0.62 : 1);
-      this.topK = small ? 3 : CFG.topK;
-      this.labels = this.width >= 900;                 // weights and phase names need room
-      const area = (this.width * this.height) / (1440 * 900);
-      this.ambientTarget = Math.round(clamp(CFG.ambientPerScreen * area, 14, 80));
       this.measureAvoid();
+      this.headCount = small || this.freeShare < 0.3 ? 2 : 3;   // narrow margins hold two heads, not three
+
+      this.topK = small || this.quiet ? 3 : CFG.topK;
+      this.labels = this.width >= 900 && !this.quiet;   // weights and phase names need room
+      this.dim = this.quiet ? 0.42 : 1;
+      // Free tokens: as dense in the space the text leaves as they are around the home page's block
+      const area = (this.width * this.height) / (1440 * 900);
+      const room = clamp(this.freeShare / 0.7, 0.55, 1);
+      this.ambientTarget = Math.round(clamp(CFG.ambientPerScreen * area * room, 14, 80));
 
       // A resize can change how many heads fit
       while (this.heads.length > this.headCount) this.heads.pop().token.isHead = false;
       while (this.heads.length && this.heads.length < this.headCount) this.heads.push(new Head(this.heads.length, this));
     }
 
-    // The page's text (the block in the middle, the caption at the bottom): heads and their lines keep out
+    // Where the page's text is. Heads and their lines keep out of these boxes.
     measureAvoid() {
       this.avoid = [];
-      const add = (els, padX, padY) => {
+      const union = (els, padX, padY) => {
         let l = Infinity, t = Infinity, r = -Infinity, b = -Infinity;
         for (const el of els) {
           const box = el.getBoundingClientRect();
@@ -417,9 +430,30 @@
         }
         if (r > l) this.avoid.push({ l: l - padX, t: t - padY, r: r + padX, b: b + padY });
       };
-      const host = document.querySelector('.content');
-      if (host) add(host.children, 34, 30);
-      add(document.querySelectorAll('.bg-note span'), 18, 12);
+      // A centred block (home, the single-screen pages): the box around what is in it
+      for (const host of document.querySelectorAll('.content, .page-hero')) union(host.children, 34, 30);
+      // A reading column (projects, experience, blog): the full height of the screen, because it scrolls
+      for (const column of document.querySelectorAll('.page')) {
+        const box = column.getBoundingClientRect();
+        if (box.width) this.avoid.push({ l: box.left - 8, t: -1e6, r: box.right + 8, b: 1e6 });
+      }
+      union(document.querySelectorAll('.back-link'), 18, 14);
+      union(document.querySelectorAll('.bg-note span'), 18, 12);
+
+      // How much of the screen is left for the heads
+      let free = 0, total = 0;
+      for (let i = 0; i < 16; i++) {
+        for (let j = 0; j < 12; j++) {
+          total++;
+          if (this.valid((i + 0.5) * this.width / 16, (j + 0.5) * this.height / 12)) free++;
+        }
+      }
+      this.freeShare = free / total;
+      this.quiet = this.freeShare < 0.2;     // too little: run behind the text instead, dimmed
+      if (this.quiet) {
+        this.avoid = [];
+        this.freeShare = 1;
+      }
     }
 
     inAvoid(x, y, pad = 0) {
@@ -552,7 +586,7 @@
         const k = easeInOut(p.t);
         const x = lerp(p.from.x, p.to.x, k);
         const y = lerp(p.from.y, p.to.y, k);
-        const alpha = Math.sin(Math.PI * p.t) * 0.85;
+        const alpha = Math.sin(Math.PI * p.t) * 0.85 * this.dim;
         ctx.beginPath();
         ctx.arc(x, y, p.size * 2.2, 0, Math.PI * 2);
         ctx.fillStyle = css(p.color, alpha * 0.25);
@@ -579,7 +613,7 @@
         ctx.beginPath();
         ctx.arc(tok.x, tok.y, Math.max(1, head.ring), 0, Math.PI * 2);
         ctx.setLineDash([2, 6]);
-        ctx.strokeStyle = css(tok.color, head.ringAlpha * tok.fade);
+        ctx.strokeStyle = css(tok.color, head.ringAlpha * tok.fade * this.dim);
         ctx.lineWidth = 1;
         ctx.stroke();
         ctx.setLineDash([]);
@@ -592,7 +626,7 @@
       for (const t of head.targets) {
         if (t.tok.dead) continue;
         const fade = Math.min(from.fade, t.tok.fade);
-        const alpha = (0.1 + 0.55 * t.w) * head.lineAlpha * fade;
+        const alpha = (0.1 + 0.55 * t.w) * head.lineAlpha * fade * this.dim;
         if (alpha < 0.01) continue;
         const x = lerp(from.x, t.tok.x, grow);
         const y = lerp(from.y, t.tok.y, grow);
@@ -694,10 +728,15 @@
         const m = Math.hypot(mx, my);
         if (m > 0.05) { ox = -mx / m; oy = -my / m; }
       }
-      const px = tok.x + ox * 34, py = tok.y + oy * 22;
-      ctx.fillStyle = `rgba(74, 68, 62, ${0.6 * tok.fade})`;
-      ctx.fillText(PHASE_NAMES[head.stage], px, py);
-      placed.push({ x: px, y: py, w: 30 });
+      let px = tok.x + ox * 34, py = tok.y + oy * 22;
+      const onText = (x, y) => this.inAvoid(x - 22, y, 4) || this.inAvoid(x + 22, y, 4);
+      if (onText(px, py)) { px = tok.x; py = tok.y - 22; }          // above the head instead
+      if (onText(px, py)) { px = tok.x; py = tok.y + 22; }          // or below it
+      if (!onText(px, py)) {
+        ctx.fillStyle = `rgba(74, 68, 62, ${0.6 * tok.fade})`;
+        ctx.fillText(PHASE_NAMES[head.stage], px, py);
+        placed.push({ x: px, y: py, w: 30 });
+      }
 
       // The weight on each line
       if (!lines || head.lineAlpha <= 0.05) return;
@@ -709,6 +748,7 @@
         const side = dx >= 0 ? 1 : -1;       // keep the number above the line
         const x = from.x + dx * 0.6 + (dy / len) * 10 * side;
         const y = from.y + dy * 0.6 - (dx / len) * 10 * side;
+        if (this.inAvoid(x - 14, y, 4) || this.inAvoid(x + 14, y, 4)) continue;
         if (placed.some((p) => Math.abs(p.x - x) < p.w + 14 && Math.abs(p.y - y) < 13)) continue;
         placed.push({ x, y, w: 14 });
         ctx.fillStyle = `rgba(74, 68, 62, ${0.66 * head.lineAlpha * Math.min(from.fade, t.tok.fade)})`;
@@ -753,7 +793,7 @@
     const world = new World(canvas);
     world.start();
     // Web fonts change the size of the text block once they load
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => world.measureAvoid());
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => world.layout());
     window.__attention = world;   // for poking at it from the console
   };
 

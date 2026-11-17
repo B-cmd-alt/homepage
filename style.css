@@ -399,9 +399,3 @@ a:focus-visible {
   }
 }
 
-/* A canvas marked data-still draws one still frame itself; any other is hidden */
-@media (prefers-reduced-motion: reduce) {
-  #nn-canvas:not([data-still]) {
-    visibility: hidden;
-  }
-}
