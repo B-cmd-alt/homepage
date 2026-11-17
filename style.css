@@ -308,7 +308,7 @@ a:focus-visible {
   font-size: clamp(0.85rem, 2vw, 1rem);
   color: var(--text-muted);
   max-width: 540px;
-  margin-bottom: 2.2rem;
+  margin-bottom: 3rem;
   line-height: 1.9;
 }
 
@@ -326,41 +326,13 @@ a:focus-visible {
   color: var(--text);
 }
 
-/* Primary links: Experience and Projects, set large, nothing around them */
-.doors {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.6rem 3.2rem;
-}
-
-.doors a {
-  font-family: var(--font-display);
-  font-variation-settings: 'opsz' 18;
-  font-size: clamp(1.75rem, 5.5vw, 2.3rem);
-  font-weight: 400;
-  line-height: 1.2;
-  padding-bottom: 0.3rem;
-  border-bottom: 1.5px solid var(--accent);
-  transition: color 0.2s ease, transform 0.2s ease;
-}
-
-.doors a:hover {
-  color: var(--accent-ink);
-  transform: translateY(-2px);
-}
-
-.doors a:active {
-  transform: translateY(0);
-}
-
 /* Secondary links: everything else, one quiet line */
 .also {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 0.2rem 1.6rem;
-  margin-top: 2.2rem;
+  margin-top: 1.9rem;
   font-family: var(--font-mono);
   font-size: 0.8rem;
 }
@@ -375,16 +347,6 @@ a:focus-visible {
 .also a:hover {
   color: var(--accent-ink);
   border-bottom-color: var(--accent-ink);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .doors a {
-    transition: none;
-  }
-
-  .doors a:hover {
-    transform: none;
-  }
 }
 
 /* Contact section */
