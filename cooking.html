@@ -52,10 +52,10 @@
     .jump .spacer { flex: 1; }
     .toggle {
       font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-muted);
-      background: none; border: 0; border-bottom: 1px solid rgba(26, 26, 26, 0.18); border-radius: 0;
-      padding: 0.3rem 0; cursor: pointer; transition: color 0.2s ease, border-color 0.2s ease;
+      background: none; border: 1.5px solid rgba(26, 26, 26, 0.2); border-radius: 100px;
+      padding: 0.45rem 0.9rem; cursor: pointer; transition: all 0.2s ease;
     }
-    .toggle:hover { color: var(--accent-ink); border-bottom-color: var(--accent-ink); }
+    .toggle:hover { color: var(--text); border-color: var(--text); }
     .toggle:focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 3px; }
     html:not(.js) .toggle { display: none; }
 
@@ -254,7 +254,8 @@
     @media (max-width: 640px) {
       .steps { grid-template-columns: 1fr; }
       .thick { grid-template-columns: repeat(2, 1fr); }
-      .recipe .facts { gap: 1rem; }
+      .recipe .facts { gap: 0.6rem; }
+      .recipe .fact { padding: 0.8rem 0.7rem; }
     }
     @media (max-width: 480px) {
       .page { padding-top: 5.5rem; }
