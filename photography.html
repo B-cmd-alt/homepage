@@ -3,30 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <!-- Primary SEO Meta Tags -->
-  <title>Photography | BB.STYLE - Capturing Moments</title>
-  <meta name="title" content="Photography | BB.STYLE - Capturing Moments">
-  <meta name="description" content="BB's photography portfolio - Capturing moments, chasing light, and finding beauty in the everyday through the lens.">
-  <meta name="keywords" content="BB photography, photo portfolio, moments, visual storytelling, photography art">
-  <meta name="author" content="BB">
+
+  <title>Photography | BB.STYLE</title>
+  <meta name="title" content="Photography | BB.STYLE">
+  <meta name="description" content="BB's photography: capturing moments, chasing light, and finding beauty in the everyday.">
+  <meta name="author" content="Bihan Qian">
   <meta name="robots" content="noindex, follow">
   <link rel="canonical" href="https://bb.style/photography.html">
-  
-  <!-- Open Graph / Facebook -->
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://bb.style/photography.html">
   <meta property="og:title" content="Photography | BB.STYLE">
   <meta property="og:description" content="Capturing moments, chasing light, and finding beauty in the everyday.">
   <meta property="og:site_name" content="BB.STYLE">
-  
-  <!-- Twitter Card -->
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:url" content="https://bb.style/photography.html">
   <meta name="twitter:title" content="Photography | BB.STYLE">
   <meta name="twitter:description" content="Capturing moments, chasing light, and finding beauty in the everyday.">
-  
-  <!-- Google Analytics (GA4) -->
+
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-0GNP7SNL8H"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -37,84 +31,43 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <style>
-    .page-hero {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 2rem;
-    }
     .back-link {
-      position: fixed;
-      top: 2rem;
-      left: 2rem;
-      font-family: var(--font-body);
-      font-size: 0.9rem;
-      color: var(--ink-muted);
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      transition: color 0.3s ease;
-      z-index: 10;
+      position: fixed; top: 1.5rem; left: 1.5rem; z-index: 10;
+      font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-muted);
+      border-bottom: 1px solid transparent; transition: all 0.2s ease;
     }
-    .back-link:hover { color: var(--photo-accent); }
-    .page-icon {
-      width: 120px;
-      height: 120px;
-      color: var(--photo-accent);
-      margin-bottom: 2rem;
-      opacity: 0.8;
+    .back-link:hover { color: var(--accent); border-bottom-color: var(--accent); }
+    .page { position: relative; z-index: 1; max-width: 760px; margin: 0 auto; padding: 7rem 1.5rem 5rem; }
+    .page-title { font-family: var(--font-display); font-size: clamp(2.6rem, 8vw, 4.5rem); font-weight: 700; line-height: 1; margin-bottom: 1rem; }
+    .lede { font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.9; color: var(--text-muted); max-width: 600px; margin-bottom: 1.8rem; }
+    .soon {
+      display: inline-block; font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-muted);
+      padding: 0.4rem 0.85rem; border: 1px dashed rgba(26, 26, 26, 0.3); border-radius: 100px;
     }
-    .page-title {
-      font-family: var(--font-display);
-      font-size: clamp(2.5rem, 8vw, 4rem);
-      font-weight: 600;
-      color: var(--ink);
-      margin-bottom: 1rem;
-    }
-    .page-subtitle {
-      font-size: 1.1rem;
-      color: var(--ink-muted);
-      max-width: 500px;
-    }
-    .coming-soon {
-      display: inline-block;
-      margin-top: 2rem;
-      padding: 0.75rem 1.5rem;
-      background: var(--photo-bg);
-      color: var(--photo-accent);
-      border-radius: 100px;
-      font-size: 0.85rem;
-      font-weight: 500;
-    }
+    @media (max-width: 480px) { .page { padding-top: 5.5rem; } .back-link { top: 1rem; left: 1rem; } }
   </style>
 </head>
 <body>
-  <div class="ambient-bg" aria-hidden="true">
-    <div class="gradient-layer"></div>
-    <div class="sun-glow"></div>
+
+  <div class="bg-animation" aria-hidden="true">
+    <div class="bg-texture"></div>
+    <div class="bg-grid"></div>
+    <canvas id="nn-canvas"></canvas>
+    <div class="bg-glow"></div>
   </div>
-  
-  <a href="index.html" class="back-link">← Back home</a>
-  
-  <main class="page-hero">
-    <div class="page-icon">
-      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5">
-        <rect x="6" y="14" width="36" height="26" rx="4"/>
-        <circle cx="24" cy="27" r="8"/>
-        <circle cx="24" cy="27" r="4"/>
-        <rect x="18" y="8" width="12" height="6" rx="2"/>
-        <circle cx="36" cy="20" r="2" fill="currentColor"/>
-      </svg>
-    </div>
-    <h1 class="page-title">Photography</h1>
-    <p class="page-subtitle">Capturing moments, chasing light, and finding beauty in the everyday.</p>
-    <span class="coming-soon">Coming soon</span>
+
+  <a href="index.html" class="back-link">← bb.style</a>
+
+  <main class="page">
+    <div class="kicker">Off work</div>
+    <h1 class="page-title">Photography<span class="accent">.</span></h1>
+    <p class="lede">Capturing moments, chasing light, and finding beauty in the everyday.</p>
+    <span class="soon">Coming soon</span>
   </main>
+
+  <script src="script.js"></script>
 </body>
 </html>
