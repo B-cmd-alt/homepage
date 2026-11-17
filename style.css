@@ -308,7 +308,7 @@ a:focus-visible {
   font-size: clamp(0.85rem, 2vw, 1rem);
   color: var(--text-muted);
   max-width: 540px;
-  margin-bottom: 3rem;
+  margin-bottom: 2.2rem;
   line-height: 1.9;
 }
 
@@ -326,9 +326,131 @@ a:focus-visible {
   color: var(--text);
 }
 
+/* Primary links: Experience and Projects */
+.doors {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  width: min(560px, 100%);
+}
+
+.door {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  text-align: left;
+  padding: 1.15rem 1.3rem 1.2rem;
+  background: rgba(255, 255, 255, 0.78);
+  border: 1.5px solid var(--accent);
+  border-radius: 14px;
+  box-shadow: 0 1px 2px rgba(26, 26, 26, 0.04), 0 8px 24px rgba(232, 93, 4, 0.08);
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.door-title {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  font-family: var(--font-display);
+  font-variation-settings: 'opsz' 18;
+  font-size: clamp(1.5rem, 4.6vw, 1.9rem);
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.door-arrow {
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--accent-ink);
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.door-sub {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  line-height: 1.55;
+  color: var(--text-muted);
+  transition: color 0.2s ease;
+}
+
+.door:hover {
+  background: var(--accent-ink);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 4px rgba(26, 26, 26, 0.06), 0 12px 28px rgba(194, 65, 12, 0.22);
+}
+
+.door:hover .door-arrow {
+  color: #fff;
+  transform: translateX(4px);
+}
+
+.door:hover .door-sub {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.door:focus-visible {
+  border-radius: 14px;
+}
+
+.door:active {
+  transform: translateY(0);
+}
+
+/* Secondary links: everything else, one quiet line */
+.also {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.2rem 1.1rem;
+  margin-top: 1.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+}
+
+.also-label {
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.also a {
+  color: var(--text-muted);
+  padding: 0.35rem 0;
+  border-bottom: 1px solid rgba(26, 26, 26, 0.18);
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.also a:hover {
+  color: var(--accent-ink);
+  border-bottom-color: var(--accent-ink);
+}
+
+@media (max-width: 520px) {
+  .doors {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .door,
+  .door-arrow {
+    transition: none;
+  }
+
+  .door:hover {
+    transform: none;
+  }
+}
+
 /* Contact section */
 .contact {
-  margin-top: 2.5rem;
+  margin-top: 1.4rem;
   font-family: var(--font-mono);
   font-size: 0.9rem;
 }
