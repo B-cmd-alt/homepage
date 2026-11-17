@@ -33,7 +33,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <style>
     /* ───────── Page frame (same as Projects / Experience) ───────── */
@@ -62,7 +62,8 @@
     /* ───────── Recipe ───────── */
     .recipe { padding: 2.8rem 0 3.2rem; border-top: 1px solid var(--rule); scroll-margin-top: 1rem; }
     .recipe h2 { font-family: var(--font-display); font-variation-settings: 'opsz' 18; font-size: clamp(1.9rem, 5vw, 2.6rem); font-weight: 700; line-height: 1.15; margin-bottom: 0.4rem; }
-    .tagline { font-family: var(--font-display); font-style: italic; font-size: 1.15rem; margin-bottom: 1.6rem; }
+    /* Upright on purpose: the italic cut is a separate 30 KB font file */
+    .tagline { font-family: var(--font-display); font-variation-settings: 'opsz' 14; font-size: 1.15rem; color: var(--text-muted); margin-bottom: 1.6rem; }
     .recipe .facts { grid-template-columns: repeat(3, 1fr); margin: 0 0 2.2rem; }
     .fact b { font-size: clamp(1.3rem, 4.6vw, 1.65rem); font-variation-settings: 'opsz' 10; white-space: nowrap; margin-bottom: 0.3rem; }
     .label {
@@ -95,6 +96,8 @@
     .step {
       background: rgba(255, 255, 255, 0.62); border: 1px solid rgba(26, 26, 26, 0.1); border-radius: 12px;
       overflow: hidden; display: flex; flex-direction: column;
+      /* Off-screen steps are not laid out or painted until you scroll near them */
+      content-visibility: auto; contain-intrinsic-size: auto 370px;
     }
     .fig { position: relative; background: #fffdfb; border-bottom: 1px solid rgba(26, 26, 26, 0.08); }
     /* a stitched edge, like a pattern piece */
@@ -754,12 +757,15 @@
 
   <script>
     (function () {
-      // Play each drawing only while it is on screen.
+      // A drawing starts playing once about a third of it is on screen, and stops when it leaves.
       var figs = document.querySelectorAll('.fig');
       if ('IntersectionObserver' in window) {
         var io = new IntersectionObserver(function (entries) {
-          entries.forEach(function (e) { e.target.classList.toggle('on', e.isIntersecting); });
-        }, { rootMargin: '80px 0px' });
+          entries.forEach(function (e) {
+            if (e.intersectionRatio >= 0.28) e.target.classList.add('on');
+            else if (!e.isIntersecting) e.target.classList.remove('on');
+          });
+        }, { threshold: [0, 0.3] });
         figs.forEach(function (f) { io.observe(f); });
       } else {
         figs.forEach(function (f) { f.classList.add('on'); });
