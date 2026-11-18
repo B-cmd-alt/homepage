@@ -19,9 +19,11 @@
   <meta property="og:title" content="Research | BB.STYLE">
   <meta property="og:description" content="Exploring ideas, diving deep into topics, and sharing discoveries.">
   <meta property="og:site_name" content="BB.STYLE">
-  <meta name="twitter:card" content="summary">
+  <meta property="og:image" content="https://bb.style/og.png">
+  <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Research | BB.STYLE">
   <meta name="twitter:description" content="Exploring ideas, diving deep into topics, and sharing discoveries.">
+  <meta name="twitter:image" content="https://bb.style/og.png">
 
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-0GNP7SNL8H"></script>
   <script>
@@ -35,23 +37,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
-  <style>
-    .back-link {
-      position: fixed; top: 1.5rem; left: 1.5rem; z-index: 10;
-      font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-muted);
-      border-bottom: 1px solid transparent; transition: all 0.2s ease;
-    }
-    .back-link:hover { color: var(--accent); border-bottom-color: var(--accent); }
-    .page { position: relative; z-index: 1; max-width: 760px; margin: 0 auto; padding: 7rem 1.5rem 5rem; }
-    .page-title { font-family: var(--font-display); font-size: clamp(2.6rem, 8vw, 4.5rem); font-weight: 700; line-height: 1; margin-bottom: 1rem; }
-    .lede { font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.9; color: var(--text-muted); max-width: 600px; margin-bottom: 1.8rem; }
-    .soon {
-      display: inline-block; font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-muted);
-      padding: 0.4rem 0.85rem; border: 1px dashed var(--line-dash); border-radius: 100px;
-    }
-    .nav-foot { text-align: center; margin-top: 3rem; }
-    @media (max-width: 480px) { .page { padding-top: 5.5rem; } .back-link { top: 1rem; left: 1rem; } }
-  </style>
 </head>
 <body>
 
@@ -68,11 +53,16 @@
     <div class="kicker">Notes</div>
     <h1 class="page-title">Research<span class="accent">.</span></h1>
     <p class="lede">Exploring ideas, diving deep into topics, and sharing discoveries.</p>
-    <span class="soon">Coming soon</span>
+    <p class="soon">Coming soon</p>
 
-    <nav class="links nav-foot">
+    <nav class="links nav-foot" aria-label="Pages">
       <a href="index.html">Home</a>
+      <a href="projects.html">Projects</a>
+      <a href="experience.html">Experience</a>
     </nav>
+    <div class="contact">
+      Find me <a href="mailto:i@bb.style">Email</a> | <a href="https://www.linkedin.com/in/bihan-q-9a5517250/" target="_blank" rel="noopener">LinkedIn</a> | <a href="https://github.com/B-cmd-alt" target="_blank" rel="noopener">GitHub</a>
+    </div>
   </main>
 
   <script src="script.js"></script>

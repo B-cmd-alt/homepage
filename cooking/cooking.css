@@ -34,18 +34,6 @@ html { scroll-behavior: smooth; }
 .lang-switch button:focus-visible, .toggle:focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 3px; }
 html:not(.js) .lang-switch { display: none; }
 
-/* ───────── Page frame (same as Projects / Experience) ───────── */
-.back-link {
-  position: fixed; top: 1.5rem; left: 1.5rem; z-index: 10;
-  font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-muted);
-  border-bottom: 1px solid transparent; transition: all 0.2s ease;
-}
-.back-link:hover { color: var(--accent); border-bottom-color: var(--accent); }
-.page { position: relative; z-index: 1; max-width: 760px; margin: 0 auto; padding: 7rem 1.5rem 5rem; }
-.page-title { font-family: var(--font-display); font-size: clamp(2.6rem, 8vw, 4.5rem); font-weight: 700; line-height: 1; margin-bottom: 1rem; }
-.lede { font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.9; color: var(--text-muted); max-width: 600px; margin-bottom: 2.6rem; }
-.nav-foot { text-align: center; margin-top: 3.2rem; padding-top: 3rem; border-top: 1px solid var(--rule); }
-
 /* ───────── Index: one row per dish ───────── */
 .dishes { list-style: none; counter-reset: dish; border-top: 1px solid var(--rule); }
 .dishes li { counter-increment: dish; border-bottom: 1px solid var(--rule); }
@@ -65,11 +53,11 @@ html:not(.js) .lang-switch { display: none; }
 /* ───────── Dish page ───────── */
 .dish-title { font-family: var(--font-display); font-variation-settings: 'opsz' 24; font-size: clamp(2.2rem, 7vw, 3.6rem); font-weight: 700; line-height: 1.08; margin-bottom: 0.7rem; }
 .dish-title small { font-family: var(--font-mono); font-size: 0.9rem; font-weight: 400; color: var(--text-muted); white-space: nowrap; }
-/* Upright on purpose: the italic cut is a separate 30 KB font file */
+/* Upright on purpose: the italic cut is a separate font file, fetched only if italic text appears */
 .tagline { font-family: var(--font-display); font-variation-settings: 'opsz' 14; font-size: 1.15rem; line-height: 1.5; color: var(--text-muted); margin-bottom: 1.8rem; }
 [data-lang="zh"] .tagline { font-size: 1.05rem; }
 .page .facts { grid-template-columns: repeat(3, 1fr); margin: 0 0 2.2rem; }
-.fact b { font-size: clamp(1.3rem, 4.6vw, 1.65rem); font-variation-settings: 'opsz' 10; white-space: nowrap; margin-bottom: 0.3rem; }
+.fact b { font-size: clamp(1.3rem, 4.6vw, 1.65rem); }
 .label {
   font-family: var(--font-mono); font-size: 0.72rem; font-weight: 500; letter-spacing: 0.12em;
   text-transform: uppercase; color: var(--text); margin: 0 0 0.8rem;
@@ -201,7 +189,5 @@ html:not(.js) .toggle { display: none; }
   .dish-meta { grid-column: 2; text-align: left; white-space: normal; }
 }
 @media (max-width: 480px) {
-  .page { padding-top: 5.5rem; }
-  .back-link { top: 1rem; left: 1rem; }
   .lang-switch { top: 0.85rem; right: 1rem; }
 }

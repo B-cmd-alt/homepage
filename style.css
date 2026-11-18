@@ -107,6 +107,16 @@ a:focus-visible {
   color: var(--accent);
 }
 
+/* Text for screen readers only */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 /* ============================================
    Animated Background - Neural Network Sparks
    ============================================ */
@@ -225,7 +235,7 @@ a:focus-visible {
 }
 
 /* ============================================
-   Shared components (home + projects)
+   Shared components
    ============================================ */
 .kicker {
   font-family: var(--font-mono);
@@ -250,12 +260,16 @@ a:focus-visible {
   padding: 0.9rem 1rem;
 }
 
+/* Low optical size keeps the hairlines of %, +, ×, – and → readable at this size */
 .fact b {
   display: block;
   font-family: var(--font-display);
-  font-size: 1.7rem;
+  font-variation-settings: 'opsz' 10;
+  font-size: clamp(1.35rem, 5vw, 1.65rem);
   font-weight: 700;
   line-height: 1.1;
+  white-space: nowrap;
+  margin-bottom: 0.3rem;
 }
 
 .fact span {
@@ -326,10 +340,10 @@ a:focus-visible {
   transform: none;
 }
 
-/* Underlined text links (projects footer nav) */
+/* Main links: the homepage's two, and the foot of every other page */
 .links {
   display: flex;
-  gap: 2.5rem;
+  gap: 0.5rem 2.5rem;
   flex-wrap: wrap;
   justify-content: center;
 }
@@ -354,6 +368,99 @@ a:focus-visible {
 
 .links a:active {
   transform: translateY(0);
+}
+
+/* ============================================
+   Page frame: every page below the homepage is built from these.
+   Back link top left, a 760px column, kicker + title + lede, and the same foot
+   (page links, then the contact line). Keep them here, not in a page's own <style>.
+   ============================================ */
+.back-link {
+  position: fixed;
+  top: 1.5rem;
+  left: 1.5rem;
+  z-index: 10;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  border-bottom: 1px solid transparent;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.back-link:hover {
+  color: var(--accent-ink);
+  border-bottom-color: var(--accent-ink);
+}
+
+.page {
+  position: relative;
+  z-index: 1;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 7rem 1.5rem 5rem;
+}
+
+.page-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 8vw, 4.5rem);
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 1rem;
+}
+
+.lede {
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  line-height: 1.9;
+  color: var(--text-muted);
+  max-width: 600px;
+  margin-bottom: 2.5rem;
+}
+
+/* A page that has nothing to show yet says so in one quiet line */
+.soon {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* Foot of every page: page links, then the contact line */
+.nav-foot {
+  margin-top: 3.5rem;
+}
+
+.nav-foot + .contact {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+/* Where the column is close to the corners, the back link and the switches would sit on
+   top of the text as it scrolls. A strip of page colour behind them keeps both readable. */
+@media (max-width: 1140px) {
+  .page::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4.2rem;
+    z-index: 2;
+    background: linear-gradient(to bottom, var(--bg) 58%, transparent);
+    pointer-events: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .page {
+    padding-top: 5.5rem;
+  }
+
+  .back-link {
+    top: 1rem;
+    left: 1rem;
+  }
 }
 
 /* ============================================

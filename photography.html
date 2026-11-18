@@ -19,9 +19,13 @@
   <meta property="og:title" content="Photography | BB.STYLE">
   <meta property="og:description" content="Capturing moments, chasing light, and finding beauty in the everyday.">
   <meta property="og:site_name" content="BB.STYLE">
-  <meta name="twitter:card" content="summary">
+  <meta property="og:image" content="https://bb.style/photography/share.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Photography | BB.STYLE">
   <meta name="twitter:description" content="Capturing moments, chasing light, and finding beauty in the everyday.">
+  <meta name="twitter:image" content="https://bb.style/photography/share.jpg">
 
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-0GNP7SNL8H"></script>
   <script>
@@ -43,12 +47,6 @@
        simply one full-height photograph after another. */
     html { scroll-snap-type: y mandatory; }
     body { overflow-x: clip; }
-    .back-link {
-      position: fixed; top: 1.5rem; left: 1.5rem; z-index: 10;
-      font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-muted);
-      border-bottom: 1px solid transparent; transition: all 0.2s ease;
-    }
-    .back-link:hover { color: var(--accent); border-bottom-color: var(--accent); }
 
     /* Backdrop: the photograph's own colours, softened towards the page colour so text stays readable */
     .ambient { position: absolute; inset: 0; overflow: hidden; }
@@ -74,15 +72,20 @@
       position: absolute; z-index: 3; top: 0; left: 0; height: 100vh; height: 100svh; width: calc(50vw - 33.4vh + 2.5rem);
       padding: 0 1.5rem 11vh 4vw; display: flex; flex-direction: column; justify-content: flex-end; pointer-events: none;
     }
-    .page-title { font-family: var(--font-display); font-size: clamp(1.9rem, calc((50vw - 33.4vh - 4vw) / 6.5), 4.5rem); font-weight: 700; line-height: 1; margin-bottom: 1rem; }
-    .lede { font-family: var(--font-mono); font-size: 0.9rem; line-height: 1.9; color: var(--text-muted); }
+    .page-title { font-size: clamp(1.9rem, calc((50vw - 33.4vh - 4vw) / 6.5), 4.5rem); }
+    .lede { font-size: 0.9rem; max-width: none; margin-bottom: 0; }
 
     /* One screen per photograph */
     .reel { position: relative; z-index: 1; }
     .frames { list-style: none; }
     .frame { height: 100vh; height: 100svh; scroll-snap-align: start; scroll-snap-stop: always; }
     .pin { height: 100%; display: grid; place-items: center; }
-    .hold { display: block; }
+    .hold { display: block; position: relative; }
+    /* When it was taken: one quiet line under the photograph's left corner, moving with it */
+    .when {
+      position: absolute; left: 0; top: 100%; margin-top: 0.55rem; white-space: nowrap;
+      font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.12em; color: var(--text);
+    }
     .shot {
       display: block; width: auto; height: auto; max-width: 92vw; max-height: calc(100vh - 7.5rem); max-height: calc(100svh - 7.5rem);
       box-shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.45);
@@ -100,7 +103,7 @@
     /* Last screen: the usual foot of a page */
     .outro {
       position: relative; z-index: 2; height: 100vh; height: 100svh; scroll-snap-align: start;
-      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2.6rem; padding: 2rem 1.5rem;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem 1.5rem;
     }
     .rights { font-family: var(--font-mono); font-size: 0.82rem; color: var(--text-muted); text-align: center; }
 
@@ -126,10 +129,41 @@
     .by-touch { display: none; }
     @media (hover: none) and (pointer: coarse) { .by-wheel { display: none; } .by-touch { display: inline-flex; } }
 
+    /* Count, bottom right. It is also the way to the overview of every photograph. */
     .count {
-      position: fixed; z-index: 5; right: 1.5rem; bottom: 1.4rem; font-family: var(--font-mono); font-size: 0.78rem;
-      letter-spacing: 0.12em; color: var(--text); pointer-events: none; transition: opacity 0.4s ease;
+      position: fixed; z-index: 5; right: 1.5rem; bottom: 1.15rem; display: flex; align-items: center; gap: 0.6rem;
+      font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.12em; color: var(--text);
+      background: none; border: 0; border-bottom: 1px solid transparent; padding: 0.25rem 0; cursor: pointer;
+      transition: opacity 0.4s ease, color 0.2s ease, border-color 0.2s ease;
     }
+    .count::before {   /* four small squares: "all of them" */
+      content: ''; width: 9px; height: 9px;
+      background: linear-gradient(currentColor, currentColor) 0 0 / 4px 4px no-repeat, linear-gradient(currentColor, currentColor) 100% 0 / 4px 4px no-repeat,
+                  linear-gradient(currentColor, currentColor) 0 100% / 4px 4px no-repeat, linear-gradient(currentColor, currentColor) 100% 100% / 4px 4px no-repeat;
+    }
+    .count:hover { color: var(--accent-ink); border-bottom-color: var(--accent-ink); }
+    .count:focus-visible, .sheet button:focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 3px; }
+
+    /* Overview: every photograph at once, shown whole. Opened from the count; nothing is fetched for it until then. */
+    .sheet {
+      position: fixed; inset: 0; z-index: 20; overflow-y: auto; overscroll-behavior: contain;
+      padding: 5.5rem 1.5rem 3rem; background: var(--bg);
+    }
+    .sheet[hidden] { display: none; }
+    .sheet-head { display: flex; align-items: baseline; justify-content: space-between; max-width: 1100px; margin: 0 auto 1.6rem; }
+    .sheet-head h2 { font-family: var(--font-mono); font-size: 0.75rem; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-ink); }
+    .sheet-close {
+      font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-muted); background: none; border: 0;
+      border-bottom: 1px solid transparent; padding: 0.25rem 0; cursor: pointer; transition: color 0.2s ease, border-color 0.2s ease;
+    }
+    .sheet-close:hover { color: var(--accent-ink); border-bottom-color: var(--accent-ink); }
+    .tiles { list-style: none; display: flex; flex-wrap: wrap; gap: 1.4rem 1rem; max-width: 1100px; margin: 0 auto; }
+    .tiles button { display: block; padding: 0 0 0.45rem; border: 0; border-bottom: 2px solid transparent; background: none; cursor: pointer; text-align: left; }
+    .tiles img { display: block; height: 230px; width: auto; }
+    .tiles span { display: block; margin-top: 0.45rem; font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.12em; color: var(--text-muted); }
+    .tiles button:hover span { color: var(--accent-ink); }
+    .tiles button[aria-current="true"] { border-bottom-color: var(--accent); }
+    .tiles button[aria-current="true"] span { color: var(--text); }
 
     /* Rail: one tick per photograph; the current one is long and orange. Click a tick to go there. */
     .rail { position: fixed; z-index: 5; right: 1.5rem; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; transition: opacity 0.4s ease; }
@@ -141,7 +175,7 @@
     .rail button:hover::before { width: 18px; opacity: 1; }
     .rail button[aria-current="true"]::before { width: 26px; background: var(--accent); opacity: 1; }
     .rail button:focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 2px; }
-    html:not(.reel-on) .count, html:not(.reel-on) .rail { display: none; }
+    html:not(.reel-on) .count, html:not(.reel-on) .rail, html:not(.reel-on) .sheet { display: none; }
     html:not(.reel-on) .sign { position: absolute; }
 
     @media (max-aspect-ratio: 4/5) {
@@ -153,7 +187,7 @@
       .rail { display: none; }
       .sign { bottom: 1.3rem; }
     }
-    @media (max-width: 480px) { .back-link { top: 1rem; left: 1rem; } .count { right: 1rem; } }
+    @media (max-width: 480px) { .count { right: 1rem; } .sheet { padding: 4.5rem 1rem 2rem; } .tiles { gap: 1.1rem 0.7rem; } .tiles img { height: 150px; } }
     @media (prefers-reduced-motion: reduce) {
       .shot, .ambient img { translate: none; transition: none; }
       .sign .mouse::after { animation: none; top: 8px; }
@@ -187,46 +221,61 @@
       <p class="lede">Capturing moments, chasing light, and finding beauty in the everyday.</p>
     </header>
 
-    <!-- Only web-size, watermarked copies live in this repository. Make them with tools/prepare-photos.py. -->
+    <!-- Only web-size, watermarked copies live in this repository. Make them with tools/prepare-photos.py.
+         Each frame has an address (photography.html#photo-03 opens on that photograph) and the year it was taken. -->
     <ol class="frames">
-      <li class="frame"><figure class="pin near"><span class="hold">
+      <li class="frame" id="photo-01"><figure class="pin near"><span class="hold">
         <img class="shot" src="photography/01-s.webp" srcset="photography/01-s.webp 720w, photography/01-l.webp 1066w"
              sizes="(max-aspect-ratio: 2/3) 92vw, 60vh" width="1066" height="1600" fetchpriority="high" decoding="async"
              alt="The upturned corner of a tiled temple roof with small ridge figures, and a forested peak rising out of cloud behind it.">
+        <span class="when"><time datetime="2026">2026</time></span>
       </span></figure></li>
-      <li class="frame"><figure class="pin"><span class="hold">
+      <li class="frame" id="photo-02"><figure class="pin"><span class="hold">
         <img class="shot" src="photography/02-s.webp" srcset="photography/02-s.webp 720w, photography/02-l.webp 1066w"
              sizes="(max-aspect-ratio: 2/3) 92vw, 60vh" width="1066" height="1600" loading="lazy" decoding="async"
              alt="Mountain tops surfacing from a sea of cloud under a grey sky, with a pale band of light on the horizon.">
+        <span class="when"><time datetime="2026">2026</time></span>
       </span></figure></li>
-      <li class="frame"><figure class="pin"><span class="hold">
+      <li class="frame" id="photo-03"><figure class="pin"><span class="hold">
         <img class="shot" src="photography/03-s.webp" srcset="photography/03-s.webp 720w, photography/03-l.webp 1066w"
              sizes="(max-aspect-ratio: 2/3) 92vw, 60vh" width="1066" height="1600" loading="lazy" decoding="async"
              alt="A single tall conifer standing above a forested ridge in fog, framed by out-of-focus leaves.">
+        <span class="when"><time datetime="2026">2026</time></span>
       </span></figure></li>
-      <li class="frame"><figure class="pin"><span class="hold">
+      <li class="frame" id="photo-04"><figure class="pin"><span class="hold">
         <img class="shot" src="photography/04-s.webp" srcset="photography/04-s.webp 720w, photography/04-l.webp 1066w"
              sizes="(max-aspect-ratio: 2/3) 92vw, 60vh" width="1066" height="1600" loading="lazy" decoding="async"
              alt="Bare branches heavy with orange and red persimmons against green leaves.">
+        <span class="when"><time datetime="2026">2026</time></span>
       </span></figure></li>
-      <li class="frame"><figure class="pin"><span class="hold">
+      <li class="frame" id="photo-05"><figure class="pin"><span class="hold">
         <img class="shot" src="photography/05-s.webp" srcset="photography/05-s.webp 720w, photography/05-l.webp 1066w"
              sizes="(max-aspect-ratio: 2/3) 92vw, 60vh" width="1066" height="1600" loading="lazy" decoding="async"
              alt="Yellow stonecrop flowers and purple-green leaves growing from cracks in grey rock.">
+        <span class="when"><time datetime="2026">2026</time></span>
       </span></figure></li>
     </ol>
 
     <section class="outro">
       <p class="rights">All photographs © Bihan Qian.</p>
-      <nav class="links">
+      <nav class="links nav-foot" aria-label="Pages">
         <a href="index.html">Home</a>
+        <a href="projects.html">Projects</a>
+        <a href="experience.html">Experience</a>
       </nav>
+      <div class="contact">
+        Find me <a href="mailto:i@bb.style">Email</a> | <a href="https://www.linkedin.com/in/bihan-q-9a5517250/" target="_blank" rel="noopener">LinkedIn</a> | <a href="https://github.com/B-cmd-alt" target="_blank" rel="noopener">GitHub</a>
+      </div>
     </section>
   </main>
 
-  <p class="count" aria-hidden="true"></p>
+  <button class="count" type="button" aria-haspopup="dialog" title="All photographs"></button>
   <p class="sign" aria-hidden="true"><span class="by-wheel"><i class="mouse"></i>Scroll</span><span class="by-touch"><i class="swipe"></i>Swipe up</span></p>
   <nav class="rail" aria-label="Photographs"></nav>
+  <div class="sheet" role="dialog" aria-modal="true" aria-label="All photographs" hidden>
+    <div class="sheet-head"><h2>All photographs</h2><button class="sheet-close" type="button">Close</button></div>
+    <ol class="tiles"></ol>
+  </div>
 
   <script src="script.js"></script>
   <script>
@@ -239,6 +288,7 @@
       var ambient = [].slice.call(document.querySelectorAll('.ambient img'));
       var intro = document.querySelector('.intro'), count = document.querySelector('.count'), sign = document.querySelector('.sign');
       var rail = document.querySelector('.rail'), ticks = [], marked = -1;
+      var sheet = document.querySelector('.sheet'), tiles = sheet.querySelector('.tiles'), built = false;
       if (!frames.length) return;
       var pins = frames.map(function (f) { return f.querySelector('.pin'); });
       var holds = frames.map(function (f) { return f.querySelector('.hold'); });
@@ -289,11 +339,16 @@
             a.style.opacity = '1';
           }
         }
-        count.textContent = two(cur + 1) + ' / ' + two(n);
         count.style.opacity = rail.style.opacity = clamp(1 - (real - (n - 1)) * 2).toFixed(2);
-        rail.style.visibility = real > n - 0.5 ? 'hidden' : 'visible';
+        count.style.visibility = rail.style.visibility = real > n - 0.5 ? 'hidden' : 'visible';
         if (cur !== marked) {
+          // Each photograph has its own address, so one can be linked to. The first is the page itself.
+          if (marked !== -1 && history.replaceState) {
+            try { history.replaceState(null, '', cur === 0 ? location.pathname + location.search : '#' + frames[cur].id); } catch (e) { /* file:// */ }
+          }
           marked = cur;
+          count.textContent = two(cur + 1) + ' / ' + two(n);
+          count.setAttribute('aria-label', 'All photographs. Showing ' + (cur + 1) + ' of ' + n + '.');
           for (var m = 0; m < n; m++) ticks[m].setAttribute('aria-current', m === cur ? 'true' : 'false');
         }
         intro.style.opacity = clamp(1 - real * 2.2).toFixed(2);
@@ -336,6 +391,7 @@
       var spent = false, lastWheel = 0, pushed = 0, peak = 0, fading = false, floor = 0;
       window.addEventListener('wheel', function (e) {
         if (e.ctrlKey) return;                                          // pinch to zoom
+        if (!sheet.hidden) return;                                      // the overview scrolls by itself
         e.preventDefault();
         // e.timeStamp is when the push happened, not when this code got round to it, so a busy moment
         // on a slow device is never mistaken for a pause.
@@ -369,12 +425,58 @@
         rail.appendChild(b); ticks.push(b);
       });
 
+      // A link to one photograph (photography.html#photo-03) opens on it.
+      function linked() {
+        for (var i = 0; i < n; i++) if ('#' + frames[i].id === location.hash) return i;
+        return -1;
+      }
+      function jump(index) {                                            // straight there, no glide
+        cancelAnimationFrame(glideFrame); moving = false; target = -1;
+        root.style.scrollSnapType = 'none';
+        window.scrollTo(0, frames[0].offsetTop + index * frames[0].offsetHeight);
+        place();
+        requestAnimationFrame(function () { root.style.scrollSnapType = ''; });
+      }
+      if (linked() > 0) jump(linked());
+      window.addEventListener('hashchange', function () { var i = linked(); if (i >= 0) jump(i); });
+
+      // The overview: every photograph at once. Built the first time it is opened, so nothing is fetched before then.
+      function openSheet() {
+        if (!built) {
+          built = true;
+          frames.forEach(function (f, i) {
+            var shot = f.querySelector('.shot'), li = document.createElement('li'), b = document.createElement('button');
+            var img = document.createElement('img'), label = document.createElement('span');
+            b.type = 'button';
+            img.src = shot.getAttribute('src'); img.alt = shot.alt; img.loading = 'lazy'; img.decoding = 'async';
+            img.width = shot.getAttribute('width'); img.height = shot.getAttribute('height');
+            label.textContent = two(i + 1);
+            b.appendChild(img); b.appendChild(label); li.appendChild(b); tiles.appendChild(li);
+            b.addEventListener('click', function () { closeSheet(); jump(i); });
+          });
+        }
+        var now = marked < 0 ? 0 : marked, all = tiles.querySelectorAll('button');
+        for (var i = 0; i < all.length; i++) all[i].setAttribute('aria-current', i === now ? 'true' : 'false');
+        sheet.hidden = false;
+        root.style.overflow = 'hidden';                                 // the reel behind stays where it is
+        all[now].focus();
+      }
+      function closeSheet() {
+        if (sheet.hidden) return;
+        sheet.hidden = true;
+        root.style.overflow = '';
+        count.focus();
+      }
+      count.addEventListener('click', openSheet);
+      sheet.querySelector('.sheet-close').addEventListener('click', closeSheet);
+
       window.addEventListener('scroll', queue, { passive: true });
       window.addEventListener('resize', queue);
       frames.forEach(function (f) { f.querySelector('.shot').addEventListener('load', queue); });   // sizes are known only once loaded
       place();
       pins.forEach(function (pin) { pin.addEventListener('click', function () { go(1); }); });
       document.addEventListener('keydown', function (e) {
+        if (!sheet.hidden) { if (e.key === 'Escape') closeSheet(); return; }
         if (e.target.closest && e.target.closest('button, a, input')) return;
         if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); go(1); }
         if (e.key === 'ArrowUp' || e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); go(-1); }
