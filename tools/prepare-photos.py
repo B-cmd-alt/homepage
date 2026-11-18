@@ -3,10 +3,15 @@
 
 Only web-size, watermarked copies ever go into this repository. The originals stay outside it.
 
-    python3 tools/prepare-photos.py --start 6 ~/Pictures/a.jpg ~/Pictures/b.jpg
+    python3 tools/prepare-photos.py --start 6 --year 2026 ~/Pictures/a.jpg ~/Pictures/b.jpg
 
 writes photography/06-s.webp, 06-l.webp, 06-a.webp (and the same for 07) and prints the two
 pieces of markup to paste into photography.html. Needs Pillow (pip install pillow).
+
+    python3 tools/prepare-photos.py --share 01
+
+writes photography/share.jpg, the picture shown when the page is shared, from photograph 01's
+published copies (so it is watermarked and needs no original).
 
 What it does to each photo:
   - turns it upright and drops all camera data (including any location);
@@ -16,6 +21,7 @@ What it does to each photo:
   - writes the author and copyright into the file.
 """
 import argparse
+import datetime
 import os
 from PIL import Image, ImageFilter, ImageOps
 
@@ -76,21 +82,46 @@ def prepare(src, number):
     return name, small.size, large.size
 
 
+def share(name):
+    """The 1200 x 630 picture for link previews: the photograph whole, on its own colours, as on the page."""
+    W, H, PAGE = 1200, 630, (250, 249, 247)
+    back = Image.open(os.path.join(OUT, f'{name}-a.webp')).convert('RGB')
+    back = ImageOps.fit(back, (W, H), Image.LANCZOS).filter(ImageFilter.GaussianBlur(40))
+    back = Image.blend(back, Image.new('RGB', (W, H), PAGE), 0.56)
+    photo = Image.open(os.path.join(OUT, f'{name}-l.webp')).convert('RGB')
+    h = H - 60
+    photo = photo.resize((round(photo.width * h / photo.height), h), Image.LANCZOS)
+    x, y = (W - photo.width) // 2, (H - h) // 2
+    shadow = Image.new('L', (W, H), 0)
+    shadow.paste(110, (x - 6, y + 14, x + photo.width + 6, y + h + 22))
+    back.paste(Image.new('RGB', (W, H), (0, 0, 0)), (0, 0), shadow.filter(ImageFilter.GaussianBlur(26)))
+    back.paste(photo, (x, y))
+    back.save(os.path.join(OUT, 'share.jpg'), 'JPEG', quality=84, optimize=True, progressive=True, exif=credit())
+
+
 if __name__ == '__main__':
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument('photos', nargs='+', help='original photo files, in the order they should appear')
+    ap.add_argument('photos', nargs='*', help='original photo files, in the order they should appear')
     ap.add_argument('--start', type=int, default=1, help='number of the first photo (default 1)')
+    ap.add_argument('--year', default=str(datetime.date.today().year), help='year the photos were taken, shown under each (default: this year)')
+    ap.add_argument('--share', metavar='NN', help='make photography/share.jpg from the published copies of photo NN, e.g. 01')
     args = ap.parse_args()
     os.makedirs(OUT, exist_ok=True)
+    if args.share:
+        share(args.share)
+        print('Wrote photography/share.jpg')
+    if not args.photos:
+        raise SystemExit(0 if args.share else 'Give at least one photo, or --share NN.')
     ambient, frames = [], []
     for i, src in enumerate(args.photos):
         name, (sw, sh), (lw, lh) = prepare(src, args.start + i)
         ambient.append(f'<img src="photography/{name}-a.webp" alt="">')
         frames.append(
-            f'<li class="frame"><figure class="pin"><span class="hold">'
+            f'<li class="frame" id="photo-{name}"><figure class="pin"><span class="hold">'
             f'<img class="shot" src="photography/{name}-s.webp" srcset="photography/{name}-s.webp {sw}w, photography/{name}-l.webp {lw}w" '
             f'sizes="(max-aspect-ratio: 2/3) 92vw, 60vh" width="{lw}" height="{lh}" loading="lazy" decoding="async" '
-            f'alt="DESCRIBE THE PHOTO"></span></figure></li>')
+            f'alt="DESCRIBE THE PHOTO">'
+            f'<span class="when"><time datetime="{args.year}">{args.year}</time></span></span></figure></li>')
     print('Add inside <div class="ambient">, in the same order as the photos:')
     print('\n'.join(ambient))
     print('\nAdd inside <ol class="frames">:')

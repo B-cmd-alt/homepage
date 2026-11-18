@@ -12,17 +12,46 @@ Static site served by GitHub Pages from `main`. Plain HTML, CSS and JS: no build
   light and dark. Dark values are written twice (browser setting, reader's choice): keep the two blocks equal.
 - **Loading comes first**: no images or video where inline SVG and CSS will do, no extra font files,
   nothing fetched that the page does not need.
+- **Nothing unnecessary**: every line has to earn its place, and each thing is written once.
+  - A page's `<head>` holds only: charset, viewport, `color-scheme`, `theme.js`, title, description, `noindex` where
+    wanted, canonical, icon, the six `og:` tags, `twitter:card`, the fonts, the stylesheets. No keywords, no author,
+    no `twitter:` copies of the `og:` tags, no analytics snippet.
+  - Analytics lives only in `script.js`, which every page loads last.
+  - The reader's saved choices (theme, and language on cooking pages) are applied only by `theme.js`.
+  - The two link looks, the switch look and the focus ring are each defined once in `style.css`; a new link or
+    button joins the existing selector instead of repeating the declarations.
+  - No fallbacks for browsers from before 2023, no unused tokens or classes, no console output.
 - **Homepage**: Projects and Experience are the two main links. Everything else sits on the small line below them.
+  A page with nothing on it yet is not linked from the homepage (Research, for now); it says "Coming soon" in the
+  shared `.soon` line, never in a pill.
 - **Consistency**: every page is built from the same parts as the homepage. A new or changed page must have:
   - the background layers with the animated `#nn-canvas` and `script.js`;
-  - `theme.js` in `<head>` (it adds the Light / Dark switch at the top right);
+  - `theme.js` in `<head>` (it adds the Light / Dark switch, `.switch`, at the top right);
   - a back link at the top left (`← bb.style`, or `← <parent page>` one level down);
-  - a title in bold Bodoni with the orange full stop, and an orange uppercase kicker above it;
-  - page links at the foot in the homepage link style (`nav.links`).
+  - a title in bold Bodoni with the orange full stop (in every language), and an orange uppercase kicker above it;
+  - the same foot: page links in the homepage link style (`nav.links.nav-foot`: Home, Projects, Experience, leaving
+    out the page itself; a page one level down puts its parent first), then the contact line (`.contact`);
+  - a tab title of the form `<Page> | BB.STYLE`, and a share image (`og.png`, or the page's own).
+  The frame these are built from (`.back-link`, `.page`, `.page-title`, `.lede`, `.nav-foot`, `.soon`, the number
+  cards) lives once in `style.css`. A page's own `<style>` holds only what that page alone needs; never copy the
+  frame into a page.
+  Comfort, on every page: nothing a visitor has to read is smaller than 12px; on touch screens every link and
+  switch answers to a finger-sized area (the `pointer: coarse` block in `style.css`); going from page to page is
+  a short cross-fade (`@view-transition`), switched off for readers who ask for reduced motion.
   Links are underlined text in one of the homepage's two styles (`.links a` / `.cta a` for main links,
   `.also a` / `.cta a.quiet` for quiet ones). No pill buttons, no filled buttons.
   `projects/memory-evaluator.html` is a generated report: its site look lives in the marked
-  "site chrome" blocks in that file and has to be re-applied if the report is regenerated.
+  "site chrome" blocks in that file (head tags and analytics, palette, background, back link, the "On this page"
+  jump links and the Top link, foot and contact line) and has to be re-applied if the report is regenerated.
+
+## Projects (`projects.html`)
+
+- Each project is told in this order: kicker, title, one-line tagline, **links** (live thing first, then evidence,
+  then GitHub), **one picture**, four numbers, then at most two short paragraphs (the question, what it shows).
+- The long write-up is not on this page. It lives in the project's GitHub README, which the page links to.
+- The picture is drawn in HTML, CSS and inline SVG from the site tokens, so it follows the theme and reflows on a
+  phone. A chart shows real numbers taken from the evidence, with the same numbers readable as text beside the bars.
+- No em dashes, as on the rest of the site.
 
 ## Photography (`photography.html`, `photography/`)
 
@@ -36,7 +65,8 @@ Static site served by GitHub Pages from `main`. Plain HTML, CSS and JS: no build
   (never cropped), with the entire background taking on that photograph's colours from its `-a` copy.
   While a photograph is showing, the colours of the next one glow along the bottom of the background.
   Scrolling slides the next photograph up over the current one as its colours rise to fill the screen;
-  the pointer makes photo and backdrop lean slightly.
+  the pointer makes photo and backdrop lean slightly. The title sits in the margin to the left of the photograph;
+  where the window is too tall or narrow to leave that margin, it goes above the photograph, never over it.
 - **Nothing moves until the visitor does.** No previews, no nudges, no edge of the next photograph showing:
   moving pictures made the page look messy. The only cue is the scroll sign in the band the photograph leaves
   free at the bottom of the first screen: a small mouse with a moving wheel and "Scroll" ("Swipe up" on touch
@@ -47,6 +77,13 @@ Static site served by GitHub Pages from `main`. Plain HTML, CSS and JS: no build
 - To add a photo, paste the two pieces of markup the tool prints: an `<img>` into `.ambient` and a
   `<li class="frame">` into `.frames`, in the same order. Write a plain description as `alt`.
   Do not invent titles or places.
+- Under each photograph's left corner is the year it was taken (`.when`; pass `--year` to the tool), and nothing else.
+- Each photograph has its own address: `photography.html#photo-03` opens on the third, and the address follows
+  the photograph being shown.
+- The count at the bottom right ("01 / 05") opens the overview: every photograph at once, shown whole, to jump
+  to any of them. Its pictures are not fetched until it is opened.
+- `photography/share.jpg` is the picture shown when the page is shared. Remake it with
+  `python3 tools/prepare-photos.py --share 01` if the first photograph changes.
 - Only the current photograph and its neighbours are rendered, so the rest are not downloaded until needed.
   Without JavaScript the page is one full-height photograph after another.
 
@@ -58,8 +95,10 @@ Design principles. These always hold:
    other: in text, in the key numbers, in drawing labels and in the index.
 2. **Everything is in English and Chinese.** Each piece of text is a pair of sibling elements,
    `lang="en"` and `lang="zh"`. Drawing descriptions and the tab title use `data-en` / `data-zh`.
+   A cooking page is marked by `data-lang` on `<html>`; its language switch is a `.switch` in the markup, which
+   `theme.js` moves into the corner beside the theme switch.
    Each version is pure: no Chinese in the English view, no English words in the Chinese view
-   (units such as °C and the site name are fine). Pages open in English; Chinese is shown only
+   (units such as °C, the site name, and names with no Chinese form such as GitHub are fine). Pages open in English; Chinese is shown only
    after the reader picks it, and that choice is remembered.
    Chinese uses the reader's system fonts; do not add a Chinese web font.
 3. **One page per dish.** `cooking.html` only lists dishes (one `<li>` each), so it stays light at 100+ dishes.

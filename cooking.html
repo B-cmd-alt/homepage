@@ -7,9 +7,7 @@
   <script src="theme.js"></script>
 
   <title data-en="Cooking | BB.STYLE" data-zh="下厨 | BB.STYLE">Cooking | BB.STYLE</title>
-  <meta name="title" content="Cooking | BB.STYLE">
   <meta name="description" content="Dishes BB cooks again and again, each drawn step by step: low-temperature steak, homemade yogurt, mala dry pot.">
-  <meta name="author" content="Bihan Qian">
   <meta name="robots" content="noindex, follow">
   <link rel="canonical" href="https://bb.style/cooking.html">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -19,29 +17,11 @@
   <meta property="og:title" content="Cooking | BB.STYLE">
   <meta property="og:description" content="Dishes I cook again and again. Only the numbers that matter, and every step drawn.">
   <meta property="og:site_name" content="BB.STYLE">
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Cooking | BB.STYLE">
-  <meta name="twitter:description" content="Dishes I cook again and again. Only the numbers that matter, and every step drawn.">
+  <meta property="og:image" content="https://bb.style/og.png">
+  <meta name="twitter:card" content="summary_large_image">
 
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-0GNP7SNL8H"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-0GNP7SNL8H');
-  </script>
-  <script>
-    (function () {
-      var d = document.documentElement, l = null;
-      try { l = localStorage.getItem('lang'); } catch (e) {}
-      if (l !== 'zh') l = 'en';   // English unless the reader has chosen Chinese
-      d.setAttribute('data-lang', l); d.lang = l === 'zh' ? 'zh-Hans' : 'en'; d.classList.add('js');
-    })();
-  </script>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="cooking/cooking.css">
   <script src="cooking/cooking.js" defer></script>
@@ -56,14 +36,14 @@
   </div>
 
   <a href="index.html" class="back-link">← bb.style</a>
-  <div class="lang-switch" role="group" aria-label="Language" data-en="Language" data-zh="语言">
+  <div class="switch" role="group" aria-label="Language" data-en="Language" data-zh="语言">
     <button type="button" data-set-lang="en" aria-pressed="true">EN</button>
     <button type="button" data-set-lang="zh" aria-pressed="false">中文</button>
   </div>
 
   <main class="page">
     <div class="kicker"><span lang="en">Kitchen notes</span><span lang="zh">厨房笔记</span></div>
-    <h1 class="page-title"><span lang="en">Cooking<span class="accent">.</span></span><span lang="zh">下厨</span></h1>
+    <h1 class="page-title"><span lang="en">Cooking<span class="accent">.</span></span><span lang="zh">下厨<span class="accent">.</span></span></h1>
     <p class="lede" lang="en">Dishes I cook again and again. Only the numbers that matter, and every step drawn out.</p><p class="lede" lang="zh">我常做的菜。只写要紧的数字，每一步都画出来。</p>
 
     <!-- One row per dish. Each dish lives on its own page, so this list stays light however long it gets. -->
@@ -82,9 +62,14 @@
       </a></li>
     </ol>
 
-    <nav class="links nav-foot">
+    <nav class="links nav-foot" aria-label="Pages">
       <a href="index.html"><span lang="en">Home</span><span lang="zh">首页</span></a>
+      <a href="projects.html"><span lang="en">Projects</span><span lang="zh">项目</span></a>
+      <a href="experience.html"><span lang="en">Experience</span><span lang="zh">经历</span></a>
     </nav>
+    <div class="contact">
+      <span lang="en">Find me</span><span lang="zh">联系我</span> <a href="mailto:i@bb.style"><span lang="en">Email</span><span lang="zh">邮箱</span></a> | <a href="https://www.linkedin.com/in/bihan-q-9a5517250/" target="_blank" rel="noopener"><span lang="en">LinkedIn</span><span lang="zh">领英</span></a> | <a href="https://github.com/B-cmd-alt" target="_blank" rel="noopener">GitHub</a>
+    </div>
   </main>
 
   <script src="script.js"></script>

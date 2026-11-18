@@ -8,8 +8,6 @@
    - Drawings are inline SVG, coloured from the site tokens so they follow light / dark.
    ============================================ */
 
-html { scroll-behavior: smooth; }
-
 /* ───────── Language: show one of each lang="en" / lang="zh" pair ───────── */
 [data-lang="en"] [lang="zh"],
 [data-lang="zh"] [lang="en"] { display: none !important; }
@@ -19,32 +17,6 @@ html { scroll-behavior: smooth; }
   --font-display: 'Bodoni Moda', 'Songti SC', 'STSong', 'Noto Serif CJK SC', 'Source Han Serif SC', 'SimSun', serif;
   --font-mono: 'JetBrains Mono', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans CJK SC', 'WenQuanYi Zen Hei', sans-serif;
 }
-
-.lang-switch {
-  position: fixed; top: 1.35rem; right: 1.5rem; z-index: 10;
-  display: flex; gap: 0.15rem; font-family: var(--font-mono); font-size: 0.85rem;
-}
-.lang-switch button {
-  font: inherit; color: var(--text-muted); background: none; border: 0;
-  border-bottom: 1px solid transparent; padding: 0.25rem 0.4rem; cursor: pointer;
-  transition: color 0.2s ease, border-color 0.2s ease;
-}
-.lang-switch button:hover { color: var(--accent-ink); }
-.lang-switch button[aria-pressed="true"] { color: var(--text); border-bottom-color: var(--accent); }
-.lang-switch button:focus-visible, .toggle:focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 3px; }
-html:not(.js) .lang-switch { display: none; }
-
-/* ───────── Page frame (same as Projects / Experience) ───────── */
-.back-link {
-  position: fixed; top: 1.5rem; left: 1.5rem; z-index: 10;
-  font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-muted);
-  border-bottom: 1px solid transparent; transition: all 0.2s ease;
-}
-.back-link:hover { color: var(--accent); border-bottom-color: var(--accent); }
-.page { position: relative; z-index: 1; max-width: 760px; margin: 0 auto; padding: 7rem 1.5rem 5rem; }
-.page-title { font-family: var(--font-display); font-size: clamp(2.6rem, 8vw, 4.5rem); font-weight: 700; line-height: 1; margin-bottom: 1rem; }
-.lede { font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.9; color: var(--text-muted); max-width: 600px; margin-bottom: 2.6rem; }
-.nav-foot { text-align: center; margin-top: 3.2rem; padding-top: 3rem; border-top: 1px solid var(--rule); }
 
 /* ───────── Index: one row per dish ───────── */
 .dishes { list-style: none; counter-reset: dish; border-top: 1px solid var(--rule); }
@@ -59,19 +31,18 @@ html:not(.js) .lang-switch { display: none; }
 }
 .dish-name { font-family: var(--font-display); font-variation-settings: 'opsz' 18; font-size: clamp(1.35rem, 4.4vw, 1.75rem); font-weight: 700; line-height: 1.2; }
 .dish-meta { font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-muted); text-align: right; white-space: nowrap; }
-.dish-note { grid-column: 2 / -1; font-family: var(--font-mono); font-size: 0.82rem; line-height: 1.6; color: var(--text-muted); }
 .dishes a:hover .dish-name { color: var(--accent-ink); }
 
 /* ───────── Dish page ───────── */
 .dish-title { font-family: var(--font-display); font-variation-settings: 'opsz' 24; font-size: clamp(2.2rem, 7vw, 3.6rem); font-weight: 700; line-height: 1.08; margin-bottom: 0.7rem; }
 .dish-title small { font-family: var(--font-mono); font-size: 0.9rem; font-weight: 400; color: var(--text-muted); white-space: nowrap; }
-/* Upright on purpose: the italic cut is a separate 30 KB font file */
+/* Upright on purpose: the italic cut is a separate font file, fetched only if italic text appears */
 .tagline { font-family: var(--font-display); font-variation-settings: 'opsz' 14; font-size: 1.15rem; line-height: 1.5; color: var(--text-muted); margin-bottom: 1.8rem; }
 [data-lang="zh"] .tagline { font-size: 1.05rem; }
 .page .facts { grid-template-columns: repeat(3, 1fr); margin: 0 0 2.2rem; }
-.fact b { font-size: clamp(1.3rem, 4.6vw, 1.65rem); font-variation-settings: 'opsz' 10; white-space: nowrap; margin-bottom: 0.3rem; }
+.fact b { font-size: clamp(1.3rem, 4.6vw, 1.65rem); }
 .label {
-  font-family: var(--font-mono); font-size: 0.72rem; font-weight: 500; letter-spacing: 0.12em;
+  font-family: var(--font-mono); font-size: 0.75rem; font-weight: 500; letter-spacing: 0.12em;
   text-transform: uppercase; color: var(--text); margin: 0 0 0.8rem;
 }
 .block { margin-bottom: 2.4rem; }
@@ -84,7 +55,7 @@ html:not(.js) .lang-switch { display: none; }
   padding: 0.4rem 0.75rem; border: 1px dashed var(--line-dash); border-radius: 100px; background: var(--surface);
 }
 .need li.opt { color: var(--text-muted); }
-.sub { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.06em; color: var(--text-muted); margin: 1.1rem 0 0.55rem; }
+.sub { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.06em; color: var(--text-muted); margin: 1.1rem 0 0.55rem; }
 .sub:first-of-type { margin-top: 0; }
 
 /* A row of measured options, e.g. time by thickness */
@@ -187,7 +158,6 @@ html:not(.js) .toggle { display: none; }
 @keyframes stir { from { transform: translateX(-16px) rotate(-5deg); } to { transform: translateX(14px) rotate(5deg); } }
 
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
   .fig .a { animation: none !important; }
   .toggle { display: none; }
 }
@@ -199,9 +169,4 @@ html:not(.js) .toggle { display: none; }
   .page .fact { padding: 0.8rem 0.7rem; }
   .dishes a { grid-template-columns: 2.1rem minmax(0, 1fr); }
   .dish-meta { grid-column: 2; text-align: left; white-space: normal; }
-}
-@media (max-width: 480px) {
-  .page { padding-top: 5.5rem; }
-  .back-link { top: 1rem; left: 1rem; }
-  .lang-switch { top: 0.85rem; right: 1rem; }
 }

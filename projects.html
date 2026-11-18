@@ -7,11 +7,7 @@
   <script src="theme.js"></script>
 
   <title>Projects | BB.STYLE</title>
-  <meta name="title" content="Projects | BB.STYLE">
   <meta name="description" content="Things Bihan Qian (BB) builds to answer questions he actually had: a memory-system evaluator for AI agents, and an autonomous detection-and-repair agent for data pipelines. Each ships with its evidence.">
-  <meta name="keywords" content="BB, Bihan, AI engineer, agent memory, LLM evaluation, benchmark, data pipelines, autonomous agents, projects">
-  <meta name="author" content="Bihan Qian">
-  <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://bb.style/projects.html">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
 
@@ -20,42 +16,69 @@
   <meta property="og:title" content="Projects | BB.STYLE">
   <meta property="og:description" content="A memory-system evaluator for AI agents and a self-repairing data-pipeline agent, each with its evidence.">
   <meta property="og:site_name" content="BB.STYLE">
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Projects | BB.STYLE">
-  <meta name="twitter:description" content="A memory-system evaluator for AI agents and a self-repairing data-pipeline agent, each with its evidence.">
+  <meta property="og:image" content="https://bb.style/og.png">
+  <meta name="twitter:card" content="summary_large_image">
 
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-0GNP7SNL8H"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-0GNP7SNL8H');
-  </script>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <style>
-    .back-link {
-      position: fixed; top: 1.5rem; left: 1.5rem; z-index: 10;
-      font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-muted);
-      border-bottom: 1px solid transparent; transition: all 0.2s ease;
-    }
-    .back-link:hover { color: var(--accent); border-bottom-color: var(--accent); }
-    .page { position: relative; z-index: 1; max-width: 760px; margin: 0 auto; padding: 7rem 1.5rem 5rem; }
-    .page-title { font-family: var(--font-display); font-size: clamp(2.6rem, 8vw, 4.5rem); font-weight: 700; line-height: 1; margin-bottom: 1rem; }
-    .lede { font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.9; color: var(--text-muted); max-width: 600px; margin-bottom: 4rem; }
     .project { padding: 2.5rem 0; border-top: 1px solid var(--rule); }
     .project:last-of-type { border-bottom: 1px solid var(--rule); }
     .project h2 { font-family: var(--font-display); font-size: clamp(1.7rem, 4vw, 2.4rem); font-weight: 700; line-height: 1.15; margin-bottom: 0.5rem; }
-    .tagline { font-family: var(--font-display); font-style: italic; font-size: 1.15rem; color: var(--text); margin-bottom: 1.5rem; }
+    .tagline { font-family: var(--font-display); font-style: italic; font-size: 1.15rem; line-height: 1.5; color: var(--text); margin-bottom: 0.9rem; }
+    .project .cta { margin-top: 0; }
     .project p { font-family: var(--font-mono); font-size: 0.9rem; line-height: 1.85; color: var(--text-muted); margin-bottom: 1rem; }
     .project p strong { color: var(--text); font-weight: 500; }
-    .note { font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-muted); margin-top: 0.8rem; }
+    .project .facts { margin: 1.2rem 0 1.6rem; }
+    /* Bodoni draws × and < as hairlines; the text face keeps them readable */
+    .fact b .sym { font-family: var(--font-mono); font-size: 0.78em; font-weight: 500; }
+    .project p.note { font-size: 0.78rem; margin-bottom: 0; }
     .coda { font-family: var(--font-display); font-style: italic; font-size: 1.2rem; text-align: center; margin: 3.5rem auto 0; max-width: 520px; line-height: 1.5; }
-    .nav-foot { text-align: center; margin-top: 3rem; }
-    @media (max-width: 480px) { .page { padding-top: 5.5rem; } .back-link { top: 1rem; left: 1rem; } }
+
+    /* ───────── One picture per project, drawn from the site tokens so it follows the theme ───────── */
+    .figure { margin: 1.7rem 0 0; padding: 1.2rem 1.3rem 1.15rem; background: var(--surface); border: 1px solid var(--hairline); border-radius: 12px; }
+    .figure-title { font-family: var(--font-mono); font-size: 0.75rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text); margin-bottom: 1rem; }
+    .project p.figure-note { font-size: 0.78rem; line-height: 1.7; margin: 1rem 0 0; }
+
+    /* Chart: one row per system. The bar is the share of update questions; the two columns beside it are the same numbers. */
+    .served { width: 100%; border-collapse: collapse; font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-muted); }
+    .served th { font-weight: 400; text-align: left; }
+    .served thead th { font-size: 0.75rem; padding-bottom: 0.6rem; white-space: nowrap; }
+    .served thead th:nth-child(n+3), .served td.n { text-align: right; padding-left: 0.9rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .served tbody th { color: var(--text); padding: 0.32rem 1rem 0.32rem 0; white-space: nowrap; width: 1%; }
+    .served tbody th small { font-size: 0.75rem; color: var(--text-muted); margin-left: 0.4rem; }
+    .served td.bar { width: 100%; }
+    .key { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 0.4rem; }
+    .track { display: flex; gap: 2px; height: 10px; border-radius: 0 4px 4px 0; background: var(--hairline); }
+    .track i { flex: 0 1 calc(var(--v) * 1%); }
+    .track i:last-child { border-radius: 0 4px 4px 0; }
+    .cur { background: var(--accent); }
+    .old { background: var(--text); }
+
+    /* Diagram: the repair loop, left to right; top to bottom on a phone */
+    .loop { list-style: none; display: grid; grid-template-columns: repeat(5, 1fr); gap: 1.6rem; }
+    .loop li { position: relative; font-family: var(--font-mono); font-size: 0.76rem; line-height: 1.6; color: var(--text-muted); }
+    .loop li + li::before { content: '→'; position: absolute; left: -1.25rem; top: 0.5rem; color: var(--accent-ink); }
+    .loop svg { display: block; width: 34px; height: 34px; margin-bottom: 0.55rem; fill: none; stroke: var(--text); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+    .loop b { display: block; font-family: var(--font-display); font-variation-settings: 'opsz' 14; font-size: 1.05rem; font-weight: 700; line-height: 1.25; color: var(--text); margin-bottom: 0.2rem; }
+    .loop .gate svg { stroke: var(--accent); }
+
+    @media (max-width: 640px) {
+      .figure { padding: 1.05rem 0.95rem 1rem; }
+      /* On a phone each system takes two lines: its name, then the bar with its two numbers */
+      .served, .served thead, .served tbody { display: block; }
+      .served thead tr { display: flex; justify-content: flex-end; gap: 1rem; }
+      .served thead th:nth-child(-n+2) { display: none; }
+      .served thead th:nth-child(n+3) { padding-left: 0; }
+      .served tbody tr { display: grid; grid-template-columns: 1fr 2.9rem 2.9rem; align-items: center; padding: 0.3rem 0; }
+      .served tbody th { grid-column: 1 / -1; width: auto; white-space: normal; padding: 0 0 0.3rem; }
+      .served td.n { padding-left: 0; }
+      .loop { grid-template-columns: 1fr; gap: 1.5rem; }
+      .loop li { display: grid; grid-template-columns: 34px 1fr; column-gap: 0.9rem; align-items: start; }
+      .loop svg { grid-row: span 2; margin: 0; }
+      .loop li + li::before { content: '↓'; left: 0.75rem; top: -1.45rem; }
+    }
   </style>
 </head>
 <body>
@@ -73,66 +96,67 @@
     <div class="kicker">Bihan Qian · AI Engineer</div>
     <h1 class="page-title">Projects<span class="accent">.</span></h1>
     <p class="lede">
-      Things I build to answer questions I actually had. Each one ships with its evidence —
-      the question, the retrieved context, the answer, the judge's reasoning, the cost —
+      Things I build to answer questions I actually had. Each one ships with its evidence,
       not just a description of what it does.
     </p>
+
+    <!-- Each project, in this order: what it is, where to go, one picture, four numbers, a short story.
+         The long write-up lives in the project's GitHub README, not here. -->
 
     <!-- ───────────────────────── Memory System Evaluator ───────────────────────── -->
     <section class="project" id="memory-evaluator">
       <div class="kicker">AI agents · evaluation · 2025–2026</div>
       <h2>Memory System Evaluator</h2>
-      <p class="tagline">Ten agent-memory systems, one model, one embedder, one calibrated judge — and every number traceable to the case that produced it.</p>
-
-      <p>
-        <strong>The question.</strong> Every memory vendor reports a benchmark score, and the scores do not survive
-        contact with an independent run: self-reported numbers in the nineties, independent re-runs in the thirties
-        to forties. Audits of the most-quoted benchmark found 6.4% of its answer key wrong and a judge that accepts
-        most intentionally wrong answers. Before comparing memory systems, I had to build an evaluation I could trust.
-      </p>
-      <p>
-        <strong>What I built.</strong> An OpenAI-compatible shim so that Mem0, Zep/Graphiti, A-MEM and Microsoft GraphRAG run
-        on exactly the same generator and embedding model as the baselines; adapters for ten systems spanning
-        2023 → 2026 (BM25, vector RAG, hybrid + reranker, GraphRAG, Mem0, Graphiti, A-MEM, and faithful
-        re-implementations of Generative Agents, Mastra Observational Memory and the Anthropic memory tool);
-        a self-built benchmark, <em>SixAxis</em>, that takes the core of LongMemEval, MemoryAgentBench, BEAM, ConvoMem,
-        Memora, MemOps, ForgetEval and MemDelta and fixes each one's documented flaw — gold answers carry evidence
-        pointers, every question ships two decoys the judge must reject, updates are scored as current / stale / other,
-        deletion and poisoning are first-class; and a strict judge protocol calibrated at κ = 0.87 against
-        independent labels after my earlier study found standard LLM-as-judge inflating results by 6–22 points.
-      </p>
-
-      <div class="facts">
-        <div class="fact"><b>66</b><span>cells in round 2: 11 systems × 3 seeded worlds × 2 generator tiers, six axes each</span></div>
-        <div class="fact"><b>0.95–1.00</b><span>full context (2023) ties GraphRAG, Mem0 and Mastra on recall; the generations split on updates, not recall</span></div>
-        <div class="fact"><b>×39</b><span>write-path cost between the cheapest and the most expensive system that makes model calls</span></div>
-        <div class="fact"><b>9</b><span>benchmark defects the round caught in its own records and fixed before any number was reported</span></div>
-      </div>
-
-      <p>
-        <strong>What it shows so far.</strong> Round 2 ran all six axes on 66 cells. On recall, the 2023 upper bound —
-        simply putting everything in context — is not beaten: GraphRAG, Mem0 and Mastra tie it inside the noise band,
-        while the retrieval-window systems lose on multi-session questions. The generations separate on <em>updates</em>:
-        vector RAG and BM25 serve the superseded value a third of the time, the reranker fixes it, and the temporal
-        knowledge graph is the one modern system that is worse than 2023 there. Deletion discriminates on ghost residue
-        (Generative Agents' reflections still name a deleted person 45% of the time) and on semantics (Mem0 by provenance
-        alone forgot only 61% until the adapter tracked the ids it returned). Write cost spans ×39. Two of four
-        pre-registered hypotheses held, one was falsified, one waits for the next scale. None of the scores were tuned to
-        make a system look good, including mine — and nine defects in my own benchmark were caught and fixed by reading
-        the records before any number was reported.
-      </p>
+      <p class="tagline">Ten agent-memory systems, one model, one embedder, one calibrated judge. Every number traces to the case that produced it.</p>
 
       <div class="cta">
         <a href="https://memory-evaluator-862698383291.us-central1.run.app" target="_blank" rel="noopener">Try it live →</a>
-        <a class="quiet" href="projects/memory-evaluator.html">Open the evidence page</a>
-        <a class="quiet" href="https://github.com/B-cmd-alt/memory-evaluator" target="_blank" rel="noopener">Code on GitHub</a>
+        <a class="quiet" href="projects/memory-evaluator.html">Evidence page</a>
+        <a class="quiet" href="https://github.com/B-cmd-alt/memory-evaluator#readme" target="_blank" rel="noopener">Full write-up and code on GitHub</a>
       </div>
-      <p class="note">The live app has three tabs: <em>Be the Judge</em> (score an answer, then see what the strict judge, two
-        human labelers and a weaker LLM judge said — your vote becomes a crowd label), <em>Ask the Memory</em> (any question,
-        six systems answer live with their retrieved evidence, latency and cost) and <em>Break the Memory</em> (inject a fact,
-        an update and a poisoned note, then watch which systems answer current, stale or poisoned). Round one: 90 memories,
-        25 questions, feasibility. Round two (pre-registered): three seeded worlds, two generator tiers, all six axes — the
-        evidence page carries both rounds with per-case explorers for the update, deletion and adversarial axes.</p>
+
+      <figure class="figure">
+        <figcaption class="figure-title">After a fact changes, which value does each system serve?</figcaption>
+        <table class="served">
+          <thead>
+            <tr><th scope="col">System</th><th scope="col" aria-label="Share of update questions"></th><th scope="col"><i class="key cur"></i>Current</th><th scope="col"><i class="key old"></i>Superseded</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Microsoft GraphRAG<small>2024</small></th><td class="bar" aria-hidden="true"><span class="track"><i class="cur" style="--v:100"></i></span></td><td class="n">100%</td><td class="n">0%</td></tr>
+            <tr><th scope="row">Hybrid search + reranker<small>2024</small></th><td class="bar" aria-hidden="true"><span class="track"><i class="cur" style="--v:92"></i></span></td><td class="n">92%</td><td class="n">0%</td></tr>
+            <tr><th scope="row">Mastra Observational Memory<small>2026</small></th><td class="bar" aria-hidden="true"><span class="track"><i class="cur" style="--v:85"></i></span></td><td class="n">85%</td><td class="n">0%</td></tr>
+            <tr><th scope="row">Full context, no retrieval<small>2023</small></th><td class="bar" aria-hidden="true"><span class="track"><i class="cur" style="--v:85"></i></span></td><td class="n">85%</td><td class="n">0%</td></tr>
+            <tr><th scope="row">A-MEM<small>2025</small></th><td class="bar" aria-hidden="true"><span class="track"><i class="cur" style="--v:83"></i><i class="old" style="--v:17"></i></span></td><td class="n">83%</td><td class="n">17%</td></tr>
+            <tr><th scope="row">Mem0<small>2024</small></th><td class="bar" aria-hidden="true"><span class="track"><i class="cur" style="--v:77"></i></span></td><td class="n">77%</td><td class="n">0%</td></tr>
+            <tr><th scope="row">Vector RAG<small>2023</small></th><td class="bar" aria-hidden="true"><span class="track"><i class="cur" style="--v:70"></i><i class="old" style="--v:30"></i></span></td><td class="n">70%</td><td class="n">30%</td></tr>
+            <tr><th scope="row">BM25<small>2023</small></th><td class="bar" aria-hidden="true"><span class="track"><i class="cur" style="--v:55"></i><i class="old" style="--v:37"></i></span></td><td class="n">55%</td><td class="n">37%</td></tr>
+            <tr><th scope="row">Anthropic memory tool<small>2025</small></th><td class="bar" aria-hidden="true"><span class="track"><i class="cur" style="--v:55"></i><i class="old" style="--v:15"></i></span></td><td class="n">55%</td><td class="n">15%</td></tr>
+            <tr><th scope="row">Zep / Graphiti<small>2024</small></th><td class="bar" aria-hidden="true"><span class="track"><i class="cur" style="--v:22"></i><i class="old" style="--v:37"></i></span></td><td class="n">22%</td><td class="n">37%</td></tr>
+            <tr><th scope="row">Generative Agents<small>2023</small></th><td class="bar" aria-hidden="true"><span class="track"><i class="cur" style="--v:15"></i><i class="old" style="--v:15"></i></span></td><td class="n">15%</td><td class="n">15%</td></tr>
+          </tbody>
+        </table>
+        <p class="figure-note">Round 2, Sonnet generator tier, mean of three seeded worlds. The rest of each bar is an answer that gave neither value.
+          The worlds are small, so close rows are ties; the evidence page has every case.</p>
+      </figure>
+
+      <div class="facts">
+        <div class="fact"><b>66</b><span>cells in round 2: 11 systems × 3 seeded worlds × 2 generator tiers</span></div>
+        <div class="fact"><b>0.95–1.00</b><span>recall: full context (2023) ties GraphRAG, Mem0 and Mastra</span></div>
+        <div class="fact"><b><span class="sym">×</span>39</b><span>write cost, cheapest to most expensive system that makes model calls</span></div>
+        <div class="fact"><b>9</b><span>defects in my own benchmark, caught and fixed before any number was reported</span></div>
+      </div>
+
+      <p>
+        <strong>The question.</strong> Memory vendors report benchmark scores in the nineties; independent re-runs land in
+        the thirties and forties. Before comparing memory systems, I had to build an evaluation I could trust.
+      </p>
+      <p>
+        <strong>What it shows so far.</strong> On recall, simply putting everything in context is not beaten. The systems
+        separate on updates: vector RAG and BM25 still serve the superseded value about a third of the time, a reranker
+        fixes it, and the temporal knowledge graph does worse than the 2023 baselines.
+      </p>
+      <p class="note">The live app has three tabs: Be the Judge, Ask the Memory and Break the Memory. The benchmark design,
+        the judge calibration and both rounds are written up in the GitHub README.</p>
     </section>
 
     <!-- ───────────────────────── PipelineAgent ───────────────────────── -->
@@ -141,52 +165,67 @@
       <h2>PipelineAgent</h2>
       <p class="tagline">A detection-and-repair agent for data pipelines that watches the data, not the job.</p>
 
-      <p>
-        <strong>The question.</strong> The pipeline failure that hurt me most in production was never a crash. It was a
-        job that exited 0 every morning while writing nothing, for weeks, under monitoring that only watched exit codes.
-        I wanted an agent that notices from the data itself, says "I don't know" when it cannot look, and repairs what it
-        can without ever being allowed to grade its own work.
-      </p>
-      <p>
-        <strong>What I built.</strong> A fleet of seven real, free, genuinely flaky public feeds (NWS, Open-Meteo, USGS,
-        FRED, GitHub Status, CoinGecko, Ontario's grid operator) running hourly on Cloud Run into an append-only,
-        vintage-stamped warehouse. Three out-of-band detectors — write recency, head lag, flat value — each returning
-        exactly <code>OK</code>, <code>BREACH</code> or <code>UNKNOWN</code>, where <code>UNKNOWN</code> is rendered amber and
-        never green. A findings ledger with explicit dispositions, a dead-man's switch whose heartbeat carries the hash of
-        the running code (so "committed" and "deployed" cannot silently diverge), and a policy test that refuses any pull
-        request that loosens an SLA to make a finding disappear. The repair agent triages deterministically, reproduces
-        the failure by replaying the archived bytes, asks a model for a minimal patch, and hands the patch to a separate
-        gate: on <code>PASS</code> it merges, deploys and verifies; if the detectors stay red it reverts; after three
-        attempts it escalates with exactly one issue.
-      </p>
+      <div class="cta">
+        <a href="https://b-cmd-alt.github.io/pipelineagent/" target="_blank" rel="noopener">Open the live dashboard →</a>
+        <a class="quiet" href="https://github.com/B-cmd-alt/pipelineagent#readme" target="_blank" rel="noopener">Full write-up and code on GitHub</a>
+      </div>
+
+      <figure class="figure">
+        <figcaption class="figure-title">The loop, and the one step it may not do itself</figcaption>
+        <ol class="loop">
+          <li>
+            <svg viewBox="0 0 34 34" aria-hidden="true"><path d="M4 9 q4.3 -5 8.6 0 t8.7 0 t8.7 0 M4 17 q4.3 -5 8.6 0 t8.7 0 t8.7 0 M4 25 q4.3 -5 8.6 0 t8.7 0 t8.7 0"/></svg>
+            <b>Feeds</b><span>Seven public feeds, hourly, append-only.</span>
+          </li>
+          <li>
+            <svg viewBox="0 0 34 34" aria-hidden="true"><circle cx="14.5" cy="14.5" r="9"/><path d="M21.2 21.2 L30 30 M10 16.5 v-3 M14.5 16.5 v-6 M19 16.5 v-4"/></svg>
+            <b>Detect</b><span>Reads the data, not exit codes: OK, BREACH or UNKNOWN.</span>
+          </li>
+          <li>
+            <svg viewBox="0 0 34 34" aria-hidden="true"><path d="M28 17 a11 11 0 1 1 -3.4 -7.9 M28.5 4.5 v5.5 h-5.5"/><path d="M17 11 v6.5 l4 2.5"/></svg>
+            <b>Replay</b><span>Reproduces the failure from the archived bytes.</span>
+          </li>
+          <li>
+            <svg viewBox="0 0 34 34" aria-hidden="true"><path d="M12 7 l-8 10 l8 10 M22 7 l8 10 l-8 10 M19 9 l-4 16"/></svg>
+            <b>Patch</b><span>A model proposes a minimal fix.</span>
+          </li>
+          <li class="gate">
+            <svg viewBox="0 0 34 34" aria-hidden="true"><path d="M17 3.5 l11 4.2 v8.3 c0 7 -4.8 11.6 -11 14.5 c-6.2 -2.9 -11 -7.5 -11 -14.5 v-8.3 z"/><path d="M11.5 16.5 l4 4 l7.5 -8.5"/></svg>
+            <b>Separate gate</b><span>Passes it or refuses it. The agent never grades its own work.</span>
+          </li>
+        </ol>
+        <p class="figure-note">On a pass it merges, deploys and checks the detectors again. Still red: it reverts.
+          After three attempts it stops and opens exactly one issue for a person.</p>
+      </figure>
 
       <div class="facts">
         <div class="fact"><b>7</b><span>public feeds, hourly, append-only with vintages</span></div>
         <div class="fact"><b>3</b><span>detector axes that read data, never exit codes</span></div>
-        <div class="fact"><b>&lt; $2</b><span>per month, steady state, on Cloud Run</span></div>
+        <div class="fact"><b><span class="sym">&lt;</span> $2</b><span>per month, steady state, on Cloud Run</span></div>
         <div class="fact"><b>hour 1</b><span>first real breach: FRED began timing out from the cloud</span></div>
       </div>
 
       <p>
-        <strong>What it shows so far.</strong> Real sources break in ways synthetic ones don't: a government data feed that
-        answers once and then resets connections, a market API that rate-limits, a grid operator whose hour-ending
-        column is fixed EST all year so the obvious daylight-saving conversion is wrong. The dashboard is a static page
-        the loop itself renders, with its own staleness check — so a dead loop cannot leave a green page behind.
+        <strong>The question.</strong> The pipeline failure that hurt me most in production was never a crash. It was a
+        job that exited 0 every morning while writing nothing, for weeks, under monitoring that only watched exit codes.
       </p>
-
-      <div class="cta">
-        <a href="https://b-cmd-alt.github.io/pipelineagent/" target="_blank" rel="noopener">Open the live dashboard →</a>
-        <a class="quiet" href="https://github.com/B-cmd-alt/pipelineagent" target="_blank" rel="noopener">Code on GitHub</a>
-      </div>
-      <p class="note">The dashboard is re-rendered and published by the hourly Cloud Run job itself; the "Generated" stamp at the top is the loop's heartbeat, and the page turns amber, then red, if the loop stops.</p>
+      <p>
+        <strong>What it shows so far.</strong> Real sources break in ways synthetic ones don't: a government feed that
+        answers once and then resets connections, a market API that rate-limits, a grid operator whose hour column
+        stays on standard time all year. When a detector cannot look, it says UNKNOWN, shown amber and never green.
+      </p>
+      <p class="note">The dashboard is re-rendered by the hourly job itself. It turns amber, then red, if the loop stops.</p>
     </section>
 
     <p class="coda">Both projects run on one rule: the thing being evaluated never grades itself.</p>
 
-    <nav class="links nav-foot">
+    <nav class="links nav-foot" aria-label="Pages">
       <a href="index.html">Home</a>
       <a href="experience.html">Experience</a>
     </nav>
+    <div class="contact">
+      Find me <a href="mailto:i@bb.style">Email</a> | <a href="https://www.linkedin.com/in/bihan-q-9a5517250/" target="_blank" rel="noopener">LinkedIn</a> | <a href="https://github.com/B-cmd-alt" target="_blank" rel="noopener">GitHub</a>
+    </div>
   </main>
 
   <script src="script.js"></script>

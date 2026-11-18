@@ -4,13 +4,10 @@
 
 :root {
   --bg: #faf9f7;
-  --bg-subtle: #f0eeeb;
   --text: #1a1a1a;
   --text-muted: #5f5f5f;
   --accent: #e85d04;
   --accent-ink: #c2410c;   /* accent dark enough for small text and filled buttons */
-  --accent-light: #f48c06;
-  --accent-glow: #ffd60a;
   --rule: rgba(26, 26, 26, 0.12);
   --hairline: rgba(26, 26, 26, 0.1);      /* card and chip borders */
   --line-dash: rgba(26, 26, 26, 0.3);     /* dashed outlines */
@@ -33,7 +30,6 @@
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --bg: #151413;
-    --bg-subtle: #1f1d1b;
     --text: #f2efea;
     --text-muted: #aaa49c;
     --accent: #f26a12;
@@ -53,7 +49,6 @@
 
 :root[data-theme="dark"] {
   --bg: #151413;
-  --bg-subtle: #1f1d1b;
   --text: #f2efea;
   --text-muted: #aaa49c;
   --accent: #f26a12;
@@ -97,7 +92,8 @@ a {
   text-decoration: none;
 }
 
-a:focus-visible {
+a:focus-visible,
+button:focus-visible {
   outline: 2px solid var(--accent-ink);
   outline-offset: 3px;
   border-radius: 2px;
@@ -180,18 +176,19 @@ a:focus-visible {
   gap: 1.1rem;
 }
 
-.corner .lang-switch {
-  position: static;
-}
-
-.theme-switch {
+.switch {
   display: flex;
   gap: 0.15rem;
   font-family: var(--font-mono);
   font-size: 0.85rem;
 }
 
-.theme-switch button {
+/* a cooking page's language switch stays out of sight until theme.js moves it into the corner */
+body > .switch {
+  display: none;
+}
+
+.switch button {
   font: inherit;
   color: var(--text-muted);
   background: none;
@@ -202,18 +199,13 @@ a:focus-visible {
   transition: color 0.2s ease, border-color 0.2s ease;
 }
 
-.theme-switch button:hover {
+.switch button:hover {
   color: var(--accent-ink);
 }
 
-.theme-switch button[aria-pressed="true"] {
+.switch button[aria-pressed="true"] {
   color: var(--text);
   border-bottom-color: var(--accent);
-}
-
-.theme-switch button:focus-visible {
-  outline: 2px solid var(--accent-ink);
-  outline-offset: 3px;
 }
 
 @media (max-width: 480px) {
@@ -225,7 +217,7 @@ a:focus-visible {
 }
 
 /* ============================================
-   Shared components (home + projects)
+   Shared components
    ============================================ */
 .kicker {
   font-family: var(--font-mono);
@@ -250,17 +242,21 @@ a:focus-visible {
   padding: 0.9rem 1rem;
 }
 
+/* Low optical size keeps the hairlines of %, +, ×, – and → readable at this size */
 .fact b {
   display: block;
   font-family: var(--font-display);
-  font-size: 1.7rem;
+  font-variation-settings: 'opsz' 10;
+  font-size: clamp(1.35rem, 5vw, 1.65rem);
   font-weight: 700;
   line-height: 1.1;
+  white-space: nowrap;
+  margin-bottom: 0.3rem;
 }
 
 .fact span {
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   line-height: 1.5;
   color: var(--text-muted);
 }
@@ -282,78 +278,162 @@ a:focus-visible {
   color: var(--accent);
 }
 
-/* Links inside a page use the main page's two link styles: no pills, no filled buttons */
+/* Links are underlined text in two looks, each written once. No pills, no filled buttons. */
+
+/* Main links: the homepage's two, the foot of every page, a project's first link */
+.links,
 .cta {
   display: flex;
   flex-wrap: wrap;
+}
+
+.links {
+  gap: 0.5rem 2.5rem;
+  justify-content: center;
+}
+
+.cta {
   align-items: baseline;
   gap: 0.4rem 1.8rem;
   margin-top: 1.4rem;
 }
 
-/* same as .links a, a touch smaller to sit in running text */
+.links a,
 .cta a {
   font-family: var(--font-mono);
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 500;
   color: var(--text);
-  padding: 0.4rem 0;
+  padding: 0.5rem 0;
   border-bottom: 2px solid var(--accent);
-  transition: all 0.2s ease;
+  transition: color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
 }
 
+.cta a {
+  font-size: 0.9rem;
+  padding: 0.4rem 0;
+}
+
+.links a:hover,
 .cta a:hover {
   color: var(--accent);
   transform: translateY(-2px);
 }
 
+.links a:active,
 .cta a:active {
   transform: translateY(0);
 }
 
-/* same as .also a */
+/* Quiet links: the back link, the homepage's small line, the contact line, a project's other links */
+.back-link,
+.also a,
+.contact a,
 .cta a.quiet {
-  font-size: 0.8rem;
-  font-weight: 400;
   color: var(--text-muted);
-  padding: 0.35rem 0;
   border-bottom: 1px solid transparent;
+  transition: color 0.2s ease, border-color 0.2s ease;
 }
 
+.back-link:hover,
+.also a:hover,
+.contact a:hover,
 .cta a.quiet:hover {
   color: var(--accent-ink);
   border-bottom-color: var(--accent-ink);
   transform: none;
 }
 
-/* Underlined text links (projects footer nav) */
-.links {
-  display: flex;
-  gap: 2.5rem;
-  flex-wrap: wrap;
-  justify-content: center;
+.also a,
+.cta a.quiet {
+  font-size: 0.8rem;
+  font-weight: 400;
+  padding: 0.35rem 0;
 }
 
-.links a {
+/* ============================================
+   Page frame: every page below the homepage is built from these.
+   Back link top left, a 760px column, kicker + title + lede, and the same foot
+   (page links, then the contact line). Keep them here, not in a page's own <style>.
+   ============================================ */
+.back-link {
+  position: fixed;
+  top: 1.5rem;
+  left: 1.5rem;
+  z-index: 10;
   font-family: var(--font-mono);
-  font-size: 1rem;
-  font-weight: 500;
-  color: var(--text);
+  font-size: 0.85rem;
+}
+
+.page {
   position: relative;
-  padding: 0.5rem 0;
-  text-decoration: none;
-  border-bottom: 2px solid var(--accent);
-  transition: all 0.2s ease;
+  z-index: 1;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 7rem 1.5rem 5rem;
 }
 
-.links a:hover {
-  color: var(--accent);
-  border-bottom-color: var(--accent);
-  transform: translateY(-2px);
+.page-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 8vw, 4.5rem);
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 1rem;
 }
 
-.links a:active {
-  transform: translateY(0);
+.lede {
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  line-height: 1.9;
+  color: var(--text-muted);
+  max-width: 600px;
+  margin-bottom: 2.5rem;
+}
+
+/* A page that has nothing to show yet says so in one quiet line */
+.soon {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* Foot of every page: page links, then the contact line */
+.nav-foot {
+  margin-top: 3.5rem;
+}
+
+.nav-foot + .contact {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+/* Where the column is close to the corners, the back link and the switches would sit on
+   top of the text as it scrolls. A strip of page colour behind them keeps both readable. */
+@media (max-width: 1140px) {
+  .page::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4.2rem;
+    z-index: 2;
+    background: linear-gradient(to bottom, var(--bg) 58%, transparent);
+    pointer-events: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .page {
+    padding-top: 5.5rem;
+  }
+
+  .back-link {
+    top: 1rem;
+    left: 1rem;
+  }
 }
 
 /* ============================================
@@ -447,18 +527,6 @@ a:focus-visible {
   font-size: 0.8rem;
 }
 
-.also a {
-  color: var(--text-muted);
-  padding: 0.35rem 0;
-  border-bottom: 1px solid transparent;
-  transition: color 0.2s ease, border-color 0.2s ease;
-}
-
-.also a:hover {
-  color: var(--accent-ink);
-  border-bottom-color: var(--accent-ink);
-}
-
 /* Contact section */
 .contact {
   margin-top: 0.9rem;
@@ -466,16 +534,45 @@ a:focus-visible {
   font-size: 0.9rem;
 }
 
-.contact a {
-  color: var(--text-muted);
-  text-decoration: none;
-  border-bottom: 1px solid transparent;
-  transition: all 0.2s ease;
+/* ============================================
+   Comfort
+   ============================================ */
+
+/* Going from one page to the next is a short cross-fade, not a hard cut */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
 }
 
-.contact a:hover {
-  color: var(--accent-ink);
-  border-bottom-color: var(--accent-ink);
+/* On touch screens the small links keep their look but answer to a finger-sized area around them */
+@media (pointer: coarse) {
+  .also a,
+  .contact a,
+  .cta a,
+  .switch button,
+  .toggle {
+    position: relative;
+  }
+
+  .back-link::after,
+  .also a::after,
+  .contact a::after,
+  .cta a::after,
+  .switch button::after,
+  .toggle::after {
+    content: '';
+    position: absolute;
+    inset: -0.55rem -0.3rem;
+  }
+
+  .back-link::after {
+    inset: -0.8rem -0.7rem;
+  }
+
+  .contact a::after {
+    inset: -0.5rem -0.3rem -0.9rem;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

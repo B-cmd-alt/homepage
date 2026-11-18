@@ -3,7 +3,7 @@
   'use strict';
   var root = document.documentElement;
 
-  // ── Language. The choice is made in <head> before first paint; this keeps it in sync.
+  // ── Language. theme.js applies the saved choice before first paint; this switches it and keeps the page in sync.
   function setLang(lang, save) {
     root.setAttribute('data-lang', lang);
     root.lang = lang === 'zh' ? 'zh-Hans' : 'en';
@@ -23,18 +23,13 @@
   setLang(root.getAttribute('data-lang') === 'zh' ? 'zh' : 'en', false);
 
   // ── A drawing starts once about a third of it is on screen, and stops when it leaves.
-  var figs = document.querySelectorAll('.fig');
-  if ('IntersectionObserver' in window) {
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        if (e.intersectionRatio >= 0.28) e.target.classList.add('on');
-        else if (!e.isIntersecting) e.target.classList.remove('on');
-      });
-    }, { threshold: [0, 0.3] });
-    figs.forEach(function (f) { io.observe(f); });
-  } else {
-    figs.forEach(function (f) { f.classList.add('on'); });
-  }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.intersectionRatio >= 0.28) e.target.classList.add('on');
+      else if (!e.isIntersecting) e.target.classList.remove('on');
+    });
+  }, { threshold: [0, 0.3] });
+  document.querySelectorAll('.fig').forEach(function (f) { io.observe(f); });
 
   // ── One switch to pause or play every drawing on the page.
   var btn = document.getElementById('motion-toggle');
