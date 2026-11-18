@@ -23,7 +23,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <style>
-    .project { padding: 2.5rem 0; border-top: 1px solid var(--rule); }
+    /* Pick a project from the top: one link per project, right under the lede */
+    .lede { margin-bottom: 1.1rem; }
+    .pick { margin: 0 0 2.6rem; }
+    @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+
+    .project { padding: 2.5rem 0; border-top: 1px solid var(--rule); scroll-margin-top: 2rem; }
     .project:last-of-type { border-bottom: 1px solid var(--rule); }
     .project h2 { font-family: var(--font-display); font-size: clamp(1.7rem, 4vw, 2.4rem); font-weight: 700; line-height: 1.15; margin-bottom: 0.5rem; }
     .tagline { font-family: var(--font-display); font-style: italic; font-size: 1.15rem; line-height: 1.5; color: var(--text); margin-bottom: 0.9rem; }
@@ -99,6 +104,10 @@
       Things I build to answer questions I actually had. Each one ships with its evidence,
       not just a description of what it does.
     </p>
+    <nav class="cta pick" aria-label="Projects">
+      <a href="#memory-evaluator">Memory System Evaluator</a>
+      <a href="#pipelineagent">PipelineAgent</a>
+    </nav>
 
     <!-- Each project, in this order: what it is, where to go, one picture, four numbers, a short story.
          The long write-up lives in the project's GitHub README, not here. -->
