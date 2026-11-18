@@ -20,6 +20,9 @@ Design principles. These always hold:
    other: in text, in the key numbers, in drawing labels and in the index.
 2. **Everything is in English and Chinese.** Each piece of text is a pair of sibling elements,
    `lang="en"` and `lang="zh"`. Drawing descriptions and the tab title use `data-en` / `data-zh`.
+   Each version is pure: no Chinese in the English view, no English words in the Chinese view
+   (units such as °C and the site name are fine). Pages open in English; Chinese is shown only
+   after the reader picks it, and that choice is remembered.
    Chinese uses the reader's system fonts; do not add a Chinese web font.
 3. **One page per dish.** `cooking.html` only lists dishes (one `<li>` each), so it stays light at 100+ dishes.
    A dish page carries only its own drawings.

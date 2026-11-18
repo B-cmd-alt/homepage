@@ -33,7 +33,7 @@
     (function () {
       var d = document.documentElement, l = null;
       try { l = localStorage.getItem('lang'); } catch (e) {}
-      if (l !== 'zh' && l !== 'en') l = /^zh\b/i.test(navigator.language || '') ? 'zh' : 'en';
+      if (l !== 'zh') l = 'en';   // English unless the reader has chosen Chinese
       d.setAttribute('data-lang', l); d.lang = l === 'zh' ? 'zh-Hans' : 'en'; d.classList.add('js');
     })();
   </script>
@@ -129,7 +129,7 @@
   </svg>
 
   <a href="../cooking.html" class="back-link">← <span lang="en">Cooking</span><span lang="zh">下厨</span></a>
-  <div class="lang-switch" role="group" aria-label="Language">
+  <div class="lang-switch" role="group" aria-label="Language" data-en="Language" data-zh="语言">
     <button type="button" data-set-lang="en" aria-pressed="true">EN</button>
     <button type="button" data-set-lang="zh" aria-pressed="false">中文</button>
   </div>
