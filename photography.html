@@ -8,7 +8,7 @@
 
   <title>Photography | BB.STYLE</title>
   <meta name="title" content="Photography | BB.STYLE">
-  <meta name="description" content="BB's photography: capturing moments, chasing light, and finding beauty in the everyday.">
+  <meta name="description" content="Photographs by Bihan Qian (BB): mountains in cloud, temple roofs, and small things growing where they can.">
   <meta name="author" content="Bihan Qian">
   <meta name="robots" content="noindex, follow">
   <link rel="canonical" href="https://bb.style/photography.html">
@@ -45,10 +45,47 @@
     .page { position: relative; z-index: 1; max-width: 760px; margin: 0 auto; padding: 7rem 1.5rem 5rem; }
     .page-title { font-family: var(--font-display); font-size: clamp(2.6rem, 8vw, 4.5rem); font-weight: 700; line-height: 1; margin-bottom: 1rem; }
     .lede { font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.9; color: var(--text-muted); max-width: 600px; margin-bottom: 1.8rem; }
-    .soon {
-      display: inline-block; font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-muted);
-      padding: 0.4rem 0.85rem; border: 1px dashed var(--line-dash); border-radius: 100px;
+
+    /* ───────── Gallery: two columns of photographs, nothing around them ───────── */
+    .gallery { list-style: none; counter-reset: photo; display: grid; grid-template-columns: repeat(2, 1fr); gap: 2.2rem 1.6rem; margin-top: 2.8rem; }
+    .gallery li { counter-increment: photo; }
+    .gallery a { display: block; cursor: zoom-in; }
+    .gallery img { display: block; width: 100%; height: auto; background: var(--bg-subtle); transition: opacity 0.25s ease; }
+    .gallery a:hover img { opacity: 0.9; }
+    .gallery a:focus-visible { outline-offset: 5px; }
+    .gallery li::after {
+      content: counter(photo, decimal-leading-zero); display: block; margin-top: 0.6rem;
+      font-family: var(--font-mono); font-size: 0.72rem; font-weight: 500; letter-spacing: 0.08em; color: var(--accent-ink);
     }
+    .rights { font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-muted); text-align: center; margin-top: 3.4rem; }
+
+    /* ───────── Viewer: one photograph at a time on a dark ground, in both themes ───────── */
+    .viewer {
+      width: 100vw; height: 100vh; height: 100dvh; max-width: none; max-height: none; margin: 0; padding: 0; border: 0;
+      background: #0d0c0b; color: #f2efea; overflow: hidden;
+    }
+    .viewer::backdrop { background: #0d0c0b; }
+    .viewer[open] { display: flex; align-items: center; justify-content: center; }
+    .viewer img { display: block; width: auto; height: auto; max-width: min(92vw, 1066px); max-height: 86vh; max-height: 86dvh; cursor: pointer; }
+    .viewer button {
+      position: absolute; font-family: var(--font-mono); font-size: 0.85rem; color: #aaa49c; background: none; border: 0;
+      border-bottom: 1px solid transparent; padding: 0.4rem 0.5rem; cursor: pointer; transition: color 0.2s ease, border-color 0.2s ease;
+    }
+    .viewer button:hover { color: #fff; border-bottom-color: var(--accent); }
+    .viewer button:focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 3px; }
+    .viewer-close { top: 1.2rem; right: 1.5rem; }
+    .viewer-prev, .viewer-next { top: 50%; transform: translateY(-50%); font-size: 1.35rem !important; padding: 0.7rem 0.8rem !important; }
+    .viewer-prev { left: 1.2rem; }
+    .viewer-next { right: 1.2rem; }
+    .viewer-count { position: absolute; bottom: 1.1rem; left: 0; right: 0; text-align: center; font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.12em; color: #aaa49c; }
+    html:has(.viewer[open]) { overflow: hidden; }
+
+    @media (max-width: 560px) {
+      .gallery { grid-template-columns: 1fr; gap: 1.8rem; }
+      .viewer-prev, .viewer-next { top: auto; bottom: 0.35rem; transform: none; }
+      .viewer img { max-width: 100vw; max-height: 82dvh; }
+    }
+    @media (prefers-reduced-motion: reduce) { .gallery img { transition: none; } }
     .nav-foot { text-align: center; margin-top: 3rem; }
     @media (max-width: 480px) { .page { padding-top: 5.5rem; } .back-link { top: 1rem; left: 1rem; } }
   </style>
@@ -68,13 +105,88 @@
     <div class="kicker">Off work</div>
     <h1 class="page-title">Photography<span class="accent">.</span></h1>
     <p class="lede">Capturing moments, chasing light, and finding beauty in the everyday.</p>
-    <span class="soon">Coming soon</span>
+
+    <!-- Only web-size, watermarked copies live in this repository. Make them with tools/prepare-photos.py. -->
+    <ol class="gallery">
+      <li><a href="photography/01-l.webp" data-w="1066" data-h="1600">
+        <img src="photography/01-s.webp" srcset="photography/01-s.webp 720w, photography/01-l.webp 1066w"
+             sizes="(max-width: 560px) calc(100vw - 3rem), 343px" width="720" height="1080"
+             decoding="async" alt="The upturned corner of a tiled temple roof with small ridge figures, and a forested peak rising out of cloud behind it.">
+      </a></li>
+      <li><a href="photography/02-l.webp" data-w="1066" data-h="1600">
+        <img src="photography/02-s.webp" srcset="photography/02-s.webp 720w, photography/02-l.webp 1066w"
+             sizes="(max-width: 560px) calc(100vw - 3rem), 343px" width="720" height="1080"
+             decoding="async" alt="Mountain tops surfacing from a sea of cloud under a grey sky, with a pale band of light on the horizon.">
+      </a></li>
+      <li><a href="photography/03-l.webp" data-w="1066" data-h="1600">
+        <img src="photography/03-s.webp" srcset="photography/03-s.webp 720w, photography/03-l.webp 1066w"
+             sizes="(max-width: 560px) calc(100vw - 3rem), 343px" width="720" height="1080"
+             loading="lazy" decoding="async" alt="A single tall conifer standing above a forested ridge in fog, framed by out-of-focus leaves.">
+      </a></li>
+      <li><a href="photography/04-l.webp" data-w="1066" data-h="1600">
+        <img src="photography/04-s.webp" srcset="photography/04-s.webp 720w, photography/04-l.webp 1066w"
+             sizes="(max-width: 560px) calc(100vw - 3rem), 343px" width="720" height="1080"
+             loading="lazy" decoding="async" alt="Bare branches heavy with orange and red persimmons against green leaves.">
+      </a></li>
+      <li><a href="photography/05-l.webp" data-w="1066" data-h="1600">
+        <img src="photography/05-s.webp" srcset="photography/05-s.webp 720w, photography/05-l.webp 1066w"
+             sizes="(max-width: 560px) calc(100vw - 3rem), 343px" width="720" height="1080"
+             loading="lazy" decoding="async" alt="Yellow stonecrop flowers and purple-green leaves growing from cracks in grey rock.">
+      </a></li>
+    </ol>
+
+    <p class="rights">All photographs © Bihan Qian.</p>
 
     <nav class="links nav-foot">
       <a href="index.html">Home</a>
     </nav>
   </main>
 
+  <dialog class="viewer" id="viewer" aria-label="Photograph viewer">
+    <button type="button" class="viewer-close">Close</button>
+    <button type="button" class="viewer-prev" aria-label="Previous photograph">←</button>
+    <img alt="">
+    <button type="button" class="viewer-next" aria-label="Next photograph">→</button>
+    <p class="viewer-count" aria-live="polite"></p>
+  </dialog>
+
   <script src="script.js"></script>
+  <script>
+    /* Viewer. Without it, each photograph is still a plain link to its larger copy. */
+    (function () {
+      var links = [].slice.call(document.querySelectorAll('.gallery a'));
+      var dlg = document.getElementById('viewer');
+      if (!dlg || !dlg.showModal) return;
+      var img = dlg.querySelector('img'), count = dlg.querySelector('.viewer-count'), at = 0;
+      function two(n) { return (n < 10 ? '0' : '') + n; }
+      function show(n) {
+        at = (n + links.length) % links.length;
+        var a = links[at];
+        img.width = a.getAttribute('data-w'); img.height = a.getAttribute('data-h');
+        img.alt = a.querySelector('img').alt;
+        img.src = a.href;
+        count.textContent = two(at + 1) + ' / ' + two(links.length);
+      }
+      links.forEach(function (a, n) {
+        a.addEventListener('click', function (e) { e.preventDefault(); show(n); dlg.showModal(); });
+      });
+      dlg.querySelector('.viewer-prev').addEventListener('click', function () { show(at - 1); });
+      dlg.querySelector('.viewer-next').addEventListener('click', function () { show(at + 1); });
+      dlg.querySelector('.viewer-close').addEventListener('click', function () { dlg.close(); });
+      img.addEventListener('click', function () { show(at + 1); });
+      dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });   // the dark ground closes it
+      dlg.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowRight') show(at + 1);
+        if (e.key === 'ArrowLeft') show(at - 1);
+      });
+      var x0 = null;                                                                        // swipe on touch screens
+      dlg.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; }, { passive: true });
+      dlg.addEventListener('touchend', function (e) {
+        if (x0 === null) return;
+        var dx = e.changedTouches[0].clientX - x0; x0 = null;
+        if (Math.abs(dx) > 45) show(at + (dx < 0 ? 1 : -1));
+      }, { passive: true });
+    })();
+  </script>
 </body>
 </html>

@@ -24,6 +24,19 @@ Static site served by GitHub Pages from `main`. Plain HTML, CSS and JS: no build
   `projects/memory-evaluator.html` is a generated report: its site look lives in the marked
   "site chrome" blocks in that file and has to be re-applied if the report is regenerated.
 
+## Photography (`photography.html`, `photography/`)
+
+- **Only web-size, watermarked copies are ever committed.** This repository is public: never add an original
+  or full-resolution photograph, not even temporarily.
+- Make the copies with `python3 tools/prepare-photos.py --start <next number> <originals...>` (needs Pillow).
+  It drops all camera data (including location), writes `NN-s.webp` (720 px wide, grid) and `NN-l.webp`
+  (1600 px on the long side, viewer; nothing larger is published), stamps `@bb.style` at the bottom centre
+  from `tools/watermark.png`, and writes the author and copyright into each file.
+- Add each photo as one `<li>` in the `.gallery` list (the tool prints it); write a plain description as `alt`.
+  Do not invent titles or places. The first two photos load at once, the rest use `loading="lazy"`.
+- The page shows photographs only: a two-column grid with a number under each, and a dark full-screen
+  viewer (arrow keys, swipe, Esc).
+
 ## Cooking (`cooking.html`, `cooking/`)
 
 Design principles. These always hold:
