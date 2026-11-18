@@ -1,54 +1,20 @@
-/**
- * Simple local development server
- * Run: node serve.js
- * Then open: http://localhost:8000
- */
-
+// Local preview: node serve.js, then open http://localhost:8000
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
 const PORT = 8000;
-const ROOT = __dirname;
-
-const MIME_TYPES = {
-  '.html': 'text/html',
-  '.css': 'text/css',
-  '.js': 'application/javascript',
-  '.json': 'application/json',
-  '.png': 'image/png',
-  '.jpg': 'image/jpeg',
-  '.jpeg': 'image/jpeg',
-  '.webp': 'image/webp',
-  '.gif': 'image/gif',
-  '.svg': 'image/svg+xml',
-  '.ico': 'image/x-icon',
-  '.woff': 'font/woff',
-  '.woff2': 'font/woff2',
+const TYPES = {
+  '.html': 'text/html', '.css': 'text/css', '.js': 'application/javascript', '.svg': 'image/svg+xml',
+  '.png': 'image/png', '.jpg': 'image/jpeg', '.webp': 'image/webp', '.xml': 'application/xml', '.txt': 'text/plain',
 };
 
-const server = http.createServer((req, res) => {
-  let filePath = path.join(ROOT, req.url === '/' ? 'index.html' : req.url);
-  const ext = path.extname(filePath).toLowerCase();
-  const contentType = MIME_TYPES[ext] || 'application/octet-stream';
-
-  fs.readFile(filePath, (err, content) => {
-    if (err) {
-      if (err.code === 'ENOENT') {
-        res.writeHead(404);
-        res.end('404 Not Found');
-      } else {
-        res.writeHead(500);
-        res.end('500 Server Error');
-      }
-    } else {
-      res.writeHead(200, { 'Content-Type': contentType });
-      res.end(content);
-    }
+http.createServer((req, res) => {
+  const url = req.url.split('?')[0];
+  const file = path.join(__dirname, url === '/' ? 'index.html' : url);
+  fs.readFile(file, (err, content) => {
+    if (err) { res.writeHead(404); res.end('404 Not Found'); return; }
+    res.writeHead(200, { 'Content-Type': TYPES[path.extname(file)] || 'application/octet-stream' });
+    res.end(content);
   });
-});
-
-server.listen(PORT, () => {
-  console.log(`\n  Server running at http://localhost:${PORT}\n`);
-  console.log('  Press Ctrl+C to stop\n');
-});
+}).listen(PORT, () => console.log(`Preview at http://localhost:${PORT} (Ctrl+C to stop)`));

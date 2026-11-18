@@ -7,11 +7,7 @@
   <script src="theme.js"></script>
 
   <title>Projects | BB.STYLE</title>
-  <meta name="title" content="Projects | BB.STYLE">
   <meta name="description" content="Things Bihan Qian (BB) builds to answer questions he actually had: a memory-system evaluator for AI agents, and an autonomous detection-and-repair agent for data pipelines. Each ships with its evidence.">
-  <meta name="keywords" content="BB, Bihan, AI engineer, agent memory, LLM evaluation, benchmark, data pipelines, autonomous agents, projects">
-  <meta name="author" content="Bihan Qian">
-  <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://bb.style/projects.html">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
 
@@ -22,19 +18,7 @@
   <meta property="og:site_name" content="BB.STYLE">
   <meta property="og:image" content="https://bb.style/og.png">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Projects | BB.STYLE">
-  <meta name="twitter:description" content="A memory-system evaluator for AI agents and a self-repairing data-pipeline agent, each with its evidence.">
-  <meta name="twitter:image" content="https://bb.style/og.png">
 
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-0GNP7SNL8H"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-0GNP7SNL8H');
-  </script>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
@@ -133,22 +117,22 @@
 
       <figure class="figure">
         <figcaption class="figure-title">After a fact changes, which value does each system serve?</figcaption>
-        <table class="served" role="table">
-          <thead role="rowgroup">
-            <tr role="row"><th role="columnheader" scope="col">System</th><th role="columnheader" scope="col"><span class="visually-hidden">Share of update questions</span></th><th role="columnheader" scope="col"><i class="key cur"></i>Current</th><th role="columnheader" scope="col"><i class="key old"></i>Superseded</th></tr>
+        <table class="served">
+          <thead>
+            <tr><th scope="col">System</th><th scope="col" aria-label="Share of update questions"></th><th scope="col"><i class="key cur"></i>Current</th><th scope="col"><i class="key old"></i>Superseded</th></tr>
           </thead>
-          <tbody role="rowgroup">
-            <tr role="row"><th role="rowheader" scope="row">Microsoft GraphRAG<small>2024</small></th><td class="bar" role="cell" aria-hidden="true"><span class="track"><i class="cur" style="--v:100"></i></span></td><td class="n" role="cell">100%</td><td class="n" role="cell">0%</td></tr>
-            <tr role="row"><th role="rowheader" scope="row">Hybrid search + reranker<small>2024</small></th><td class="bar" role="cell" aria-hidden="true"><span class="track"><i class="cur" style="--v:92"></i></span></td><td class="n" role="cell">92%</td><td class="n" role="cell">0%</td></tr>
-            <tr role="row"><th role="rowheader" scope="row">Mastra Observational Memory<small>2026</small></th><td class="bar" role="cell" aria-hidden="true"><span class="track"><i class="cur" style="--v:85"></i></span></td><td class="n" role="cell">85%</td><td class="n" role="cell">0%</td></tr>
-            <tr role="row"><th role="rowheader" scope="row">Full context, no retrieval<small>2023</small></th><td class="bar" role="cell" aria-hidden="true"><span class="track"><i class="cur" style="--v:85"></i></span></td><td class="n" role="cell">85%</td><td class="n" role="cell">0%</td></tr>
-            <tr role="row"><th role="rowheader" scope="row">A-MEM<small>2025</small></th><td class="bar" role="cell" aria-hidden="true"><span class="track"><i class="cur" style="--v:83"></i><i class="old" style="--v:17"></i></span></td><td class="n" role="cell">83%</td><td class="n" role="cell">17%</td></tr>
-            <tr role="row"><th role="rowheader" scope="row">Mem0<small>2024</small></th><td class="bar" role="cell" aria-hidden="true"><span class="track"><i class="cur" style="--v:77"></i></span></td><td class="n" role="cell">77%</td><td class="n" role="cell">0%</td></tr>
-            <tr role="row"><th role="rowheader" scope="row">Vector RAG<small>2023</small></th><td class="bar" role="cell" aria-hidden="true"><span class="track"><i class="cur" style="--v:70"></i><i class="old" style="--v:30"></i></span></td><td class="n" role="cell">70%</td><td class="n" role="cell">30%</td></tr>
-            <tr role="row"><th role="rowheader" scope="row">BM25<small>2023</small></th><td class="bar" role="cell" aria-hidden="true"><span class="track"><i class="cur" style="--v:55"></i><i class="old" style="--v:37"></i></span></td><td class="n" role="cell">55%</td><td class="n" role="cell">37%</td></tr>
-            <tr role="row"><th role="rowheader" scope="row">Anthropic memory tool<small>2025</small></th><td class="bar" role="cell" aria-hidden="true"><span class="track"><i class="cur" style="--v:55"></i><i class="old" style="--v:15"></i></span></td><td class="n" role="cell">55%</td><td class="n" role="cell">15%</td></tr>
-            <tr role="row"><th role="rowheader" scope="row">Zep / Graphiti<small>2024</small></th><td class="bar" role="cell" aria-hidden="true"><span class="track"><i class="cur" style="--v:22"></i><i class="old" style="--v:37"></i></span></td><td class="n" role="cell">22%</td><td class="n" role="cell">37%</td></tr>
-            <tr role="row"><th role="rowheader" scope="row">Generative Agents<small>2023</small></th><td class="bar" role="cell" aria-hidden="true"><span class="track"><i class="cur" style="--v:15"></i><i class="old" style="--v:15"></i></span></td><td class="n" role="cell">15%</td><td class="n" role="cell">15%</td></tr>
+          <tbody>
+            <tr><th scope="row">Microsoft GraphRAG<small>2024</small></th><td class="bar" aria-hidden="true"><span class="track"><i class="cur" style="--v:100"></i></span></td><td class="n">100%</td><td class="n">0%</td></tr>
+            <tr><th scope="row">Hybrid search + reranker<small>2024</small></th><td class="bar" aria-hidden="true"><span class="track"><i class="cur" style="--v:92"></i></span></td><td class="n">92%</td><td class="n">0%</td></tr>
+            <tr><th scope="row">Mastra Observational Memory<small>2026</small></th><td class="bar" aria-hidden="true"><span class="track"><i class="cur" style="--v:85"></i></span></td><td class="n">85%</td><td class="n">0%</td></tr>
+            <tr><th scope="row">Full context, no retrieval<small>2023</small></th><td class="bar" aria-hidden="true"><span class="track"><i class="cur" style="--v:85"></i></span></td><td class="n">85%</td><td class="n">0%</td></tr>
+            <tr><th scope="row">A-MEM<small>2025</small></th><td class="bar" aria-hidden="true"><span class="track"><i class="cur" style="--v:83"></i><i class="old" style="--v:17"></i></span></td><td class="n">83%</td><td class="n">17%</td></tr>
+            <tr><th scope="row">Mem0<small>2024</small></th><td class="bar" aria-hidden="true"><span class="track"><i class="cur" style="--v:77"></i></span></td><td class="n">77%</td><td class="n">0%</td></tr>
+            <tr><th scope="row">Vector RAG<small>2023</small></th><td class="bar" aria-hidden="true"><span class="track"><i class="cur" style="--v:70"></i><i class="old" style="--v:30"></i></span></td><td class="n">70%</td><td class="n">30%</td></tr>
+            <tr><th scope="row">BM25<small>2023</small></th><td class="bar" aria-hidden="true"><span class="track"><i class="cur" style="--v:55"></i><i class="old" style="--v:37"></i></span></td><td class="n">55%</td><td class="n">37%</td></tr>
+            <tr><th scope="row">Anthropic memory tool<small>2025</small></th><td class="bar" aria-hidden="true"><span class="track"><i class="cur" style="--v:55"></i><i class="old" style="--v:15"></i></span></td><td class="n">55%</td><td class="n">15%</td></tr>
+            <tr><th scope="row">Zep / Graphiti<small>2024</small></th><td class="bar" aria-hidden="true"><span class="track"><i class="cur" style="--v:22"></i><i class="old" style="--v:37"></i></span></td><td class="n">22%</td><td class="n">37%</td></tr>
+            <tr><th scope="row">Generative Agents<small>2023</small></th><td class="bar" aria-hidden="true"><span class="track"><i class="cur" style="--v:15"></i><i class="old" style="--v:15"></i></span></td><td class="n">15%</td><td class="n">15%</td></tr>
           </tbody>
         </table>
         <p class="figure-note">Round 2, Sonnet generator tier, mean of three seeded worlds. The rest of each bar is an answer that gave neither value.

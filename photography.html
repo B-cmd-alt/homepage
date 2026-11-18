@@ -7,9 +7,7 @@
   <script src="theme.js"></script>
 
   <title>Photography | BB.STYLE</title>
-  <meta name="title" content="Photography | BB.STYLE">
   <meta name="description" content="Photographs by Bihan Qian (BB): mountains in cloud, temple roofs, and small things growing where they can.">
-  <meta name="author" content="Bihan Qian">
   <meta name="robots" content="noindex, follow">
   <link rel="canonical" href="https://bb.style/photography.html">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -20,22 +18,8 @@
   <meta property="og:description" content="Capturing moments, chasing light, and finding beauty in the everyday.">
   <meta property="og:site_name" content="BB.STYLE">
   <meta property="og:image" content="https://bb.style/photography/share.jpg">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Photography | BB.STYLE">
-  <meta name="twitter:description" content="Capturing moments, chasing light, and finding beauty in the everyday.">
-  <meta name="twitter:image" content="https://bb.style/photography/share.jpg">
 
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-0GNP7SNL8H"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-0GNP7SNL8H');
-  </script>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
@@ -69,7 +53,7 @@
     /* It lives in the margin to the left of the photograph and is sized to fit there.
        The photograph is (100vh - 7.5rem) tall and two-thirds as wide, so the margin is 50vw - 33.4vh + 2.5rem. */
     .intro {
-      position: absolute; z-index: 3; top: 0; left: 0; height: 100vh; height: 100svh; width: calc(50vw - 33.4vh + 2.5rem);
+      position: absolute; z-index: 3; top: 0; left: 0; height: 100svh; width: calc(50vw - 33.4vh + 2.5rem);
       padding: 0 1.5rem 11vh 4vw; display: flex; flex-direction: column; justify-content: flex-end; pointer-events: none;
     }
     .page-title { font-size: clamp(1.4rem, calc((50vw - 33.4vh - 4vw) / 6.5), 4.5rem); }
@@ -78,7 +62,7 @@
     /* One screen per photograph */
     .reel { position: relative; z-index: 1; }
     .frames { list-style: none; }
-    .frame { height: 100vh; height: 100svh; scroll-snap-align: start; scroll-snap-stop: always; }
+    .frame { height: 100svh; scroll-snap-align: start; scroll-snap-stop: always; }
     .pin { height: 100%; display: grid; place-items: center; }
     .hold { display: block; position: relative; }
     /* When it was taken: one quiet line under the photograph's left corner, moving with it */
@@ -87,7 +71,7 @@
       font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.12em; color: var(--text);
     }
     .shot {
-      display: block; width: auto; height: auto; max-width: 92vw; max-height: calc(100vh - 7.5rem); max-height: calc(100svh - 7.5rem);
+      display: block; width: auto; height: auto; max-width: 92vw; max-height: calc(100svh - 7.5rem);
       box-shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.45);
       translate: calc(var(--mx, 0) * -14px) calc(var(--my, 0) * -14px);
       transition: translate 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
@@ -102,7 +86,7 @@
 
     /* Last screen: the usual foot of a page */
     .outro {
-      position: relative; z-index: 2; height: 100vh; height: 100svh; scroll-snap-align: start;
+      position: relative; z-index: 2; height: 100svh; scroll-snap-align: start;
       display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem 1.5rem;
     }
     .rights { font-family: var(--font-mono); font-size: 0.82rem; color: var(--text-muted); text-align: center; }
@@ -142,7 +126,6 @@
                   linear-gradient(currentColor, currentColor) 0 100% / 4px 4px no-repeat, linear-gradient(currentColor, currentColor) 100% 100% / 4px 4px no-repeat;
     }
     .count:hover { color: var(--accent-ink); border-bottom-color: var(--accent-ink); }
-    .count:focus-visible, .sheet button:focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 3px; }
     @media (pointer: coarse) { .count::after { content: ''; position: absolute; inset: -0.7rem -0.6rem; } }
 
     /* Overview: every photograph at once, shown whole. Opened from the count; nothing is fetched for it until then. */
@@ -175,7 +158,6 @@
     }
     .rail button:hover::before { width: 18px; opacity: 1; }
     .rail button[aria-current="true"]::before { width: 26px; background: var(--accent); opacity: 1; }
-    .rail button:focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 2px; }
     html:not(.reel-on) .count, html:not(.reel-on) .rail, html:not(.reel-on) .sheet { display: none; }
     html:not(.reel-on) .sign { position: absolute; }
 
@@ -185,7 +167,7 @@
       .intro { width: 100%; justify-content: flex-start; padding: 3.9rem 1.5rem 0; }
       .page-title { font-size: 2.1rem; margin-bottom: 0; }
       .lede { display: none; }
-      .shot { max-height: 66vh; max-height: 66svh; }
+      .shot { max-height: 66svh; }
       .pin { padding-top: 5.6rem; }
       .rail { display: none; }
       .sign { bottom: 1.3rem; }
@@ -300,7 +282,7 @@
       if (!frames.length) return;
       var pins = frames.map(function (f) { return f.querySelector('.pin'); });
       var holds = frames.map(function (f) { return f.querySelector('.hold'); });
-      var calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       var n = frames.length, queued = false;
 
       function two(v) { return (v < 10 ? '0' : '') + v; }
@@ -310,7 +292,6 @@
         queued = false;
         var h = frames[0].offsetHeight || window.innerHeight;
         var pos = (window.scrollY - frames[0].offsetTop) / h;           // 0 = first photograph, n = the last screen
-        var real = pos;
         var cur = Math.max(0, Math.min(n - 1, Math.round(pos)));
         for (var j = 0; j < n; j++) pins[j].classList.toggle('near', Math.abs(pos - j) <= 1.6);   // only the current photograph and its neighbours exist
 
@@ -347,21 +328,19 @@
             a.style.opacity = '1';
           }
         }
-        count.style.opacity = rail.style.opacity = clamp(1 - (real - (n - 1)) * 2).toFixed(2);
-        count.style.visibility = rail.style.visibility = real > n - 0.5 ? 'hidden' : 'visible';
+        count.style.opacity = rail.style.opacity = clamp(1 - (pos - (n - 1)) * 2).toFixed(2);
+        count.style.visibility = rail.style.visibility = pos > n - 0.5 ? 'hidden' : 'visible';
         if (cur !== marked) {
           // Each photograph has its own address, so one can be linked to. The first is the page itself.
-          if (marked !== -1 && history.replaceState) {
-            try { history.replaceState(null, '', cur === 0 ? location.pathname + location.search : '#' + frames[cur].id); } catch (e) { /* file:// */ }
-          }
+          if (marked !== -1) history.replaceState(null, '', cur === 0 ? location.pathname + location.search : '#' + frames[cur].id);
           marked = cur;
           count.textContent = two(cur + 1) + ' / ' + two(n);
           count.setAttribute('aria-label', 'All photographs. Showing ' + (cur + 1) + ' of ' + n + '.');
           for (var m = 0; m < n; m++) ticks[m].setAttribute('aria-current', m === cur ? 'true' : 'false');
         }
-        intro.style.opacity = clamp(1 - real * 2.2).toFixed(2);
-        intro.style.visibility = real > 0.5 ? 'hidden' : 'visible';
-        sign.style.opacity = real > 0.08 ? '0' : '1';
+        intro.style.opacity = clamp(1 - pos * 2.2).toFixed(2);
+        intro.style.visibility = pos > 0.5 ? 'hidden' : 'visible';
+        sign.style.opacity = pos > 0.08 ? '0' : '1';
       }
       function queue() { if (!queued) { queued = true; requestAnimationFrame(place); } }
 
@@ -485,7 +464,7 @@
       pins.forEach(function (pin) { pin.addEventListener('click', function () { go(1); }); });
       document.addEventListener('keydown', function (e) {
         if (!sheet.hidden) { if (e.key === 'Escape') closeSheet(); return; }
-        if (e.target.closest && e.target.closest('button, a, input')) return;
+        if (e.target.closest('button, a')) return;
         if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); go(1); }
         if (e.key === 'ArrowUp' || e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); go(-1); }
       });

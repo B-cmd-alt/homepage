@@ -4,13 +4,10 @@
 
 :root {
   --bg: #faf9f7;
-  --bg-subtle: #f0eeeb;
   --text: #1a1a1a;
   --text-muted: #5f5f5f;
   --accent: #e85d04;
   --accent-ink: #c2410c;   /* accent dark enough for small text and filled buttons */
-  --accent-light: #f48c06;
-  --accent-glow: #ffd60a;
   --rule: rgba(26, 26, 26, 0.12);
   --hairline: rgba(26, 26, 26, 0.1);      /* card and chip borders */
   --line-dash: rgba(26, 26, 26, 0.3);     /* dashed outlines */
@@ -33,7 +30,6 @@
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --bg: #151413;
-    --bg-subtle: #1f1d1b;
     --text: #f2efea;
     --text-muted: #aaa49c;
     --accent: #f26a12;
@@ -53,7 +49,6 @@
 
 :root[data-theme="dark"] {
   --bg: #151413;
-  --bg-subtle: #1f1d1b;
   --text: #f2efea;
   --text-muted: #aaa49c;
   --accent: #f26a12;
@@ -97,7 +92,8 @@ a {
   text-decoration: none;
 }
 
-a:focus-visible {
+a:focus-visible,
+button:focus-visible {
   outline: 2px solid var(--accent-ink);
   outline-offset: 3px;
   border-radius: 2px;
@@ -105,16 +101,6 @@ a:focus-visible {
 
 .accent {
   color: var(--accent);
-}
-
-/* Text for screen readers only */
-.visually-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
 }
 
 /* ============================================
@@ -190,18 +176,19 @@ a:focus-visible {
   gap: 1.1rem;
 }
 
-.corner .lang-switch {
-  position: static;
-}
-
-.theme-switch {
+.switch {
   display: flex;
   gap: 0.15rem;
   font-family: var(--font-mono);
   font-size: 0.85rem;
 }
 
-.theme-switch button {
+/* a cooking page's language switch stays out of sight until theme.js moves it into the corner */
+body > .switch {
+  display: none;
+}
+
+.switch button {
   font: inherit;
   color: var(--text-muted);
   background: none;
@@ -212,18 +199,13 @@ a:focus-visible {
   transition: color 0.2s ease, border-color 0.2s ease;
 }
 
-.theme-switch button:hover {
+.switch button:hover {
   color: var(--accent-ink);
 }
 
-.theme-switch button[aria-pressed="true"] {
+.switch button[aria-pressed="true"] {
   color: var(--text);
   border-bottom-color: var(--accent);
-}
-
-.theme-switch button:focus-visible {
-  outline: 2px solid var(--accent-ink);
-  outline-offset: 3px;
 }
 
 @media (max-width: 480px) {
@@ -296,78 +278,77 @@ a:focus-visible {
   color: var(--accent);
 }
 
-/* Links inside a page use the main page's two link styles: no pills, no filled buttons */
+/* Links are underlined text in two looks, each written once. No pills, no filled buttons. */
+
+/* Main links: the homepage's two, the foot of every page, a project's first link */
+.links,
 .cta {
   display: flex;
   flex-wrap: wrap;
+}
+
+.links {
+  gap: 0.5rem 2.5rem;
+  justify-content: center;
+}
+
+.cta {
   align-items: baseline;
   gap: 0.4rem 1.8rem;
   margin-top: 1.4rem;
 }
 
-/* same as .links a, a touch smaller to sit in running text */
+.links a,
 .cta a {
   font-family: var(--font-mono);
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 500;
   color: var(--text);
-  padding: 0.4rem 0;
+  padding: 0.5rem 0;
   border-bottom: 2px solid var(--accent);
-  transition: all 0.2s ease;
+  transition: color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
 }
 
+.cta a {
+  font-size: 0.9rem;
+  padding: 0.4rem 0;
+}
+
+.links a:hover,
 .cta a:hover {
   color: var(--accent);
   transform: translateY(-2px);
 }
 
+.links a:active,
 .cta a:active {
   transform: translateY(0);
 }
 
-/* same as .also a */
+/* Quiet links: the back link, the homepage's small line, the contact line, a project's other links */
+.back-link,
+.also a,
+.contact a,
 .cta a.quiet {
-  font-size: 0.8rem;
-  font-weight: 400;
   color: var(--text-muted);
-  padding: 0.35rem 0;
   border-bottom: 1px solid transparent;
+  transition: color 0.2s ease, border-color 0.2s ease;
 }
 
+.back-link:hover,
+.also a:hover,
+.contact a:hover,
 .cta a.quiet:hover {
   color: var(--accent-ink);
   border-bottom-color: var(--accent-ink);
   transform: none;
 }
 
-/* Main links: the homepage's two, and the foot of every other page */
-.links {
-  display: flex;
-  gap: 0.5rem 2.5rem;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.links a {
-  font-family: var(--font-mono);
-  font-size: 1rem;
-  font-weight: 500;
-  color: var(--text);
-  position: relative;
-  padding: 0.5rem 0;
-  text-decoration: none;
-  border-bottom: 2px solid var(--accent);
-  transition: all 0.2s ease;
-}
-
-.links a:hover {
-  color: var(--accent);
-  border-bottom-color: var(--accent);
-  transform: translateY(-2px);
-}
-
-.links a:active {
-  transform: translateY(0);
+.also a,
+.cta a.quiet {
+  font-size: 0.8rem;
+  font-weight: 400;
+  padding: 0.35rem 0;
 }
 
 /* ============================================
@@ -382,14 +363,6 @@ a:focus-visible {
   z-index: 10;
   font-family: var(--font-mono);
   font-size: 0.85rem;
-  color: var(--text-muted);
-  border-bottom: 1px solid transparent;
-  transition: color 0.2s ease, border-color 0.2s ease;
-}
-
-.back-link:hover {
-  color: var(--accent-ink);
-  border-bottom-color: var(--accent-ink);
 }
 
 .page {
@@ -554,35 +527,11 @@ a:focus-visible {
   font-size: 0.8rem;
 }
 
-.also a {
-  color: var(--text-muted);
-  padding: 0.35rem 0;
-  border-bottom: 1px solid transparent;
-  transition: color 0.2s ease, border-color 0.2s ease;
-}
-
-.also a:hover {
-  color: var(--accent-ink);
-  border-bottom-color: var(--accent-ink);
-}
-
 /* Contact section */
 .contact {
   margin-top: 0.9rem;
   font-family: var(--font-mono);
   font-size: 0.9rem;
-}
-
-.contact a {
-  color: var(--text-muted);
-  text-decoration: none;
-  border-bottom: 1px solid transparent;
-  transition: all 0.2s ease;
-}
-
-.contact a:hover {
-  color: var(--accent-ink);
-  border-bottom-color: var(--accent-ink);
 }
 
 /* ============================================
@@ -594,11 +543,6 @@ a:focus-visible {
   @view-transition {
     navigation: auto;
   }
-
-  ::view-transition-old(root),
-  ::view-transition-new(root) {
-    animation-duration: 0.28s;
-  }
 }
 
 /* On touch screens the small links keep their look but answer to a finger-sized area around them */
@@ -606,8 +550,7 @@ a:focus-visible {
   .also a,
   .contact a,
   .cta a,
-  .theme-switch button,
-  .lang-switch button,
+  .switch button,
   .toggle {
     position: relative;
   }
@@ -616,8 +559,7 @@ a:focus-visible {
   .also a::after,
   .contact a::after,
   .cta a::after,
-  .theme-switch button::after,
-  .lang-switch button::after,
+  .switch button::after,
   .toggle::after {
     content: '';
     position: absolute;

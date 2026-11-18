@@ -12,12 +12,21 @@ Static site served by GitHub Pages from `main`. Plain HTML, CSS and JS: no build
   light and dark. Dark values are written twice (browser setting, reader's choice): keep the two blocks equal.
 - **Loading comes first**: no images or video where inline SVG and CSS will do, no extra font files,
   nothing fetched that the page does not need.
+- **Nothing unnecessary**: every line has to earn its place, and each thing is written once.
+  - A page's `<head>` holds only: charset, viewport, `color-scheme`, `theme.js`, title, description, `noindex` where
+    wanted, canonical, icon, the six `og:` tags, `twitter:card`, the fonts, the stylesheets. No keywords, no author,
+    no `twitter:` copies of the `og:` tags, no analytics snippet.
+  - Analytics lives only in `script.js`, which every page loads last.
+  - The reader's saved choices (theme, and language on cooking pages) are applied only by `theme.js`.
+  - The two link looks, the switch look and the focus ring are each defined once in `style.css`; a new link or
+    button joins the existing selector instead of repeating the declarations.
+  - No fallbacks for browsers from before 2023, no unused tokens or classes, no console output.
 - **Homepage**: Projects and Experience are the two main links. Everything else sits on the small line below them.
   A page with nothing on it yet is not linked from the homepage (Research, for now); it says "Coming soon" in the
   shared `.soon` line, never in a pill.
 - **Consistency**: every page is built from the same parts as the homepage. A new or changed page must have:
   - the background layers with the animated `#nn-canvas` and `script.js`;
-  - `theme.js` in `<head>` (it adds the Light / Dark switch at the top right);
+  - `theme.js` in `<head>` (it adds the Light / Dark switch, `.switch`, at the top right);
   - a back link at the top left (`← bb.style`, or `← <parent page>` one level down);
   - a title in bold Bodoni with the orange full stop (in every language), and an orange uppercase kicker above it;
   - the same foot: page links in the homepage link style (`nav.links.nav-foot`: Home, Projects, Experience, leaving
@@ -86,6 +95,8 @@ Design principles. These always hold:
    other: in text, in the key numbers, in drawing labels and in the index.
 2. **Everything is in English and Chinese.** Each piece of text is a pair of sibling elements,
    `lang="en"` and `lang="zh"`. Drawing descriptions and the tab title use `data-en` / `data-zh`.
+   A cooking page is marked by `data-lang` on `<html>`; its language switch is a `.switch` in the markup, which
+   `theme.js` moves into the corner beside the theme switch.
    Each version is pure: no Chinese in the English view, no English words in the Chinese view
    (units such as °C, the site name, and names with no Chinese form such as GitHub are fine). Pages open in English; Chinese is shown only
    after the reader picks it, and that choice is remembered.

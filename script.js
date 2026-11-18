@@ -1,23 +1,38 @@
-/**
- * Neural Spark Network (Optimized)
- *
- * Performance-focused implementation:
- * - Spatial hash grid for O(N) neighbor queries
- * - Delta-time based updates
- * - Gamma-correct color mixing
- * - Polarity computed once at spawn
- * - Hard caps on interactions and particles
- */
+/* Loaded at the end of every page: analytics, then the animated background. */
 
 (() => {
   'use strict';
+
+  // ============================================
+  // Analytics (GA4): the one place the tag lives
+  // ============================================
+
+  const GA_ID = 'G-0GNP7SNL8H';
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = function () { window.dataLayer.push(arguments); };
+  window.gtag('js', new Date());
+  window.gtag('config', GA_ID);
+  const tag = document.createElement('script');
+  tag.async = true;
+  tag.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+  document.head.appendChild(tag);
+
+  // ============================================
+  // Background: sparks that drift, link up when they come close, and pass energy and
+  // colour along the links. Which of two linked sparks gives is decided once, when a
+  // spark appears, by a tiny random neural network.
+  // ============================================
+
+  const canvas = document.getElementById('nn-canvas');
+  // style.css hides the canvas for readers who ask for reduced motion: skip the work too
+  if (!canvas || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
   // ============================================
   // Configuration (tune these)
   // ============================================
 
   const CONFIG = {
-    // Spark counts - balanced
+    // Spark counts on a 1920 x 1080 screen; scaled by screen area, kept between 30 and 300
     sparkCountDesktop: 120,
     sparkCountMobile: 55,
 
@@ -42,9 +57,6 @@
     // Performance caps
     maxInteractionsPerFrame: 1200,
     maxDpr: 2,
-
-    // Spawn area
-    spawnPadding: 0,
 
     // Physics - moderate movement
     maxSpeed: 20,
@@ -134,55 +146,6 @@
   }
 
   // ============================================
-  // Spatial Hash Grid
-  // ============================================
-
-  class SpatialGrid {
-    constructor(cellSize, width, height) {
-      this.cellSize = cellSize;
-      this.cols = Math.ceil(width / cellSize);
-      this.rows = Math.ceil(height / cellSize);
-      this.cells = new Map();
-    }
-
-    clear() {
-      this.cells.clear();
-    }
-
-    getKey(x, y) {
-      const col = Math.floor(x / this.cellSize);
-      const row = Math.floor(y / this.cellSize);
-      return `${col},${row}`;
-    }
-
-    insert(spark) {
-      const key = this.getKey(spark.x, spark.y);
-      if (!this.cells.has(key)) this.cells.set(key, []);
-      this.cells.get(key).push(spark);
-    }
-
-    getNeighbors(spark) {
-      const col = Math.floor(spark.x / this.cellSize);
-      const row = Math.floor(spark.y / this.cellSize);
-      const neighbors = [];
-
-      // Check 3x3 grid of cells
-      for (let dc = -1; dc <= 1; dc++) {
-        for (let dr = -1; dr <= 1; dr++) {
-          const key = `${col + dc},${row + dr}`;
-          const cell = this.cells.get(key);
-          if (cell) {
-            for (const other of cell) {
-              if (other !== spark) neighbors.push(other);
-            }
-          }
-        }
-      }
-      return neighbors;
-    }
-  }
-
-  // ============================================
   // Flow Particle
   // ============================================
 
@@ -219,7 +182,7 @@
   // Spark
   // ============================================
 
-  let sparkIdCounter = 0;
+  let sparkIdCounter = 0;   // ids rise with age, so a pair of sparks has one stable key: older-younger
 
   class Spark {
     constructor(x, y, w, h, nn) {
@@ -333,34 +296,17 @@
       this.canvas = canvas;
       this.ctx = canvas.getContext('2d');
 
-      // Detect mobile
-      this.isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ||
-                      window.innerWidth < 768;
-
-      // Scale spark count based on screen area for consistent density
-      const baseArea = 1920 * 1080; // Reference area
-      const screenArea = window.innerWidth * window.innerHeight;
-      const densityScale = screenArea / baseArea;
-
-      const baseCount = this.isMobile ? CONFIG.sparkCountMobile : CONFIG.sparkCountDesktop;
-      // Clamp between 30 and 300 to prevent extremes
-      this.sparkCount = Math.round(Math.max(30, Math.min(300, baseCount * densityScale)));
+      this.isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || window.innerWidth < 768;
 
       this.sparks = [];
       this.flowParticles = [];
       this.connections = new Map(); // Track connection strength for smooth fade
       this.nn = new TinyNN();
-      this.grid = null;
       this.lastTime = performance.now();
       this.spawnAccumulator = 0;
 
       this.resize();
       window.addEventListener('resize', () => this.resize());
-
-      // Log config
-      console.log(`%c✦ Neural Sparks`, 'font-size: 16px; font-weight: bold; color: #e85d04;');
-      console.log(`%c  ${this.sparkCount} sparks | Mobile: ${this.isMobile}`,
-                  'font-size: 11px; color: #888;');
     }
 
     resize() {
@@ -370,61 +316,31 @@
 
       this.canvas.width = this.width * dpr;
       this.canvas.height = this.height * dpr;
-      this.canvas.style.width = this.width + 'px';
-      this.canvas.style.height = this.height + 'px';
-
       this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-      // Rebuild spatial grid
-      this.grid = new SpatialGrid(CONFIG.interactionRadius, this.width, this.height);
-
-      // Recalculate spark count based on new screen area
-      const baseArea = 1920 * 1080;
-      const screenArea = this.width * this.height;
-      const densityScale = screenArea / baseArea;
+      // The same density of sparks on every screen
       const baseCount = this.isMobile ? CONFIG.sparkCountMobile : CONFIG.sparkCountDesktop;
-      this.sparkCount = Math.round(Math.max(30, Math.min(300, baseCount * densityScale)));
+      this.sparkCount = Math.round(clamp(baseCount * this.width * this.height / (1920 * 1080), 30, 300));
     }
 
     spawnSpark() {
       if (this.sparks.length >= this.sparkCount) return;
 
-      const pad = CONFIG.spawnPadding;
-      const x = this.width * (pad + Math.random() * (1 - 2 * pad));
-      const y = this.height * (pad + Math.random() * (1 - 2 * pad));
-
-      this.sparks.push(new Spark(x, y, this.width, this.height, this.nn));
-    }
-
-    getConnectionKey(a, b) {
-      // Use spark IDs for stable keys (IDs assigned at spawn)
-      return a.id < b.id ? `${a.id}-${b.id}` : `${b.id}-${a.id}`;
+      this.sparks.push(new Spark(Math.random() * this.width, Math.random() * this.height, this.width, this.height, this.nn));
     }
 
     processInteractions(dt) {
-      // Rebuild spatial grid
-      this.grid.clear();
-      for (const spark of this.sparks) {
-        this.grid.insert(spark);
-      }
-
-      let interactions = 0;
-      const processed = new Set();
+      const sparks = this.sparks;   // oldest first
       const activeConnections = new Set();
+      let interactions = 0;
 
-      for (const spark of this.sparks) {
-        if (interactions >= CONFIG.maxInteractionsPerFrame) break;
+      for (let i = 0; i < sparks.length && interactions < CONFIG.maxInteractionsPerFrame; i++) {
+        const spark = sparks[i];
 
-        const neighbors = this.grid.getNeighbors(spark);
-
-        for (const other of neighbors) {
-          const connKey = this.getConnectionKey(spark, other);
-          if (processed.has(connKey)) continue;
-          processed.add(connKey);
-
-          const dx = other.x - spark.x;
-          const dy = other.y - spark.y;
-          const dist = Math.hypot(dx, dy);
+        for (let j = i + 1; j < sparks.length; j++) {
+          const other = sparks[j];
+          const connKey = spark.id + '-' + other.id;
+          const dist = Math.hypot(other.x - spark.x, other.y - spark.y);
 
           if (dist < CONFIG.interactionRadius && dist > 0) {
             interactions++;
@@ -652,24 +568,6 @@
     }
   }
 
-  // ============================================
-  // Initialize on DOM ready
-  // ============================================
-
-  const init = () => {
-    const canvas = document.getElementById('nn-canvas');
-    // style.css hides the canvas for readers who ask for reduced motion: skip the work too
-    const still = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (canvas && !still) {
-      const system = new SparkSystem(canvas);
-      system.start();
-    }
-  };
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
+  new SparkSystem(canvas).start();
 
 })();

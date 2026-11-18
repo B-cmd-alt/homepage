@@ -1,32 +1,43 @@
-/* Theme: follows the browser until the reader picks Light or Dark; the choice is remembered.
-   Loaded in <head> on every page so a saved choice applies before the first paint. */
+/* The reader's choices, applied before the first paint: loaded in <head> on every page.
+   Theme: follows the browser until the reader picks Light or Dark; the choice is remembered.
+   Language (cooking pages only, marked by data-lang on <html>): English unless the reader has chosen Chinese. */
 (function () {
   'use strict';
   var root = document.documentElement;
-  var media = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+  var media = window.matchMedia('(prefers-color-scheme: dark)');
+  var bilingual = root.hasAttribute('data-lang');
 
-  function saved() {
-    try { var t = localStorage.getItem('theme'); return t === 'light' || t === 'dark' ? t : null; } catch (e) { return null; }
-  }
-  function current() {
-    return root.getAttribute('data-theme') || (media && media.matches ? 'dark' : 'light');
+  function saved(key, values) {
+    try { var v = localStorage.getItem(key); return values.indexOf(v) < 0 ? null : v; } catch (e) { return null; }
   }
 
-  var choice = saved();
-  if (choice) root.setAttribute('data-theme', choice);
+  var theme = saved('theme', ['light', 'dark']);
+  if (theme) root.setAttribute('data-theme', theme);
 
+  if (bilingual) {
+    var lang = saved('lang', ['zh']) || 'en';
+    root.setAttribute('data-lang', lang);
+    root.lang = lang === 'zh' ? 'zh-Hans' : 'en';
+    root.classList.add('js');   // cooking.css shows its switches only when scripts run
+  }
+
+  // The switch at the top right. A cooking page's language switch, written in its markup, joins it there.
   function build() {
-    var bilingual = root.hasAttribute('data-lang');   // cooking pages carry English and Chinese
-    var zh = root.getAttribute('data-lang') === 'zh';
     var names = { light: ['Light', '浅色'], dark: ['Dark', '深色'] };
+    var buttons = {};
 
     var group = document.createElement('div');
-    group.className = 'theme-switch';
+    group.className = 'switch';
     group.setAttribute('role', 'group');
-    group.setAttribute('aria-label', zh ? '主题' : 'Theme');
+    group.setAttribute('aria-label', root.getAttribute('data-lang') === 'zh' ? '主题' : 'Theme');
     if (bilingual) { group.setAttribute('data-en', 'Theme'); group.setAttribute('data-zh', '主题'); }
 
-    var buttons = {};
+    function mark() {
+      var now = root.getAttribute('data-theme') || (media.matches ? 'dark' : 'light');
+      buttons.light.setAttribute('aria-pressed', String(now === 'light'));
+      buttons.dark.setAttribute('aria-pressed', String(now === 'dark'));
+    }
+
     ['light', 'dark'].forEach(function (t) {
       var b = document.createElement('button');
       b.type = 'button';
@@ -43,21 +54,14 @@
       buttons[t] = b;
       group.appendChild(b);
     });
-
-    function mark() {
-      var now = current();
-      buttons.light.setAttribute('aria-pressed', String(now === 'light'));
-      buttons.dark.setAttribute('aria-pressed', String(now === 'dark'));
-    }
     mark();
-    if (media && media.addEventListener) media.addEventListener('change', mark);
+    media.addEventListener('change', mark);
 
-    // One corner holds the theme switch and, on cooking pages, the language switch.
     var corner = document.createElement('div');
     corner.className = 'corner';
     corner.appendChild(group);
-    var lang = document.querySelector('.lang-switch');
-    if (lang) corner.appendChild(lang);
+    var language = document.querySelector('.switch');   // the theme switch is not in the page yet, so this is the language one
+    if (language) corner.appendChild(language);
     document.body.insertBefore(corner, document.body.firstChild);
   }
 
