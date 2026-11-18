@@ -73,7 +73,7 @@
       position: absolute; z-index: 3; top: 0; left: 0; height: 100vh; height: 100svh; width: calc(50vw - 30vh);
       padding: 0 1.5rem 11vh 4vw; display: flex; flex-direction: column; justify-content: flex-end; pointer-events: none;
     }
-    .page-title { font-family: var(--font-display); font-size: clamp(1.9rem, calc((50vw - 30vh - 4vw - 2.5rem) / 5.9), 4.5rem); font-weight: 700; line-height: 1; margin-bottom: 1rem; }
+    .page-title { font-family: var(--font-display); font-size: clamp(1.9rem, calc((50vw - 30vh - 4vw - 2.5rem) / 6.5), 4.5rem); font-weight: 700; line-height: 1; margin-bottom: 1rem; }
     .lede { font-family: var(--font-mono); font-size: 0.9rem; line-height: 1.9; color: var(--text-muted); }
 
     /* One screen per photograph */
@@ -103,16 +103,42 @@
     }
     .rights { font-family: var(--font-mono); font-size: 0.82rem; color: var(--text-muted); text-align: center; }
 
-    /* Counter and scroll hint */
-    .count, .hint {
-      position: fixed; z-index: 5; right: 1.5rem; font-family: var(--font-mono); font-size: 0.78rem;
-      letter-spacing: 0.12em; color: var(--text-muted); pointer-events: none; transition: opacity 0.4s ease;
+    /* ───────── How a visitor learns to move ─────────
+       1. The top edge of the next photograph rests just above the bottom of the screen, on its own glow.
+       2. Until the visitor has moved once, it rises a little and settles back every few seconds:
+          a short preview of exactly what scrolling does.
+       3. Words beside the title say it plainly, and a rail on the right shows how many there are. */
+    .cue {
+      display: flex; align-items: center; gap: 0.85rem; margin-top: 1.7rem;
+      font-family: var(--font-mono); font-size: 0.74rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text);
     }
-    .count { bottom: 1.4rem; color: var(--text); }
-    .hint { bottom: 3.3rem; text-transform: uppercase; font-size: 0.7rem; }
-    .hint::after { content: ''; display: block; width: 1px; height: 26px; margin: 0.5rem 0 0 auto; background: var(--accent); transform-origin: top; animation: hint 1.8s ease-in-out infinite; }
-    @keyframes hint { 0% { transform: scaleY(0); } 50% { transform: scaleY(1); } 100% { transform: scaleY(1); opacity: 0; } }
-    html:not(.reel-on) .count, html:not(.reel-on) .hint { display: none; }
+    .cue i { position: relative; flex: none; width: 1px; height: 34px; background: var(--line-dash); }
+    .cue i::after {
+      content: ''; position: absolute; left: -2.5px; top: 0; width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent); animation: drop 2s cubic-bezier(0.6, 0, 0.3, 1) infinite;
+    }
+    @keyframes drop { 0% { transform: translateY(-3px); opacity: 0; } 20%, 78% { opacity: 1; } 100% { transform: translateY(31px); opacity: 0; } }
+    .by-touch { display: none; }
+    @media (hover: none) and (pointer: coarse) { .by-wheel { display: none; } .by-touch { display: inline; } }
+
+    .count, .hint {
+      position: fixed; z-index: 5; font-family: var(--font-mono); font-size: 0.78rem;
+      letter-spacing: 0.12em; pointer-events: none; transition: opacity 0.4s ease;
+    }
+    .count { right: 1.5rem; bottom: 1.4rem; color: var(--text); }
+    .hint { display: none; left: 1.5rem; font-size: 0.7rem; font-weight: 500; text-transform: uppercase; color: var(--text); }   /* small screens only */
+
+    /* Rail: one tick per photograph; the current one is long and orange. Click a tick to go there. */
+    .rail { position: fixed; z-index: 5; right: 1.5rem; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; transition: opacity 0.4s ease; }
+    .rail button { position: relative; width: 30px; height: 13px; padding: 0; border: 0; background: none; cursor: pointer; }
+    .rail button::before {
+      content: ''; position: absolute; right: 0; top: 6px; width: 10px; height: 1.5px; background: var(--text-muted); opacity: 0.6;
+      transition: width 0.35s ease, background-color 0.35s ease, opacity 0.35s ease;
+    }
+    .rail button:hover::before { width: 18px; opacity: 1; }
+    .rail button[aria-current="true"]::before { width: 26px; background: var(--accent); opacity: 1; }
+    .rail button:focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 2px; }
+    html:not(.reel-on) .count, html:not(.reel-on) .rail { display: none; }
 
     @media (max-aspect-ratio: 4/5) {
       .intro { width: 100%; justify-content: flex-start; padding: 3.9rem 1.5rem 0; }
@@ -120,13 +146,14 @@
       .lede { display: none; }
       .shot { max-height: 66vh; max-height: 66svh; }
       .pin { padding-top: 5.6rem; }
-      .hint { right: auto; left: 1.5rem; bottom: 1.4rem; }
-      .hint::after { display: none; }
+      .cue, .rail { display: none; }
+      .reel-on .hint { display: block; }
+      .count, .hint { bottom: calc(var(--peek, 0px) + 0.85rem); }
     }
     @media (max-width: 480px) { .back-link { top: 1rem; left: 1rem; } .count { right: 1rem; } .hint { left: 1rem; } }
     @media (prefers-reduced-motion: reduce) {
       .shot, .ambient img { translate: none; transition: none; }
-      .hint::after { animation: none; }
+      .cue i::after { animation: none; top: 14px; }
     }
   </style>
 </head>
@@ -154,6 +181,7 @@
       <div class="kicker">Off work</div>
       <h1 class="page-title">Photography<span class="accent">.</span></h1>
       <p class="lede">Capturing moments, chasing light, and finding beauty in the everyday.</p>
+      <p class="cue"><i></i><span><span class="by-wheel">Scroll</span><span class="by-touch">Swipe up</span> for the next photograph</span></p>
     </header>
 
     <!-- Only web-size, watermarked copies live in this repository. Make them with tools/prepare-photos.py. -->
@@ -194,22 +222,26 @@
   </main>
 
   <p class="count" aria-hidden="true"></p>
-  <p class="hint" aria-hidden="true">Scroll</p>
+  <p class="hint" aria-hidden="true"><span class="by-wheel">Scroll ↓</span><span class="by-touch">Swipe up ↑</span></p>
+  <nav class="rail" aria-label="Photographs"></nav>
 
   <script src="script.js"></script>
   <script>
     /* The reel: pin each photograph to the screen and place it from the scroll position.
-       The next photograph rises over the current one, which steps back and fades. */
+       The next photograph rises over the current one, which steps back and fades.
+       While a photograph is showing, the top edge of the next one waits at the bottom of the screen. */
     (function () {
       var root = document.documentElement;
       var frames = [].slice.call(document.querySelectorAll('.frame'));
       var ambient = [].slice.call(document.querySelectorAll('.ambient img'));
       var intro = document.querySelector('.intro'), count = document.querySelector('.count'), hint = document.querySelector('.hint');
+      var rail = document.querySelector('.rail'), ticks = [], marked = -1;
       if (!frames.length) return;
       var pins = frames.map(function (f) { return f.querySelector('.pin'); });
       var holds = frames.map(function (f) { return f.querySelector('.hold'); });
       var calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       var n = frames.length, queued = false;
+      var tease = 0;                       // a little pretend scrolling, used only for the preview nudge
 
       function two(v) { return (v < 10 ? '0' : '') + v; }
       function clamp(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
@@ -217,21 +249,33 @@
       function place() {
         queued = false;
         var h = frames[0].offsetHeight || window.innerHeight;
-        var pos = (window.scrollY - frames[0].offsetTop) / h;          // 0 = first photograph, n = the last screen
+        var real = (window.scrollY - frames[0].offsetTop) / h;          // 0 = first photograph, n = the last screen
+        var resting = Math.abs(real - Math.round(real)) < 0.02;
+        var pos = real + (resting ? tease : 0);
+        var cur = Math.max(0, Math.min(n - 1, Math.round(real)));
+        for (var j = 0; j < n; j++) pins[j].classList.toggle('near', Math.abs(real - j) <= 1.6);   // only the current photograph and its neighbours exist
+
+        // How much of the next photograph may show: a sliver inside the empty band under the current one.
+        var below = h - (holds[cur].offsetTop + holds[cur].offsetHeight);
+        var peek = Math.max(0, Math.min(h * 0.034, below * 0.62));
+        root.style.setProperty('--peek', Math.round(peek) + 'px');
+
         for (var i = 0; i < n; i++) {
           var d = pos - i;                                             // < 0 still to come, > 0 already passed
           var pin = pins[i], hold = holds[i];
-          pin.classList.toggle('near', Math.abs(d) <= 1.6);            // only the current photograph and its neighbours exist
-          if (d <= -1 || d >= 1) { pin.style.visibility = 'hidden'; continue; }
+          if (d < -1.001 || d >= 1 || !pin.classList.contains('near')) { pin.style.visibility = 'hidden'; continue; }
           pin.style.visibility = 'visible';
           pin.style.zIndex = i + 1;
-          if (d < 0) {                                                 // arriving: rises from below, settling in size
-            var t = -d;
-            pin.style.transform = 'translate3d(0,' + (t * h * 0.82).toFixed(1) + 'px,0)';
-            hold.style.transform = calm ? '' : 'scale(' + (1 + t * 0.1).toFixed(4) + ')';
+          if (d < 0) {                                                 // arriving: rises from its waiting place, settling in size
+            var t = Math.min(1, -d);
+            var rest = h - hold.offsetTop - peek;                      // waiting place: top edge just above the bottom of the screen
+            pin.style.transform = 'translate3d(0,' + (t * rest).toFixed(1) + 'px,0)';
+            hold.style.transformOrigin = '50% 0';
+            hold.style.transform = calm ? '' : 'scale(' + (1 + 0.07 * Math.sin(Math.PI * t)).toFixed(4) + ')';   // swells on the way, true size at both ends
             hold.style.opacity = '';
           } else {                                                     // leaving: steps back and fades
             pin.style.transform = calm ? '' : 'translate3d(0,' + (-d * h * 0.06).toFixed(1) + 'px,0)';
+            hold.style.transformOrigin = '';
             hold.style.transform = calm ? '' : 'scale(' + (1 - d * 0.08).toFixed(4) + ')';
             hold.style.opacity = (1 - clamp(d * 1.15)).toFixed(3);
           }
@@ -249,24 +293,118 @@
             a.style.opacity = '1';
           }
         }
-        var shown = Math.min(n, Math.max(1, Math.round(pos) + 1));
-        count.textContent = two(shown) + ' / ' + two(n);
-        count.style.opacity = clamp(1 - (pos - (n - 1)) * 2).toFixed(2);
-        intro.style.opacity = clamp(1 - pos * 2.2).toFixed(2);
-        intro.style.visibility = pos > 0.5 ? 'hidden' : 'visible';
-        hint.style.opacity = pos > 0.08 ? '0' : '1';
+        count.textContent = two(cur + 1) + ' / ' + two(n);
+        count.style.opacity = rail.style.opacity = clamp(1 - (real - (n - 1)) * 2).toFixed(2);
+        rail.style.visibility = real > n - 0.5 ? 'hidden' : 'visible';
+        if (cur !== marked) {
+          marked = cur;
+          for (var m = 0; m < n; m++) ticks[m].setAttribute('aria-current', m === cur ? 'true' : 'false');
+        }
+        intro.style.opacity = clamp(1 - real * 2.2).toFixed(2);
+        intro.style.visibility = real > 0.5 ? 'hidden' : 'visible';
+        hint.style.opacity = real > 0.08 ? '0' : '1';
+        if (cur !== startAt) learned();
       }
       function queue() { if (!queued) { queued = true; requestAnimationFrame(place); } }
+
+      // Every way of moving ends in the same smooth glide to a whole photograph.
+      var moving = false, glideFrame = 0, target = -1;
+      function glide(to) {
+        cancelAnimationFrame(glideFrame);
+        var from = window.scrollY, dist = to - from;
+        if (Math.abs(dist) < 1) { moving = false; return; }
+        if (calm) { window.scrollTo(0, to); return; }
+        var took = Math.min(1250, 780 + Math.abs(dist) / window.innerHeight * 110), began = performance.now();
+        moving = true;
+        root.style.scrollSnapType = 'none';                             // the browser's own snapping would fight the glide
+        (function step(now) {
+          var x = Math.min(1, (now - began) / took);
+          window.scrollTo(0, from + dist * (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2));
+          place();                                                      // in the same frame, so nothing trails behind
+          if (x < 1) glideFrame = requestAnimationFrame(step);
+          else { root.style.scrollSnapType = ''; moving = false; target = -1; }
+        })(began);
+      }
+      function goTo(index) {
+        target = Math.max(0, Math.min(n, index));
+        glide(frames[0].offsetTop + target * frames[0].offsetHeight);
+      }
+      function go(step) {
+        var at = moving && target >= 0 ? target : Math.round((window.scrollY - frames[0].offsetTop) / frames[0].offsetHeight);
+        goTo(at + step);
+      }
+
+      // Mouse wheel and trackpad: one push moves one photograph, however small the push.
+      // A trackpad swipe sends a burst that swells, peaks, then fades for a second or more. Once a push
+      // has been used, the rest of its burst is ignored; a pause, or a clear rise out of the fading tail,
+      // is the next push. A push that arrives mid-glide simply extends the glide by one photograph.
+      var spent = false, lastWheel = 0, pushed = 0, peak = 0, fading = false, floor = 0;
+      window.addEventListener('wheel', function (e) {
+        if (e.ctrlKey) return;                                          // pinch to zoom
+        e.preventDefault();
+        // e.timeStamp is when the push happened, not when this code got round to it, so a busy moment
+        // on a slow device is never mistaken for a pause.
+        var now = e.timeStamp || performance.now(), dy = e.deltaY * (e.deltaMode === 1 ? 32 : 1), size = Math.abs(dy);
+        var pause = now - lastWheel > 180;
+        lastWheel = now;
+        if (spent && !pause) {
+          if (!fading) {                                                // still swelling, or just past the peak
+            if (size > peak) peak = size;
+            else if (size < peak * 0.6) { fading = true; floor = size; }
+            return;
+          }
+          if (size <= floor * 3 + 10) { floor = Math.min(floor, size); return; }   // the tail, fading out
+        }
+        if (spent) { spent = false; pushed = 0; }                       // a new push begins
+        pushed += dy;
+        if (Math.abs(pushed) >= 24) {
+          spent = true; peak = size; fading = false;
+          var dir = pushed > 0 ? 1 : -1; pushed = 0;
+          go(dir);
+        }
+      }, { passive: false });
+      window.addEventListener('touchstart', function () {               // a finger takes over from any glide in progress
+        if (moving) { cancelAnimationFrame(glideFrame); root.style.scrollSnapType = ''; moving = false; target = -1; }
+      }, { passive: true });
+      frames.forEach(function (f, i) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.setAttribute('aria-label', 'Photograph ' + (i + 1) + ' of ' + n);
+        b.addEventListener('click', function () { goTo(i); });
+        rail.appendChild(b); ticks.push(b);
+      });
+
+      // The preview nudge: until the visitor has moved to another photograph, the next one rises a little
+      // and settles back every few seconds, showing what scrolling will do. Then it never plays again.
+      var startAt = Math.max(0, Math.min(n - 1, Math.round((window.scrollY - frames[0].offsetTop) / (frames[0].offsetHeight || 1))));
+      var teaching = !calm, timer = 0, frame = 0;
+      try { if (sessionStorage.getItem('reel-learned')) teaching = false; } catch (e) {}
+      function learned() {
+        if (!teaching) return;
+        teaching = false; clearTimeout(timer); cancelAnimationFrame(frame); tease = 0;
+        try { sessionStorage.setItem('reel-learned', '1'); } catch (e) {}
+      }
+      function nudge() {
+        if (!teaching) return;
+        var real = (window.scrollY - frames[0].offsetTop) / frames[0].offsetHeight;
+        if (document.hidden || Math.abs(real - Math.round(real)) > 0.02 || Math.round(real) >= n - 1) { timer = setTimeout(nudge, 2500); return; }
+        var began = performance.now(), UP = 650, DOWN = 950;
+        (function step(now) {
+          if (!teaching) return;
+          var e = now - began;
+          if (e < UP) tease = 0.1 * (1 - Math.pow(1 - e / UP, 3));                               // up: quick, easing out
+          else { var x = Math.min(1, (e - UP) / DOWN); tease = 0.1 * (1 - (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2)); }   // back: slower
+          place();
+          if (e < UP + DOWN) frame = requestAnimationFrame(step);
+          else { tease = 0; place(); timer = setTimeout(nudge, 3400); }
+        })(began);
+      }
+
       window.addEventListener('scroll', queue, { passive: true });
       window.addEventListener('resize', queue);
+      frames.forEach(function (f) { f.querySelector('.shot').addEventListener('load', queue); });   // sizes are known only once loaded
       place();
-
-      // Move one photograph at a time with the keyboard or by clicking the photograph.
-      function go(step) {
-        var h = frames[0].offsetHeight;
-        var at = Math.round((window.scrollY - frames[0].offsetTop) / h);
-        window.scrollTo({ top: frames[0].offsetTop + Math.max(0, Math.min(n, at + step)) * h, behavior: calm ? 'auto' : 'smooth' });
-      }
+      timer = setTimeout(nudge, 1500);
       pins.forEach(function (pin) { pin.addEventListener('click', function () { go(1); }); });
       document.addEventListener('keydown', function (e) {
         if (e.target.closest && e.target.closest('button, a, input')) return;

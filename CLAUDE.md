@@ -36,7 +36,15 @@ Static site served by GitHub Pages from `main`. Plain HTML, CSS and JS: no build
   (never cropped), with the entire background taking on that photograph's colours from its `-a` copy.
   While a photograph is showing, the colours of the next one glow along the bottom of the background.
   Scrolling slides the next photograph up over the current one as its colours rise to fill the screen;
-  the pointer makes photo and backdrop lean slightly. Arrow keys, clicking, and swiping also move one photograph at a time.
+  the pointer makes photo and backdrop lean slightly.
+- **A first-time visitor must see at once how to move.** The page shows it rather than only saying it:
+  the top edge of the next photograph waits at the bottom of the screen; until the visitor has moved once
+  it rises a little and settles back every few seconds (a preview of the scroll, never a real scroll);
+  "Scroll for the next photograph" sits beside the title ("Swipe up" on touch screens); and a rail of
+  ticks on the right shows how many photographs there are and jumps to any of them.
+- **One push moves exactly one photograph**, always ending in the same smooth glide: one wheel notch
+  however small, one trackpad swipe (its fading tail is ignored), one arrow key, one click, one swipe.
+  Never rely on the browser's scroll snapping alone for the wheel: a single notch springs back.
 - To add a photo, paste the two pieces of markup the tool prints: an `<img>` into `.ambient` and a
   `<li class="frame">` into `.frames`, in the same order. Write a plain description as `alt`.
   Do not invent titles or places.
