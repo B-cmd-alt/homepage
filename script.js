@@ -658,7 +658,9 @@
 
   const init = () => {
     const canvas = document.getElementById('nn-canvas');
-    if (canvas) {
+    // style.css hides the canvas for readers who ask for reduced motion: skip the work too
+    const still = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (canvas && !still) {
       const system = new SparkSystem(canvas);
       system.start();
     }

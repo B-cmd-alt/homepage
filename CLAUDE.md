@@ -13,6 +13,16 @@ Static site served by GitHub Pages from `main`. Plain HTML, CSS and JS: no build
 - **Loading comes first**: no images or video where inline SVG and CSS will do, no extra font files,
   nothing fetched that the page does not need.
 - **Homepage**: Projects and Experience are the two main links. Everything else sits on the small line below them.
+- **Consistency**: every page is built from the same parts as the homepage. A new or changed page must have:
+  - the background layers with the animated `#nn-canvas` and `script.js`;
+  - `theme.js` in `<head>` (it adds the Light / Dark switch at the top right);
+  - a back link at the top left (`← bb.style`, or `← <parent page>` one level down);
+  - a title in bold Bodoni with the orange full stop, and an orange uppercase kicker above it;
+  - page links at the foot in the homepage link style (`nav.links`).
+  Links are underlined text in one of the homepage's two styles (`.links a` / `.cta a` for main links,
+  `.also a` / `.cta a.quiet` for quiet ones). No pill buttons, no filled buttons.
+  `projects/memory-evaluator.html` is a generated report: its site look lives in the marked
+  "site chrome" blocks in that file and has to be re-applied if the report is regenerated.
 
 ## Cooking (`cooking.html`, `cooking/`)
 
