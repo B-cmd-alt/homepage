@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+
+  <title data-en="Low-temperature steak | Cooking | BB.STYLE" data-zh="低温牛排 | 下厨 | BB.STYLE">Low-temperature steak | Cooking | BB.STYLE</title>
+  <meta name="title" content="Low-temperature steak | Cooking | BB.STYLE">
+  <meta name="description" content="Low-temperature steak, drawn step by step: 55°C (131°F) in a water bath, timed by the thickness of the cut.">
+  <meta name="author" content="Bihan Qian">
+  <meta name="robots" content="noindex, follow">
+  <link rel="canonical" href="https://bb.style/cooking/steak.html">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://bb.style/cooking/steak.html">
+  <meta property="og:title" content="Low-temperature steak | Cooking | BB.STYLE">
+  <meta property="og:description" content="A 55°C (131°F) steak timed by its thickness. Every step drawn.">
+  <meta property="og:site_name" content="BB.STYLE">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Low-temperature steak | Cooking | BB.STYLE">
+  <meta name="twitter:description" content="A 55°C (131°F) steak timed by its thickness. Every step drawn.">
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-0GNP7SNL8H"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-0GNP7SNL8H');
+  </script>
+  <script>
+    (function () {
+      var d = document.documentElement, l = null;
+      try { l = localStorage.getItem('lang'); } catch (e) {}
+      if (l !== 'zh' && l !== 'en') l = /^zh\b/i.test(navigator.language || '') ? 'zh' : 'en';
+      d.setAttribute('data-lang', l); d.lang = l === 'zh' ? 'zh-Hans' : 'en'; d.classList.add('js');
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="cooking.css">
+  <style>
+    /* Loops used only by this dish */
+    .a-drop1 { animation: drop1 6s ease-in infinite; }
+    .a-drop2 { animation: drop2 6s ease-in infinite; }
+    .a-drop3 { animation: drop3 6s ease-in infinite; }
+    @keyframes drop1 {
+      0% { transform: translateY(-78px); opacity: 0; } 4% { opacity: 1; }
+      16% { transform: translateY(0); } 19% { transform: translateY(-5px); } 22%, 92% { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(0); opacity: 0; }
+    }
+    @keyframes drop2 {
+      0%, 18% { transform: translateY(-78px); opacity: 0; } 22% { opacity: 1; }
+      34% { transform: translateY(0); } 37% { transform: translateY(-5px); } 40%, 92% { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(0); opacity: 0; }
+    }
+    @keyframes drop3 {
+      0%, 36% { transform: translateY(-78px); opacity: 0; } 40% { opacity: 1; }
+      52% { transform: translateY(0); } 55% { transform: translateY(-4px); } 58%, 92% { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(0); opacity: 0; }
+    }
+    .a-skin { animation: skin 5.5s ease-in-out infinite; }
+    @keyframes skin { 0%, 6% { transform: scale(1.09, 1.07); } 40%, 94% { transform: scale(1); } 100% { transform: scale(1.09, 1.07); } }
+    .a-cling { animation: cling 5.5s ease-in-out infinite; }
+    @keyframes cling { 0%, 22% { opacity: 0; } 42%, 94% { opacity: 1; } 100% { opacity: 0; } }
+    .a-air { opacity: 0; animation: air 5.5s ease-out infinite; }
+    @keyframes air {
+      0% { transform: translateY(8px); opacity: 0; } 6% { opacity: 1; }
+      20% { transform: translateY(-12px); opacity: 0; } 21% { transform: translateY(8px); opacity: 0; }
+      26% { opacity: 1; } 40% { transform: translateY(-12px); opacity: 0; } 100% { opacity: 0; }
+    }
+    .a-seal { stroke-dasharray: 152; animation: seal 5.5s ease-in-out infinite; }
+    @keyframes seal { 0%, 42% { stroke-dashoffset: 152; } 58%, 94% { stroke-dashoffset: 0; } 100% { stroke-dashoffset: 152; } }
+    @media (prefers-reduced-motion: reduce) { .a-air { opacity: 0; } }
+  </style>
+  <script src="cooking.js" defer></script>
+</head>
+<body>
+
+  <div class="bg-animation" aria-hidden="true">
+    <div class="bg-texture"></div>
+    <div class="bg-grid"></div>
+    <div class="bg-glow"></div>
+  </div>
+
+  <!-- Shared pieces for the step drawings -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <g id="i-steak">
+        <path class="ln pa" d="M-68 -4 C-72 -30 -46 -46 -14 -44 C16 -42 40 -50 60 -36 C80 -22 76 12 56 28 C34 46 -2 50 -34 42 C-56 36 -65 20 -68 -4 Z"/>
+        <path class="ln thin ac" d="M-58 -5 C-60 -24 -40 -35 -15 -34"/>
+        <path class="ln thin" opacity="0.45" d="M-22 -10 q10 -6 22 0 M8 16 q12 -5 22 2 M-38 14 q8 -4 16 0 M24 -16 q8 -3 14 2"/>
+      </g>
+      <g id="i-sprig">
+        <path class="ln thin" d="M0 0 L48 -20"/>
+        <path class="ln thin" d="M6 -2.5 l-1 -9 M6 -2.5 l7 5 M14 -6 l-1 -9 M14 -6 l7 5 M22 -9 l-1 -9 M22 -9 l7 5 M30 -12.5 l-1 -8 M30 -12.5 l7 4.5 M38 -16 l0 -7 M38 -16 l6 4 M48 -20 l5 -5"/>
+      </g>
+      <g id="i-spice">
+        <circle class="dot" cx="-40" cy="-12" r="1.5"/><circle class="salt" cx="-26" cy="4" r="1.7"/>
+        <circle class="dot" cx="-8" cy="-22" r="1.5"/><circle class="salt" cx="4" cy="-6" r="1.7"/>
+        <circle class="dot" cx="20" cy="6" r="1.5"/><circle class="salt" cx="34" cy="-20" r="1.7"/>
+        <circle class="dot" cx="44" cy="2" r="1.5"/><circle class="salt" cx="-12" cy="24" r="1.7"/>
+        <circle class="dot" cx="-44" cy="12" r="1.5"/><circle class="salt" cx="26" cy="26" r="1.7"/>
+        <circle class="dot" cx="6" cy="30" r="1.5"/><circle class="salt" cx="-30" cy="-26" r="1.7"/>
+        <circle class="salt" cx="48" cy="-12" r="1.7"/><circle class="dot" cx="-18" cy="8" r="1.5"/>
+      </g>
+      <g id="i-garlic">
+        <path class="ln pa" d="M0 -11 C8 -4 9 7 0 10 C-9 7 -8 -4 0 -11 Z"/>
+        <path class="ln thin" opacity="0.5" d="M0 -6 V5"/>
+      </g>
+      <g id="i-tub">
+        <path class="ln" d="M56 66 V182 Q56 192 66 192 H254 Q264 192 264 182 V66 M47 66 H56 M264 66 H273"/>
+      </g>
+      <g id="i-circ">
+        <rect class="ln pa" x="228" y="58" width="18" height="102" rx="8"/>
+        <rect class="ln pa" x="216" y="28" width="42" height="34" rx="8"/>
+        <path class="ln thin" d="M233 144 h8 M233 150 h8"/>
+      </g>
+      <g id="i-clock">
+        <circle class="ln pa" cx="72" cy="36" r="15"/>
+        <path class="ln thin" d="M72 24 v2.5 M72 45.5 v2.5 M60 36 h2.5 M81.5 36 h2.5 M72 36 L79 40"/>
+      </g>
+      <clipPath id="clip-tub"><path d="M57 60 H263 V182 Q263 191 254 191 H66 Q57 191 57 182 Z"/></clipPath>
+    </defs>
+  </svg>
+
+  <a href="../cooking.html" class="back-link">← <span lang="en">Cooking</span><span lang="zh">下厨</span></a>
+  <div class="lang-switch" role="group" aria-label="Language">
+    <button type="button" data-set-lang="en" aria-pressed="true">EN</button>
+    <button type="button" data-set-lang="zh" aria-pressed="false">中文</button>
+  </div>
+
+  <main class="page">
+    <div class="kicker"><span lang="en">Beef · Low-temperature cooker</span><span lang="zh">牛肉 · 低温慢煮</span></div>
+    <h1 class="dish-title"><span lang="en">Low-temperature steak<span class="accent">.</span></span><span lang="zh">低温牛排</span></h1>
+    <p class="tagline" lang="en">One temperature. The thickness decides the time.</p><p class="tagline" lang="zh">温度只有一个，时间看厚度。</p>
+
+    <div class="facts">
+        <div class="fact"><b lang="en">55°C</b><b lang="zh">55°C</b><span lang="en">131°F water bath</span><span lang="zh">131°F 水浴</span></div>
+        <div class="fact"><b lang="en">2.5–4.5 h</b><b lang="zh">2.5–4.5 小时</b><span lang="en">set by thickness</span><span lang="zh">按厚度定</span></div>
+        <div class="fact"><b lang="en">2–5 cm</b><b lang="zh">2–5 厘米</b><span lang="en">steak thickness</span><span lang="zh">牛排厚度</span></div>
+    </div>
+
+    <div class="block">
+      <h2 class="label"><span lang="en">You'll need</span><span lang="zh">材料</span></h2>
+      <ul class="need">
+        <li><span lang="en">Beef steak</span><span lang="zh">牛排</span></li>
+        <li><span lang="en">Salt</span><span lang="zh">盐</span></li>
+        <li><span lang="en">Black pepper</span><span lang="zh">黑胡椒</span></li>
+        <li><span lang="en">Rosemary, or any spice you like</span><span lang="zh">迷迭香，或任何你喜欢的香料</span></li>
+        <li><span lang="en">Thyme</span><span lang="zh">百里香</span></li>
+        <li><span lang="en">Peeled garlic</span><span lang="zh">去皮大蒜</span></li>
+        <li><span lang="en">Butter or oil</span><span lang="zh">黄油或油</span></li>
+        <li><span lang="en">Vacuum bag</span><span lang="zh">真空袋</span></li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h2 class="label"><span lang="en">Time by thickness</span><span lang="zh">厚度与时间</span></h2>
+      <ol class="thick">
+        <li>
+          <svg viewBox="0 0 120 66" aria-hidden="true">
+            <path class="guide" d="M8 58 H112"/>
+            <rect class="ln pa" x="36" y="42" width="70" height="16" rx="7"/>
+            <path class="ln thin ac" d="M22 42 V58 M17 42 h10 M17 58 h10"/>
+          </svg>
+          <span class="cm" lang="en">2 cm thick</span><span class="cm" lang="zh">厚 2 厘米</span><span class="hrs" lang="en">2.5 h</span><span class="hrs" lang="zh">2.5 小时</span>
+        </li>
+        <li>
+          <svg viewBox="0 0 120 66" aria-hidden="true">
+            <path class="guide" d="M8 58 H112"/>
+            <rect class="ln pa" x="36" y="34" width="70" height="24" rx="9"/>
+            <path class="ln thin ac" d="M22 34 V58 M17 34 h10 M17 58 h10"/>
+          </svg>
+          <span class="cm" lang="en">3 cm thick</span><span class="cm" lang="zh">厚 3 厘米</span><span class="hrs" lang="en">3 h</span><span class="hrs" lang="zh">3 小时</span>
+        </li>
+        <li>
+          <svg viewBox="0 0 120 66" aria-hidden="true">
+            <path class="guide" d="M8 58 H112"/>
+            <rect class="ln pa" x="36" y="26" width="70" height="32" rx="10"/>
+            <path class="ln thin ac" d="M22 26 V58 M17 26 h10 M17 58 h10"/>
+          </svg>
+          <span class="cm" lang="en">4 cm thick</span><span class="cm" lang="zh">厚 4 厘米</span><span class="hrs" lang="en">3.5 h</span><span class="hrs" lang="zh">3.5 小时</span>
+        </li>
+        <li>
+          <svg viewBox="0 0 120 66" aria-hidden="true">
+            <path class="guide" d="M8 58 H112"/>
+            <rect class="ln pa" x="36" y="18" width="70" height="40" rx="11"/>
+            <path class="ln thin ac" d="M22 18 V58 M17 18 h10 M17 58 h10"/>
+          </svg>
+          <span class="cm" lang="en">5 cm thick</span><span class="cm" lang="zh">厚 5 厘米</span><span class="hrs" lang="en">4.5 h</span><span class="hrs" lang="zh">4.5 小时</span>
+        </li>
+      </ol>
+    </div>
+
+    <div class="steps-head">
+      <h2 class="label"><span lang="en">Steps</span><span lang="zh">步骤</span></h2>
+      <button class="toggle" type="button" id="motion-toggle" aria-pressed="false">
+          <span class="when-playing"><span lang="en">Pause drawings</span><span lang="zh">暂停动画</span></span>
+          <span class="when-paused"><span lang="en">Play drawings</span><span lang="zh">播放动画</span></span>
+        </button>
+    </div>
+    <ol class="steps">
+
+        <li class="step">
+          <div class="fig">
+            <svg viewBox="0 0 320 220" role="img" aria-label="Salt and pepper being shaken over a raw steak, with a sprig of rosemary beside it." data-en="Salt and pepper being shaken over a raw steak, with a sprig of rosemary beside it." data-zh="盐和黑胡椒撒在生牛排上，旁边放着一枝迷迭香。">
+              <use href="#i-steak" transform="translate(150 140)"/>
+              <use href="#i-spice" transform="translate(150 140)"/>
+              <use href="#i-sprig" transform="translate(222 200) rotate(-8)"/>
+              <use href="#i-sprig" transform="translate(40 66) rotate(28) scale(0.8)"/>
+              <!-- shaker -->
+              <g transform="translate(240 50) rotate(-135)">
+                <g class="a a-shake">
+                  <rect class="ln pa" x="-13" y="-18" width="26" height="38" rx="7"/>
+                  <rect class="ln pa" x="-13" y="-28" width="26" height="12" rx="4"/>
+                  <circle class="dot" cx="-5" cy="-22" r="1.2"/><circle class="dot" cx="0" cy="-22" r="1.2"/><circle class="dot" cx="5" cy="-22" r="1.2"/>
+                </g>
+              </g>
+              <!-- falling grains -->
+              <circle class="dot a a-fall"  cx="216" cy="74" r="1.6" style="--dx:-34px;--dy:44px"/>
+              <circle class="salt a a-fall" cx="213" cy="72" r="1.8" style="--dx:-62px;--dy:52px;animation-delay:.25s"/>
+              <circle class="dot a a-fall"  cx="218" cy="77" r="1.6" style="--dx:-18px;--dy:54px;animation-delay:.5s"/>
+              <circle class="salt a a-fall" cx="214" cy="76" r="1.8" style="--dx:-86px;--dy:48px;animation-delay:.75s"/>
+              <circle class="dot a a-fall"  cx="216" cy="73" r="1.6" style="--dx:-48px;--dy:66px;animation-delay:1s"/>
+              <circle class="salt a a-fall" cx="212" cy="75" r="1.8" style="--dx:-104px;--dy:60px;animation-delay:1.25s"/>
+              <circle class="dot a a-fall"  cx="217" cy="75" r="1.6" style="--dx:-72px;--dy:74px;animation-delay:1.45s"/>
+            </svg>
+          </div>
+          <div class="step-body">
+            <div class="step-head"><span class="num">01</span><h3><span lang="en">Season</span><span lang="zh">调味</span></h3></div>
+            <p lang="en">Season the steak with <strong>salt and black pepper</strong>. Add rosemary, thyme, or any spice you like.</p><p lang="zh">给牛排撒上<strong>盐和黑胡椒</strong>，再加迷迭香、百里香，或任何你喜欢的香料。</p>
+          </div>
+        </li>
+
+        <li class="step">
+          <div class="fig">
+            <svg viewBox="0 0 320 220" role="img" aria-label="The seasoned steak in an open vacuum bag, with garlic cloves and a piece of butter dropping in." data-en="The seasoned steak in an open vacuum bag, with garlic cloves and a piece of butter dropping in." data-zh="调好味的牛排放在打开的真空袋里，蒜瓣和一块黄油正落进去。">
+              <path class="ln pa" d="M82 46 L78 188 Q78 198 88 198 H232 Q242 198 242 188 L238 46"/>
+              <path class="ln thin" d="M82 46 Q160 60 238 46 M82 46 Q160 34 238 46"/>
+              <use href="#i-steak" transform="translate(160 150) scale(0.86)"/>
+              <use href="#i-spice" transform="translate(160 150) scale(0.86)"/>
+              <use href="#i-sprig" transform="translate(150 176) rotate(-6) scale(0.9)"/>
+              <g class="a a-drop1"><use href="#i-garlic" transform="translate(120 101) rotate(-18)"/></g>
+              <g class="a a-drop2"><use href="#i-garlic" transform="translate(145 97) rotate(14)"/></g>
+              <g class="a a-drop3">
+                <path class="ln pa" d="M176 92 h28 v15 h-28 Z"/>
+                <path class="tint" d="M176 92 h28 v15 h-28 Z"/>
+                <path class="ln thin" d="M176 92 l6 -6 h28 l-6 6 M204 107 l6 -6 v-15"/>
+              </g>
+            </svg>
+          </div>
+          <div class="step-body">
+            <div class="step-head"><span class="num">02</span><h3><span lang="en">Bag</span><span lang="zh">装袋</span></h3></div>
+            <p lang="en">Put the steak in a vacuum bag. Add <strong>peeled garlic</strong> and a piece of <strong>butter</strong>, or a little oil.</p><p lang="zh">把牛排放进真空袋，加入<strong>去皮大蒜</strong>和一块<strong>黄油</strong>，或少许油。</p>
+          </div>
+        </li>
+
+        <li class="step">
+          <div class="fig">
+            <svg viewBox="0 0 320 220" role="img" aria-label="Air leaving the bag as it tightens around the steak, then a seal line closing the top." data-en="Air leaving the bag as it tightens around the steak, then a seal line closing the top." data-zh="空气被抽出，袋子贴紧牛排，然后袋口封上。">
+              <!-- air leaving -->
+              <g class="a a-air"><path class="ln thin ac" d="M124 30 v-14 m-4.5 4.5 l4.5 -4.5 l4.5 4.5 M160 30 v-14 m-4.5 4.5 l4.5 -4.5 l4.5 4.5 M196 30 v-14 m-4.5 4.5 l4.5 -4.5 l4.5 4.5"/></g>
+              <!-- bag skin -->
+              <g class="a a-skin"><path class="ln pa" d="M84 42 H236 L242 188 Q242 198 232 198 H88 Q78 198 78 188 Z"/></g>
+              <path class="ln thin" opacity="0.5" d="M86 50 H234 M86 62 H234"/>
+              <path class="ln ac a-seal a" d="M84 56 H236"/>
+              <!-- contents -->
+              <use href="#i-steak" transform="translate(160 150) scale(0.86)"/>
+              <use href="#i-spice" transform="translate(160 150) scale(0.86)"/>
+              <use href="#i-sprig" transform="translate(150 176) rotate(-6) scale(0.9)"/>
+              <use href="#i-garlic" transform="translate(120 101) rotate(-18)"/>
+              <use href="#i-garlic" transform="translate(145 97) rotate(14)"/>
+              <path class="ln pa" d="M176 92 h28 v15 h-28 Z"/><path class="tint" d="M176 92 h28 v15 h-28 Z"/>
+              <path class="ln thin" d="M176 92 l6 -6 h28 l-6 6 M204 107 l6 -6 v-15"/>
+              <!-- bag clinging to the food -->
+              <g class="a a-cling">
+                <path class="guide" d="M92 150 C86 116 104 84 140 82 C168 80 214 70 226 96 C240 122 240 160 222 180 C196 204 128 202 104 186 C96 180 93 166 92 150 Z"/>
+              </g>
+            </svg>
+          </div>
+          <div class="step-body">
+            <div class="step-head"><span class="num">03</span><h3><span lang="en">Seal</span><span lang="zh">封口</span></h3></div>
+            <p lang="en">Vacuum the air out and <strong>seal the bag</strong> tight around the steak.</p><p lang="zh">抽出空气，把袋子紧贴牛排<strong>封好</strong>。</p>
+          </div>
+        </li>
+
+        <li class="step">
+          <div class="fig">
+            <svg viewBox="0 0 320 220" role="img" aria-label="The sealed bag resting in a water bath held at 55 degrees Celsius, 131 Fahrenheit, with a clock running." data-en="The sealed bag resting in a water bath held at 55 degrees Celsius, 131 Fahrenheit, with a clock running." data-zh="封好的袋子泡在 55 摄氏度（131 华氏度）的水浴里，时钟在走。">
+              <use href="#i-clock"/>
+              <path class="ln thin ac a a-hand" style="transform-origin:72px 36px" d="M72 36 V26"/>
+              <text class="big" x="96" y="34" lang="en">2.5–4.5 h</text><text class="big" x="96" y="34" lang="zh">2.5–4.5 小时</text>
+              <text x="96" y="50">55°C · 131°F</text>
+              <g clip-path="url(#clip-tub)">
+                <g class="a a-wave">
+                  <path class="water" d="M4 98 q13 -5 26 0 t26 0 t26 0 t26 0 t26 0 t26 0 t26 0 t26 0 t26 0 t26 0 t26 0 t26 0 V200 H4 Z"/>
+                  <path class="ln thin" opacity="0.55" d="M4 98 q13 -5 26 0 t26 0 t26 0 t26 0 t26 0 t26 0 t26 0 t26 0 t26 0 t26 0 t26 0 t26 0"/>
+                </g>
+              </g>
+              <g class="a a-bob">
+                <rect class="ln thin pa" x="78" y="120" width="130" height="54" rx="12"/>
+                <path class="guide" d="M196 126 V168"/>
+                <rect class="ln pa" x="92" y="133" width="92" height="28" rx="13"/>
+                <path class="ln thin ac" d="M106 139.5 H170"/>
+              </g>
+              <use href="#i-circ"/>
+              <text class="disp a a-glow" x="237" y="50">55°</text>
+              <circle class="ln thin a a-rise" cx="222" cy="166" r="2.6" style="--dx:-8px"/>
+              <circle class="ln thin a a-rise" cx="218" cy="160" r="1.8" style="--dx:-16px;animation-delay:.6s"/>
+              <circle class="ln thin a a-rise" cx="224" cy="170" r="3.2" style="--dx:-4px;animation-delay:1.2s"/>
+              <circle class="ln thin a a-rise" cx="220" cy="164" r="2" style="--dx:-22px;animation-delay:1.8s"/>
+              <use href="#i-tub"/>
+            </svg>
+          </div>
+          <div class="step-body">
+            <div class="step-head"><span class="num">04</span><h3><span lang="en">Cook</span><span lang="zh">水浴</span></h3></div>
+            <p lang="en">Lower the bag into <strong>55°C (131°F)</strong> water. Leave it for the time that matches the thickness.</p><p lang="zh">把袋子放入 <strong>55°C（131°F）</strong>的水中，按厚度对应的时间煮。</p>
+          </div>
+        </li>
+
+    </ol>
+
+    <nav class="links nav-foot">
+      <a href="../cooking.html"><span lang="en">All dishes</span><span lang="zh">全部菜谱</span></a>
+      <a href="../index.html"><span lang="en">Home</span><span lang="zh">首页</span></a>
+    </nav>
+  </main>
+
+</body>
+</html>

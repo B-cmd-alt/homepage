@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+
+  <title data-en="Mala dry pot | Cooking | BB.STYLE" data-zh="麻辣干锅 | 下厨 | BB.STYLE">Mala dry pot | Cooking | BB.STYLE</title>
+  <meta name="title" content="Mala dry pot | Cooking | BB.STYLE">
+  <meta name="description" content="Mala dry pot with adjustable heat, drawn step by step: fry the aromatics, add doubanjiang, blanch, then stir-fry on high and cover for 5 minutes.">
+  <meta name="author" content="Bihan Qian">
+  <meta name="robots" content="noindex, follow">
+  <link rel="canonical" href="https://bb.style/cooking/mala-dry-pot.html">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://bb.style/cooking/mala-dry-pot.html">
+  <meta property="og:title" content="Mala dry pot | Cooking | BB.STYLE">
+  <meta property="og:description" content="Mala dry pot, as hot as you like. Every step drawn.">
+  <meta property="og:site_name" content="BB.STYLE">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Mala dry pot | Cooking | BB.STYLE">
+  <meta name="twitter:description" content="Mala dry pot, as hot as you like. Every step drawn.">
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-0GNP7SNL8H"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-0GNP7SNL8H');
+  </script>
+  <script>
+    (function () {
+      var d = document.documentElement, l = null;
+      try { l = localStorage.getItem('lang'); } catch (e) {}
+      if (l !== 'zh' && l !== 'en') l = /^zh\b/i.test(navigator.language || '') ? 'zh' : 'en';
+      d.setAttribute('data-lang', l); d.lang = l === 'zh' ? 'zh-Hans' : 'en'; d.classList.add('js');
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="cooking.css">
+  <style>
+    /* Loops used only by this dish */
+    .a-pop { animation: pop 6s ease-out infinite backwards; }
+    @keyframes pop {
+      0% { opacity: 0; transform: scale(0.7); } 5% { opacity: 1; transform: scale(1.08); }
+      9%, 90% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(1); }
+    }
+    .a-stream { stroke-dasharray: 40; animation: stream 2.4s linear infinite; }
+    @keyframes stream { 0% { stroke-dashoffset: 40; } 30%, 70% { stroke-dashoffset: 0; } 100% { stroke-dashoffset: -40; } }
+    .a-chop { transform-origin: 0% 50%; animation: chop 0.42s ease-in infinite alternate; }
+    @keyframes chop { from { transform: translateY(0) rotate(-3deg); } to { transform: translateY(20px) rotate(0deg); } }
+    .a-toss { animation: toss 1.15s infinite; }
+    @keyframes toss {
+      0%, 100% { transform: translateY(0) rotate(0deg); animation-timing-function: ease-out; }
+      50% { transform: translateY(var(--h, -50px)) rotate(var(--r, 160deg)); animation-timing-function: ease-in; }
+    }
+  </style>
+  <script src="cooking.js" defer></script>
+</head>
+<body>
+
+  <div class="bg-animation" aria-hidden="true">
+    <div class="bg-texture"></div>
+    <div class="bg-grid"></div>
+    <div class="bg-glow"></div>
+  </div>
+
+  <!-- Shared pieces for the step drawings -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <g id="i-flame">
+        <path class="ln thin ac tint" d="M0 0 C-7 -4 -6 -11 0 -18 C6 -11 7 -4 0 0 Z"/>
+      </g>
+      <g id="i-garlic">
+        <path class="ln pa" d="M0 -11 C8 -4 9 7 0 10 C-9 7 -8 -4 0 -11 Z"/>
+        <path class="ln thin" opacity="0.5" d="M0 -6 V5"/>
+      </g>
+      <g id="i-chili">
+        <path class="ln thin ac pa" d="M-15 3 C-8 -8 8 -9 15 -3 C9 5 -3 8 -15 3 Z"/>
+        <path class="tint" d="M-15 3 C-8 -8 8 -9 15 -3 C9 5 -3 8 -15 3 Z"/>
+        <path class="ln thin" d="M15 -3 q4 -1 6 -5"/>
+      </g>
+      <g id="i-wok">
+        <path class="ln pa" d="M58 112 C66 180 254 180 262 112 Z"/>
+        <path class="ln" d="M50 112 H270"/>
+        <path class="ln" style="stroke-width:4" d="M270 111 L304 99"/>
+        <path class="ln" d="M52 112 q-11 -1 -11 6 q0 6 13 3"/>
+      </g>
+      <g id="i-pot">
+        <path class="ln pa" d="M66 104 V164 Q66 176 78 176 H242 Q254 176 254 164 V104 Z"/>
+        <path class="water" d="M67.5 122 H252.5 V164 Q252.5 174.5 242 174.5 H78 Q67.5 174.5 67.5 164 Z"/>
+        <path class="guide" d="M70 122 H250"/>
+        <path class="ln" d="M58 104 H262 M66 113 H53 V123 H66 M254 113 H267 V123 H254"/>
+      </g>
+      <g id="i-clock">
+        <circle class="ln pa" cx="72" cy="36" r="15"/>
+        <path class="ln thin" d="M72 24 v2.5 M72 45.5 v2.5 M60 36 h2.5 M81.5 36 h2.5 M72 36 L79 40"/>
+      </g>
+    </defs>
+  </svg>
+
+  <a href="../cooking.html" class="back-link">← <span lang="en">Cooking</span><span lang="zh">下厨</span></a>
+  <div class="lang-switch" role="group" aria-label="Language">
+    <button type="button" data-set-lang="en" aria-pressed="true">EN</button>
+    <button type="button" data-set-lang="zh" aria-pressed="false">中文</button>
+  </div>
+
+  <main class="page">
+    <div class="kicker"><span lang="en">Beef and vegetables · Wok</span><span lang="zh">牛肉蔬菜 · 炒锅</span></div>
+    <h1 class="dish-title"><span lang="en">Mala dry pot<span class="accent">.</span> <small lang="en">(heat to taste)</small></span><span lang="zh">麻辣干锅<small lang="zh">（辣度可调）</small></span></h1>
+    <p class="tagline" lang="en">Numbing and spicy, as hot as you like: use fewer dried chilies for a milder pot.</p><p class="tagline" lang="zh">又麻又辣，辣度自己定：怕辣就少放干辣椒。</p>
+
+    <div class="facts">
+        <div class="fact"><b lang="en">4 × 4</b><b lang="zh">4 × 4</b><span lang="en">dried chilies, four kinds</span><span lang="zh">四种干辣椒，各 4 个</span></div>
+        <div class="fact"><b lang="en">30</b><b lang="zh">30 颗</b><span lang="en">Sichuan peppercorns</span><span lang="zh">花椒</span></div>
+        <div class="fact"><b lang="en">5 + 5 min</b><b lang="zh">5 + 5 分钟</b><span lang="en">fry the base, then lid on</span><span lang="zh">炒香底料，最后加盖焖</span></div>
+    </div>
+
+    <div class="block">
+      <h2 class="label"><span lang="en">You'll need</span><span lang="zh">材料</span></h2>
+      <p class="sub" lang="en">Aromatics</p><p class="sub" lang="zh">香料</p>
+      <ul class="need">
+        <li><span lang="en">Dried chilies, 4 kinds × 4 each</span><span lang="zh">干辣椒 4 种，各 4 个</span></li>
+        <li><span lang="en">Sichuan peppercorns × 30</span><span lang="zh">花椒 30 颗</span></li>
+        <li><span lang="en">Ginger, 6 slices</span><span lang="zh">姜片 6 片</span></li>
+        <li><span lang="en">Garlic, 2 cloves</span><span lang="zh">大蒜 2 瓣</span></li>
+        <li><span lang="en">Half an onion</span><span lang="zh">洋葱半个</span></li>
+        <li><span lang="en">3 scallions, cut in sections</span><span lang="zh">葱 3 根，切段</span></li>
+      </ul>
+      <p class="sub" lang="en">Oil and sauce</p><p class="sub" lang="zh">油和酱</p>
+      <ul class="need">
+        <li><span lang="en">Herb butter, 15 g</span><span lang="zh">香草黄油 15 克</span></li>
+        <li><span lang="en">Olive oil</span><span lang="zh">橄榄油</span></li>
+        <li><span lang="en">Doubanjiang</span><span lang="zh">豆瓣酱</span></li>
+        <li><span lang="en">Soy sauce</span><span lang="zh">酱油</span></li>
+      </ul>
+      <p class="sub" lang="en">Into the pot</p><p class="sub" lang="zh">主料</p>
+      <ul class="need">
+        <li><span lang="en">Beef</span><span lang="zh">牛肉</span></li>
+        <li><span lang="en">Carrot</span><span lang="zh">胡萝卜</span></li>
+        <li><span lang="en">Celery</span><span lang="zh">芹菜</span></li>
+        <li><span lang="en">Mushrooms</span><span lang="zh">蘑菇</span></li>
+        <li><span lang="en">Cauliflower</span><span lang="zh">花菜</span></li>
+        <li><span lang="en">Quail eggs</span><span lang="zh">鹌鹑蛋</span></li>
+        <li><span lang="en">Rice cakes</span><span lang="zh">年糕</span></li>
+      </ul>
+      <p class="sub" lang="en">For the beef</p><p class="sub" lang="zh">腌牛肉</p>
+      <ul class="need">
+        <li><span lang="en">Baking soda</span><span lang="zh">小苏打</span></li>
+        <li><span lang="en">Cornstarch</span><span lang="zh">玉米淀粉</span></li>
+        <li><span lang="en">Salt</span><span lang="zh">盐</span></li>
+        <li><span lang="en">Cooking wine</span><span lang="zh">酒</span></li>
+        <li><span lang="en">Soy sauce</span><span lang="zh">酱油</span></li>
+      </ul>
+    </div>
+
+    <div class="steps-head">
+      <h2 class="label"><span lang="en">Steps</span><span lang="zh">步骤</span></h2>
+      <button class="toggle" type="button" id="motion-toggle" aria-pressed="false">
+          <span class="when-playing"><span lang="en">Pause drawings</span><span lang="zh">暂停动画</span></span>
+          <span class="when-paused"><span lang="en">Play drawings</span><span lang="zh">播放动画</span></span>
+        </button>
+    </div>
+    <ol class="steps">
+
+        <li class="step">
+          <div class="fig">
+            <svg viewBox="0 0 320 220" role="img" aria-label="Six aromatics laid out with their counts: dried chilies, Sichuan peppercorns, ginger, garlic, onion and scallions." data-en="Six aromatics laid out with their counts: dried chilies, Sichuan peppercorns, ginger, garlic, onion and scallions." data-zh="六样香料和各自的数量：干辣椒、花椒、姜片、大蒜、洋葱和葱。">
+              <g class="a a-pop">
+                <use href="#i-chili" transform="translate(50 52) rotate(-22)"/>
+                <use href="#i-chili" transform="translate(74 56) rotate(16)"/>
+                <use href="#i-chili" transform="translate(52 70) rotate(10)"/>
+                <use href="#i-chili" transform="translate(76 76) rotate(-12)"/>
+              </g>
+              <text class="mid" x="62" y="104" lang="en">chilies 4 × 4</text><text class="mid" x="62" y="104" lang="zh">干辣椒 4 × 4</text>
+              <g class="a a-pop" style="animation-delay:.45s">
+                <path class="ln thin ac tint" d="M151 54 a3.2 3.2 0 1 0 .1 0 M161 49 a3.2 3.2 0 1 0 .1 0 M171 55 a3.2 3.2 0 1 0 .1 0 M146 64 a3.2 3.2 0 1 0 .1 0 M157 61 a3.2 3.2 0 1 0 .1 0 M167 65 a3.2 3.2 0 1 0 .1 0 M176 68 a3.2 3.2 0 1 0 .1 0 M152 72 a3.2 3.2 0 1 0 .1 0 M163 75 a3.2 3.2 0 1 0 .1 0"/>
+              </g>
+              <text class="mid" x="160" y="104" lang="en">peppercorns 30</text><text class="mid" x="160" y="104" lang="zh">花椒 30 颗</text>
+              <g class="a a-pop" style="animation-delay:.9s">
+                <path class="ln thin pa" d="M236 58 C236 50 245 48 252 50 C260 52 261 60 257 65 C251 69 238 67 236 58 Z"/>
+                <path class="ln thin pa" d="M252 62 C253 54 262 53 269 56 C277 59 276 68 271 72 C264 75 252 71 252 62 Z"/>
+                <path class="ln thin pa" d="M240 72 C240 65 249 63 256 65 C263 67 264 75 260 79 C254 83 241 80 240 72 Z"/>
+                <path class="ln thin" opacity="0.45" d="M244 57 h8 M260 63 h8 M246 72 h9"/>
+              </g>
+              <text class="mid" x="258" y="104" lang="en">ginger 6</text><text class="mid" x="258" y="104" lang="zh">姜片 6 片</text>
+              <g class="a a-pop" style="animation-delay:1.35s">
+                <use href="#i-garlic" transform="translate(52 150) rotate(-14) scale(1.25)"/>
+                <use href="#i-garlic" transform="translate(73 152) rotate(12) scale(1.25)"/>
+              </g>
+              <text class="mid" x="62" y="190" lang="en">garlic 2</text><text class="mid" x="62" y="190" lang="zh">大蒜 2 瓣</text>
+              <g class="a a-pop" style="animation-delay:1.8s">
+                <path class="ln pa" d="M138 162 A22 22 0 0 1 182 162 Z"/>
+                <path class="ln thin" d="M145 162 A15 15 0 0 1 175 162 M152 162 A8 8 0 0 1 168 162 M160 140 v-5"/>
+              </g>
+              <text class="mid" x="160" y="190" lang="en">onion ½</text><text class="mid" x="160" y="190" lang="zh">洋葱半个</text>
+              <g class="a a-pop" style="animation-delay:2.25s">
+                <rect class="ln thin pa" x="236" y="138" width="26" height="8" rx="4" transform="rotate(-14 249 142)"/>
+                <rect class="ln thin pa" x="254" y="148" width="26" height="8" rx="4" transform="rotate(9 267 152)"/>
+                <rect class="ln thin pa" x="238" y="158" width="26" height="8" rx="4" transform="rotate(-5 251 162)"/>
+              </g>
+              <text class="mid" x="258" y="190" lang="en">scallions 3</text><text class="mid" x="258" y="190" lang="zh">葱 3 根</text>
+            </svg>
+          </div>
+          <div class="step-body">
+            <div class="step-head"><span class="num">01</span><h3><span lang="en">Prep the aromatics</span><span lang="zh">备香料</span></h3></div>
+            <p lang="en">Get out <strong>4 kinds of dried chili, 4 of each</strong>, and 30 Sichuan peppercorns. Slice 6 pieces of ginger, peel 2 garlic cloves, cut half an onion, and cut 3 scallions into sections.</p><p lang="zh">准备 <strong>4 种干辣椒，每种 4 个</strong>，花椒 30 颗。姜切 6 片，大蒜 2 瓣，洋葱半个，葱 3 根切段。</p>
+          </div>
+        </li>
+
+        <li class="step">
+          <div class="fig">
+            <svg viewBox="0 0 320 220" role="img" aria-label="Butter, oil, chilies, garlic and peppercorns dropping into a wok over a medium flame." data-en="Butter, oil, chilies, garlic and peppercorns dropping into a wok over a medium flame." data-zh="黄油、橄榄油、辣椒、大蒜和花椒落进中火上的炒锅。">
+              <text class="big" x="40" y="30" lang="en">5 min</text><text class="big" x="40" y="30" lang="zh">5 分钟</text>
+              <text x="40" y="46" lang="en">medium heat</text><text x="40" y="46" lang="zh">中火</text>
+              <g class="a a-steam"><path class="ln thin" opacity="0.6" d="M222 104 q-6 -8 0 -16 t0 -16"/></g>
+              <g class="a a-steam" style="animation-delay:1.5s"><path class="ln thin" opacity="0.6" d="M244 104 q-6 -8 0 -16 t0 -16"/></g>
+              <g class="a a-fall" style="--dy:52px;animation-duration:2.6s"><g transform="translate(150 56)"><path class="ln pa" d="M-13 -7 h26 v14 h-26 Z"/><path class="tint" d="M-13 -7 h26 v14 h-26 Z"/>
+                <path class="ln thin" d="M-13 -7 l6 -6 h26 l-6 6 M13 7 l6 -6 v-14"/></g></g>
+              <path class="ln thin ac tint a a-fall" style="--dy:60px;animation-duration:2.6s;animation-delay:.3s" d="M118 44 q-5 8 0 11 q5 -3 0 -11 Z"/>
+              <path class="ln thin ac tint a a-fall" style="--dy:60px;animation-duration:2.6s;animation-delay:.6s" d="M106 50 q-5 8 0 11 q5 -3 0 -11 Z"/>
+              <g class="a a-fall" style="--dx:-6px;--dy:54px;animation-duration:2.6s;animation-delay:1.1s"><use href="#i-chili" transform="translate(190 52) rotate(-20)"/></g>
+              <g class="a a-fall" style="--dx:4px;--dy:50px;animation-duration:2.6s;animation-delay:1.4s"><use href="#i-chili" transform="translate(126 62) rotate(24)"/></g>
+              <g class="a a-fall" style="--dy:52px;animation-duration:2.6s;animation-delay:1.7s"><use href="#i-garlic" transform="translate(176 66) rotate(18)"/></g>
+              <path class="ln thin ac tint a a-fall" style="--dy:56px;animation-duration:2.6s;animation-delay:1.9s" d="M158 44 a3 3 0 1 0 .1 0 M168 50 a3 3 0 1 0 .1 0 M150 52 a3 3 0 1 0 .1 0"/>
+              <use href="#i-wok"/>
+              <path class="ln" d="M100 198 H220"/>
+              <g class="a a-flick"><use href="#i-flame" x="130" y="196"/></g>
+              <g class="a a-flick" style="animation-delay:.25s"><use href="#i-flame" x="160" y="196"/></g>
+              <g class="a a-flick" style="animation-delay:.1s"><use href="#i-flame" x="190" y="196"/></g>
+            </svg>
+          </div>
+          <div class="step-body">
+            <div class="step-head"><span class="num">02</span><h3><span lang="en">Fry the base</span><span lang="zh">炒香</span></h3></div>
+            <p lang="en"><strong>Medium heat.</strong> Put in 15 g herb butter and some olive oil, then everything from step 1. Fry for <strong>5 minutes</strong>.</p><p lang="zh"><strong>中火。</strong>放入 15 克香草黄油和橄榄油，再把第 1 步的香料全部放进去，炒 <strong>5 分钟</strong>。</p>
+          </div>
+        </li>
+
+        <li class="step">
+          <div class="fig">
+            <svg viewBox="0 0 320 220" role="img" aria-label="A spoon of doubanjiang and a stream of soy sauce going into the wok." data-en="A spoon of doubanjiang and a stream of soy sauce going into the wok." data-zh="一勺豆瓣酱和一股酱油加进炒锅。">
+              <text class="mid" x="106" y="27" lang="en">doubanjiang</text><text class="mid" x="106" y="27" lang="zh">豆瓣酱</text>
+              <text class="mid" x="226" y="27" lang="en">soy sauce</text><text class="mid" x="226" y="27" lang="zh">酱油</text>
+              <!-- spoon of paste -->
+              <path class="ln" d="M66 44 L100 70"/>
+              <ellipse class="ln pa" cx="110" cy="76" rx="14" ry="8" transform="rotate(32 110 76)"/>
+              <path class="ln thin ac tint" d="M101 72 q8 -9 18 2 q-4 8 -12 6 q-6 -2 -6 -8 Z"/>
+              <path class="ln thin ac tint a a-fall" style="--dy:26px;animation-duration:1.9s" d="M112 84 q-7 9 0 13 q7 -4 0 -13 Z"/>
+              <!-- soy bottle -->
+              <g transform="translate(232 58) rotate(-132)">
+                <rect class="ln pa" x="-10" y="-12" width="20" height="32" rx="5"/>
+                <rect class="ln pa" x="-4.5" y="-25" width="9" height="14" rx="2"/>
+                <path class="ln thin" d="M-10 0 H10"/>
+              </g>
+              <path class="ln a a-stream" style="stroke-width:2.6" d="M212 78 V111"/>
+              <g class="a a-steam"><path class="ln thin" opacity="0.6" d="M160 104 q-6 -8 0 -16 t0 -16"/></g>
+              <use href="#i-wok"/>
+              <path class="ln" d="M100 198 H220"/>
+              <g class="a a-flick"><use href="#i-flame" x="130" y="196"/></g>
+              <g class="a a-flick" style="animation-delay:.25s"><use href="#i-flame" x="160" y="196"/></g>
+              <g class="a a-flick" style="animation-delay:.1s"><use href="#i-flame" x="190" y="196"/></g>
+            </svg>
+          </div>
+          <div class="step-body">
+            <div class="step-head"><span class="num">03</span><h3><span lang="en">Add the sauces</span><span lang="zh">加酱</span></h3></div>
+            <p lang="en">After the 5 minutes, add <strong>doubanjiang and soy sauce</strong>.</p><p lang="zh">5 分钟后，放<strong>豆瓣酱和酱油</strong>。</p>
+          </div>
+        </li>
+
+        <li class="step">
+          <div class="fig">
+            <svg viewBox="0 0 320 220" role="img" aria-label="A knife chopping a carrot on a board, with celery and a mushroom beside it." data-en="A knife chopping a carrot on a board, with celery and a mushroom beside it." data-zh="菜刀在案板上切胡萝卜，旁边是芹菜和蘑菇。">
+              <rect class="ln pa" x="30" y="164" width="260" height="14" rx="5"/>
+              <!-- celery -->
+              <rect class="ln pa" x="42" y="148" width="40" height="16" rx="6"/>
+              <path class="ln thin" opacity="0.5" d="M47 152 H77 M47 156 H77 M47 160 H77"/>
+              <path class="ln thin" d="M42 156 q-7 -9 -9 -2 q-5 0 -2 5 q-2 6 6 2"/>
+              <!-- carrot -->
+              <path class="ln ac pa" d="M92 150 C92 140 100 137 108 138 L152 144 C158 145 158 156 152 157 L108 163 C100 164 92 161 92 150 Z"/>
+              <path class="tint" d="M92 150 C92 140 100 137 108 138 L152 144 C158 145 158 156 152 157 L108 163 C100 164 92 161 92 150 Z"/>
+              <path class="ln thin" d="M92 150 l-9 -8 M92 150 l-11 0 M92 150 l-9 8"/>
+              <!-- slices -->
+              <ellipse class="ln thin ac pa" cx="226" cy="154" rx="5" ry="9"/><ellipse class="tint" cx="226" cy="154" rx="5" ry="9"/>
+              <ellipse class="ln thin ac pa" cx="238" cy="155" rx="5" ry="9"/><ellipse class="tint" cx="238" cy="155" rx="5" ry="9"/>
+              <!-- mushroom -->
+              <path class="ln pa" d="M252 150 A15 13 0 0 1 282 150 Z"/>
+              <rect class="ln pa" x="262" y="150" width="10" height="14" rx="3"/>
+              <!-- knife -->
+              <g class="a a-chop">
+                <path class="ln pa" d="M150 104 H214 Q218 124 206 130 H150 Z"/>
+                <rect class="ln" x="108" y="106" width="42" height="12" rx="5" style="fill:var(--text)"/>
+              </g>
+            </svg>
+          </div>
+          <div class="step-body">
+            <div class="step-head"><span class="num">04</span><h3><span lang="en">Cut the vegetables</span><span lang="zh">切菜</span></h3></div>
+            <p lang="en">Cut the <strong>carrot, celery and mushrooms</strong>.</p><p lang="zh">切<strong>胡萝卜、芹菜、蘑菇</strong>。</p>
+          </div>
+        </li>
+
+        <li class="step">
+          <div class="fig">
+            <svg viewBox="0 0 320 220" role="img" aria-label="Sliced beef in a bowl, with powders sprinkled and sauce poured over it." data-en="Sliced beef in a bowl, with powders sprinkled and sauce poured over it." data-zh="碗里的牛肉片，正撒上粉料、淋上调料。">
+              <!-- pinch of powders -->
+              <path class="ln" d="M70 34 L104 58"/>
+              <ellipse class="ln pa" cx="113" cy="63" rx="12" ry="7" transform="rotate(30 113 63)"/>
+              <circle class="salt a a-fall" cx="120" cy="72" r="1.8" style="--dx:8px;--dy:30px;animation-duration:1.3s"/>
+              <circle class="dot a a-fall" cx="124" cy="70" r="1.5" style="--dx:14px;--dy:32px;animation-duration:1.3s;animation-delay:.25s"/>
+              <circle class="salt a a-fall" cx="118" cy="74" r="1.8" style="--dx:4px;--dy:28px;animation-duration:1.3s;animation-delay:.5s"/>
+              <circle class="dot a a-fall" cx="122" cy="74" r="1.5" style="--dx:18px;--dy:30px;animation-duration:1.3s;animation-delay:.75s"/>
+              <circle class="salt a a-fall" cx="126" cy="72" r="1.8" style="--dx:10px;--dy:32px;animation-duration:1.3s;animation-delay:1s"/>
+              <!-- bottle -->
+              <g transform="translate(232 50) rotate(-132)">
+                <rect class="ln pa" x="-10" y="-12" width="20" height="32" rx="5"/>
+                <rect class="ln pa" x="-4.5" y="-25" width="9" height="14" rx="2"/>
+                <path class="ln thin" d="M-10 0 H10"/>
+              </g>
+              <path class="ln a a-stream" style="stroke-width:2.6" d="M212 70 V100"/>
+              <!-- beef in the bowl -->
+              <g transform="rotate(-9 140 112)"><rect class="ln pa" x="116" y="106" width="48" height="13" rx="6.5"/><path class="ln thin ac" d="M126 112.5 H154"/></g>
+              <g transform="rotate(7 182 112)"><rect class="ln pa" x="158" y="106" width="48" height="13" rx="6.5"/><path class="ln thin ac" d="M168 112.5 H196"/></g>
+              <g transform="rotate(-3 160 100)"><rect class="ln pa" x="136" y="94" width="48" height="13" rx="6.5"/><path class="ln thin ac" d="M146 100.5 H174"/></g>
+              <path class="ln pa" d="M92 122 C96 176 224 176 228 122 Z"/>
+              <path class="ln" d="M84 122 H236 M140 165 H180"/>
+              <text class="mid" x="160" y="186" lang="en">baking soda · cornstarch · salt</text>
+              <text class="mid" x="160" y="200" lang="en">cooking wine · soy sauce</text>
+              <text class="mid" x="160" y="192" lang="zh">小苏打 · 玉米淀粉 · 盐 · 酒 · 酱油</text>
+            </svg>
+          </div>
+          <div class="step-body">
+            <div class="step-head"><span class="num">05</span><h3><span lang="en">Marinate the beef</span><span lang="zh">腌牛肉</span></h3></div>
+            <p lang="en">Mix the beef with <strong>baking soda, cornstarch, salt, cooking wine and soy sauce</strong>.</p><p lang="zh">牛肉加<strong>小苏打、玉米淀粉、盐、酒、酱油</strong>拌匀。</p>
+          </div>
+        </li>
+
+        <li class="step">
+          <div class="fig">
+            <svg viewBox="0 0 320 220" role="img" aria-label="Cauliflower, quail eggs, rice cakes and beef in a pot of boiling water." data-en="Cauliflower, quail eggs, rice cakes and beef in a pot of boiling water." data-zh="花菜、鹌鹑蛋、年糕和牛肉在一锅沸水里。">
+              <text x="40" y="30" lang="en">boiling water</text><text x="40" y="30" lang="zh">沸水</text>
+              <g class="a a-steam"><path class="ln thin" opacity="0.6" d="M122 96 q-6 -8 0 -16 t0 -16"/></g>
+              <g class="a a-steam" style="animation-delay:1s"><path class="ln thin" opacity="0.6" d="M160 96 q-6 -8 0 -16 t0 -16"/></g>
+              <g class="a a-steam" style="animation-delay:2s"><path class="ln thin" opacity="0.6" d="M198 96 q-6 -8 0 -16 t0 -16"/></g>
+              <use href="#i-pot"/>
+              <!-- cauliflower -->
+              <g class="a a-bob">
+                <path class="ln thin pa" d="M90 152 a7 7 0 0 1 3 -12 a8 8 0 0 1 14 -3 a7 7 0 0 1 9 12 a5 5 0 0 1 -4 5 h-18 a5 5 0 0 1 -4 -2 Z"/>
+                <path class="ln thin pa" d="M98 154 l1 9 h8 l1 -9"/>
+              </g>
+              <!-- quail eggs -->
+              <g class="a a-bob" style="animation-delay:-1.2s">
+                <ellipse class="ln thin pa" cx="136" cy="150" rx="6.5" ry="8.5"/><circle class="dot" cx="134" cy="148" r="1"/><circle class="dot" cx="138" cy="153" r="1"/>
+                <ellipse class="ln thin pa" cx="152" cy="156" rx="6.5" ry="8.5" transform="rotate(20 152 156)"/><circle class="dot" cx="151" cy="153" r="1"/><circle class="dot" cx="154" cy="159" r="1"/>
+              </g>
+              <!-- rice cakes -->
+              <g class="a a-bob" style="animation-delay:-2s">
+                <rect class="ln thin pa" x="172" y="142" width="28" height="10" rx="5" transform="rotate(-12 186 147)"/>
+                <rect class="ln thin pa" x="180" y="156" width="28" height="10" rx="5" transform="rotate(8 194 161)"/>
+              </g>
+              <!-- beef -->
+              <g class="a a-bob" style="animation-delay:-.6s">
+                <rect class="ln thin pa" x="214" y="146" width="30" height="11" rx="5.5" transform="rotate(-6 229 151)"/>
+                <path class="ln thin ac" d="M221 152 L238 150.4"/>
+              </g>
+              <circle class="ln thin a a-rise" cx="120" cy="168" r="2.2" style="--dx:-3px;--dy:-42px;animation-duration:1.8s"/>
+              <circle class="ln thin a a-rise" cx="168" cy="170" r="2.8" style="--dx:3px;--dy:-44px;animation-duration:1.8s;animation-delay:.5s"/>
+              <circle class="ln thin a a-rise" cx="208" cy="168" r="2" style="--dx:-2px;--dy:-42px;animation-duration:1.8s;animation-delay:1s"/>
+              <circle class="ln thin a a-rise" cx="88" cy="170" r="2.4" style="--dx:2px;--dy:-44px;animation-duration:1.8s;animation-delay:1.4s"/>
+              <path class="ln" d="M84 198 H236"/>
+              <g class="a a-flick"><use href="#i-flame" x="100" y="196"/></g>
+              <g class="a a-flick" style="animation-delay:.2s"><use href="#i-flame" x="130" y="196"/></g>
+              <g class="a a-flick" style="animation-delay:.45s"><use href="#i-flame" x="160" y="196"/></g>
+              <g class="a a-flick" style="animation-delay:.1s"><use href="#i-flame" x="190" y="196"/></g>
+              <g class="a a-flick" style="animation-delay:.35s"><use href="#i-flame" x="220" y="196"/></g>
+            </svg>
+          </div>
+          <div class="step-body">
+            <div class="step-head"><span class="num">06</span><h3><span lang="en">Blanch</span><span lang="zh">过水</span></h3></div>
+            <p lang="en">Blanch the <strong>cauliflower, quail eggs, rice cakes and beef</strong> in boiling water.</p><p lang="zh"><strong>花菜、鹌鹑蛋、年糕和牛肉</strong>过水。</p>
+          </div>
+        </li>
+
+        <li class="step">
+          <div class="fig">
+            <svg viewBox="0 0 320 220" role="img" aria-label="Vegetables, eggs, rice cakes and beef tossed in the wok over a high flame." data-en="Vegetables, eggs, rice cakes and beef tossed in the wok over a high flame." data-zh="大火上，蔬菜、鹌鹑蛋、年糕和牛肉在炒锅里翻炒。">
+              <text class="big" x="40" y="30" lang="en">high heat</text><text class="big" x="40" y="30" lang="zh">大火</text>
+              <g class="a a-toss" style="--h:-52px;--r:200deg"><ellipse class="ln thin ac pa" cx="104" cy="104" rx="8" ry="8"/><ellipse class="tint" cx="104" cy="104" rx="8" ry="8"/></g>
+              <g class="a a-toss" style="--h:-66px;--r:-160deg;animation-delay:.15s"><path class="ln thin pa" d="M122 108 A11 9 0 0 1 144 108 Z"/><rect class="ln thin pa" x="129.5" y="108" width="7" height="8" rx="2"/></g>
+              <g class="a a-toss" style="--h:-44px;--r:140deg;animation-delay:.3s"><rect class="ln thin pa" x="148" y="98" width="20" height="10" rx="4"/><path class="ln thin" opacity="0.5" d="M152 103 H164"/></g>
+              <g class="a a-toss" style="--h:-72px;--r:-220deg;animation-delay:.45s"><ellipse class="ln thin pa" cx="182" cy="102" rx="6.5" ry="8.5"/><circle class="dot" cx="180" cy="100" r="1"/><circle class="dot" cx="184" cy="105" r="1"/></g>
+              <g class="a a-toss" style="--h:-50px;--r:180deg;animation-delay:.2s"><rect class="ln thin pa" x="192" y="98" width="28" height="10" rx="5"/></g>
+              <g class="a a-toss" style="--h:-60px;--r:-150deg;animation-delay:.55s"><ellipse class="ln thin ac pa" cx="228" cy="104" rx="7" ry="7"/><ellipse class="tint" cx="228" cy="104" rx="7" ry="7"/></g>
+              <g class="a a-toss" style="--h:-40px;--r:120deg;animation-delay:.38s"><rect class="ln thin pa" x="78" y="100" width="24" height="10" rx="5"/><path class="ln thin ac" d="M83 105 H97"/></g>
+              <use href="#i-wok"/>
+              <path class="ln" d="M92 198 H228"/>
+              <g class="a a-flick"><use href="#i-flame" transform="translate(112 196) scale(1.45)"/></g>
+              <g class="a a-flick" style="animation-delay:.2s"><use href="#i-flame" transform="translate(136 196) scale(1.6)"/></g>
+              <g class="a a-flick" style="animation-delay:.45s"><use href="#i-flame" transform="translate(160 196) scale(1.7)"/></g>
+              <g class="a a-flick" style="animation-delay:.1s"><use href="#i-flame" transform="translate(184 196) scale(1.6)"/></g>
+              <g class="a a-flick" style="animation-delay:.35s"><use href="#i-flame" transform="translate(208 196) scale(1.45)"/></g>
+            </svg>
+          </div>
+          <div class="step-body">
+            <div class="step-head"><span class="num">07</span><h3><span lang="en">Stir-fry on high</span><span lang="zh">大火翻炒</span></h3></div>
+            <p lang="en">Turn the wok up to <strong>high heat</strong>. Add the carrot, celery and mushrooms, then everything you blanched.</p><p lang="zh">把油锅的火<strong>调大</strong>，加入胡萝卜、芹菜、蘑菇，再加入所有过水的东西。</p>
+          </div>
+        </li>
+
+        <li class="step">
+          <div class="fig">
+            <svg viewBox="0 0 320 220" role="img" aria-label="The wok covered with a lid over the flame while a clock runs for five minutes." data-en="The wok covered with a lid over the flame while a clock runs for five minutes." data-zh="炒锅盖着盖子在火上，时钟走 5 分钟。">
+              <use href="#i-clock"/>
+              <path class="ln thin ac a a-hand" style="transform-origin:72px 36px" d="M72 36 V26"/>
+              <text class="big" x="96" y="34" lang="en">5 min</text><text class="big" x="96" y="34" lang="zh">5 分钟</text>
+              <text x="96" y="50" lang="en">lid on</text><text x="96" y="50" lang="zh">盖上盖子</text>
+              <g class="a a-steam"><path class="ln thin" opacity="0.6" d="M62 104 q-6 -8 0 -16 t0 -16"/></g>
+              <g class="a a-steam" style="animation-delay:1.5s"><path class="ln thin" opacity="0.6" d="M258 104 q-6 -8 0 -16 t0 -16"/></g>
+              <path class="ln pa" d="M72 110 C84 66 236 66 248 110 Z"/>
+              <rect class="ln pa" x="149" y="66" width="22" height="12" rx="5"/>
+              <use href="#i-wok"/>
+              <path class="ln" d="M92 198 H228"/>
+              <g class="a a-flick"><use href="#i-flame" transform="translate(112 196) scale(1.45)"/></g>
+              <g class="a a-flick" style="animation-delay:.2s"><use href="#i-flame" transform="translate(136 196) scale(1.6)"/></g>
+              <g class="a a-flick" style="animation-delay:.45s"><use href="#i-flame" transform="translate(160 196) scale(1.7)"/></g>
+              <g class="a a-flick" style="animation-delay:.1s"><use href="#i-flame" transform="translate(184 196) scale(1.6)"/></g>
+              <g class="a a-flick" style="animation-delay:.35s"><use href="#i-flame" transform="translate(208 196) scale(1.45)"/></g>
+            </svg>
+          </div>
+          <div class="step-body">
+            <div class="step-head"><span class="num">08</span><h3><span lang="en">Cover</span><span lang="zh">加盖焖</span></h3></div>
+            <p lang="en">Put the lid on and let it cook for <strong>5 minutes</strong>.</p><p lang="zh">盖上盖子焖 <strong>5 分钟</strong>。</p>
+          </div>
+        </li>
+
+    </ol>
+
+    <nav class="links nav-foot">
+      <a href="../cooking.html"><span lang="en">All dishes</span><span lang="zh">全部菜谱</span></a>
+      <a href="../index.html"><span lang="en">Home</span><span lang="zh">首页</span></a>
+    </nav>
+  </main>
+
+</body>
+</html>
