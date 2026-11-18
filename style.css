@@ -431,6 +431,11 @@ a:focus-visible {
 
 .society-tally {
   margin-top: 0.45rem;
+  color: var(--text);
+}
+
+.society-short {
+  display: none;
 }
 
 .society-backdrop {
@@ -513,8 +518,13 @@ a:focus-visible {
   }
 
   .society-panel table,
-  .society-head span {
+  .society-head span,
+  .society-more {
     display: none;
+  }
+
+  .society-short {
+    display: inline;
   }
 
   .society-head {

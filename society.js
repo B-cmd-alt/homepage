@@ -373,7 +373,8 @@
         <tr><td>light is fine</td><td><i data-cell="4"></i></td><td><i data-cell="5"></i></td></tr>
         <tr><td>light is low</td><td><i data-cell="6"></i></td><td><i data-cell="7"></i></td></tr>
       </table>
-      <div class="society-tally"></div>`;
+      <div class="society-tally"></div>
+      <div class="society-more"></div>`;
     document.body.appendChild(panel);
 
     const backdrop = document.createElement('div');
@@ -406,6 +407,8 @@
 
     const cells = Array.from(panel.querySelectorAll('[data-cell]'));
     const tally = panel.querySelector('.society-tally');
+    const more = panel.querySelector('.society-more');
+    const baseline = window.LIGHT_START && window.LIGHT_START.withoutLearning;
     let clock = 0;
     panel.update = (world, lifetime) => {
       if (++clock % 20 !== 1) return;                 // a few times a second is plenty
@@ -413,7 +416,14 @@
       const share = [1 - b.approachCompany, b.approachCompany, 1 - b.approachAlone, b.approachAlone,
         1 - b.giveFine, b.giveFine, 1 - b.giveLow, b.giveLow];
       cells.forEach((cell, k) => { cell.style.opacity = (0.1 + 0.9 * share[k]).toFixed(2); });
-      tally.textContent = `${b.alive} alight · average life ${Math.round(lifetime)} s`;
+      // The learning rate shown is each point's own step size: 1 for a first experience, then alpha
+      const cfg = world.cfg;
+      let rate = 0;
+      for (const p of world.points) for (let k = 0; k < 8; k++) rate += p.n[k] ? Math.max(cfg.alpha, 1 / p.n[k]) : 1;
+      rate /= Math.max(1, world.points.length * 8);
+      tally.innerHTML = `${b.alive} alight · average life ${Math.round(lifetime)} s<span class="society-short"> · α ${cfg.alpha}</span>`;
+      more.innerHTML = (baseline ? `without learning ${baseline} s<br>` : '')
+        + `learning rate α ${cfg.alpha} · now ${rate.toFixed(2)}<br>discount γ ${cfg.gamma} · explore ε ${cfg.explore}`;
     };
     return panel;
   }

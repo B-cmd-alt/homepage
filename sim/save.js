@@ -14,9 +14,12 @@ const w = new World({ seed: SEED });
 for (let i = 0; i < HOURS * 3600 / DT; i++) w.step(DT);
 
 const b = w.beliefs();
+// The average life of a society that chooses at random, from the held-out comparison (sim/run.js)
+const report = JSON.parse(fs.readFileSync(path.join(__dirname, 'report.json'), 'utf8'));
 const out = {
   note: `Saved by sim/save.js: seed ${SEED}, ${HOURS} simulated hours, reward '${w.cfg.reward}'.`,
   lifetime: Math.round(w.lifeSum / w.deaths),
+  withoutLearning: Math.round(report.variants['baseline: random choices'].lifetimeMean),
   points: w.save(),
 };
 fs.writeFileSync(path.join(__dirname, '..', 'start.js'),
