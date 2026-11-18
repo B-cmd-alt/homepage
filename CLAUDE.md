@@ -24,6 +24,15 @@ Static site served by GitHub Pages from `main`. Plain HTML, CSS and JS: no build
   `projects/memory-evaluator.html` is a generated report: its site look lives in the marked
   "site chrome" blocks in that file and has to be re-applied if the report is regenerated.
 
+## Background (`script.js`)
+
+- The sparks learn one thing: to drift or to approach the nearest spark, when in company and when alone.
+  All sparks share one table of four numbers (Q-learning); the reward is the change in a spark's own energy.
+  The table starts empty on every page load. Who gives energy to whom is fixed, not learned.
+- Never describe more learning than the file does. After changing how sparks move, fade or choose,
+  run `node tools/check-sparks.js`: it runs `script.js` headless and compares what is learned with fixed rules.
+  Quote its numbers as they are.
+
 ## Photography (`photography.html`, `photography/`)
 
 - **Only web-size, watermarked copies are ever committed.** This repository is public: never add an original

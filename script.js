@@ -1,6 +1,16 @@
 /**
  * Neural Spark Network (Optimized)
  *
+ * What is fixed and what is learned:
+ * - Fixed: a spark's polarity (who gives energy to whom) comes from a small network with random
+ *   weights, read once when the spark appears. That network is never trained.
+ * - Fixed: a spark fades several times faster with nobody in reach than in company.
+ * - Learned: one choice, to drift or to approach the nearest spark, in two situations, in company
+ *   or alone. All sparks share one table of four numbers, q[situation][choice]. Once a second a
+ *   spark judges its last choice by how its own energy changed since (the reward) and updates that
+ *   number (Q-learning). The table starts empty on every page load.
+ * - `node tools/check-sparks.js` runs this file headless and compares what is learned with fixed rules.
+ *
  * Performance-focused implementation:
  * - Spatial hash grid for O(N) neighbor queries
  * - Delta-time based updates
@@ -25,7 +35,8 @@
     interactionRadius: 110,
     transferRatePerSec: 0.6,
     colorRatePerSec: 1.0,
-    energyDecayPerSec: 0.018,
+    energyDecayPerSec: 0.018,        // fading with another spark in reach
+    energyDecayAlonePerSec: 0.12,    // fading with nobody in reach
     energyFloor: 0.15,
 
     // Visuals - balanced visibility
@@ -55,6 +66,15 @@
     lifetimeMin: 6000,
     lifetimeMax: 12000,
     spawnRatePerSec: 5,
+
+    // Learning (see the header)
+    sightRadius: 220,        // px: how far a spark looks for another
+    thinkEverySec: 1,        // seconds a choice is kept before it is judged
+    approachStrength: 40,    // steering toward the nearest spark
+    keepApart: 28,           // px: an approaching spark does not push closer than this
+    learnRate: 0.05,
+    discount: 0.9,
+    exploreChance: 0.08,     // share of choices made at random, so both keep being tried
   };
 
   // Base colors (sRGB) - warm and visible but not overpowering
@@ -101,7 +121,7 @@
   }
 
   // ============================================
-  // Minimal Neural Network
+  // Minimal Neural Network (random weights, never trained: it only spreads polarity over the page)
   // ============================================
 
   class TinyNN {
@@ -263,6 +283,13 @@
 
       // Visual state
       this.ringAlpha = 0;
+
+      // What it sees (set every frame by the system) and what it is doing about it
+      this.inCompany = false;     // another spark within the interaction radius
+      this.nearest = null;        // the nearest spark in sight, if any
+      this.approaching = false;   // the current choice: drift (false) or approach (true)
+      this.thinkIn = Math.random() * CONFIG.thinkEverySec;
+      this.pending = null;        // the choice waiting to be judged
     }
 
     update(dt, time) {
@@ -275,6 +302,17 @@
 
       this.vx += noiseX * dt;
       this.vy += noiseY * dt;
+
+      // Approach: steer toward the nearest spark in sight
+      const target = this.nearest;
+      if (this.approaching && target) {
+        const dx = target.x - this.x, dy = target.y - this.y;
+        const dist = Math.hypot(dx, dy);
+        if (dist > CONFIG.keepApart) {
+          this.vx += (dx / dist) * CONFIG.approachStrength * dt;
+          this.vy += (dy / dist) * CONFIG.approachStrength * dt;
+        }
+      }
 
       // Damping
       this.vx *= Math.pow(CONFIG.damping, dt * 60);
@@ -298,7 +336,8 @@
       if (this.y > this.h) this.y -= this.h;
 
       // Energy decay
-      this.energy *= Math.pow(1 - CONFIG.energyDecayPerSec, dt);
+      const decay = this.inCompany ? CONFIG.energyDecayPerSec : CONFIG.energyDecayAlonePerSec;
+      this.energy *= Math.pow(1 - decay, dt);
       this.energy = Math.max(CONFIG.energyFloor * 0.5, this.energy);
 
       // Fade ring alpha
@@ -350,6 +389,9 @@
       this.flowParticles = [];
       this.connections = new Map(); // Track connection strength for smooth fade
       this.nn = new TinyNN();
+      // What the sparks have learned, shared by all of them: q[situation][choice]
+      // situation: 0 in company, 1 alone. choice: 0 drift, 1 approach.
+      this.q = [[0, 0], [0, 0]];
       this.grid = null;
       this.lastTime = performance.now();
       this.spawnAccumulator = 0;
@@ -376,7 +418,7 @@
       this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
       // Rebuild spatial grid
-      this.grid = new SpatialGrid(CONFIG.interactionRadius, this.width, this.height);
+      this.grid = new SpatialGrid(CONFIG.sightRadius, this.width, this.height);
 
       // Recalculate spark count based on new screen area
       const baseArea = 1920 * 1080;
@@ -406,6 +448,9 @@
       this.grid.clear();
       for (const spark of this.sparks) {
         this.grid.insert(spark);
+        spark.inCompany = false;
+        spark.nearest = null;
+        spark.nearestDist = CONFIG.sightRadius;
       }
 
       let interactions = 0;
@@ -426,7 +471,13 @@
           const dy = other.y - spark.y;
           const dist = Math.hypot(dx, dy);
 
+          // What each of the two sees
+          if (dist < spark.nearestDist) { spark.nearestDist = dist; spark.nearest = other; }
+          if (dist < other.nearestDist) { other.nearestDist = dist; other.nearest = spark; }
+
           if (dist < CONFIG.interactionRadius && dist > 0) {
+            spark.inCompany = true;
+            other.inCompany = true;
             interactions++;
             activeConnections.add(connKey);
 
@@ -494,6 +545,40 @@
       }
     }
 
+    // Every `thinkEverySec` a spark judges its last choice by how its own energy changed since,
+    // writes that into the shared table (Q-learning), then chooses again.
+    think(dt) {
+      for (const spark of this.sparks) {
+        spark.thinkIn -= dt;
+        if (spark.thinkIn > 0) continue;
+        spark.thinkIn += CONFIG.thinkEverySec;
+
+        const situation = spark.inCompany ? 0 : 1;
+        const last = spark.pending;
+        if (last) this.learn(last.situation, last.choice, spark.energy - last.energy, situation);
+
+        if (!spark.nearest) {            // nobody in sight: nothing to choose
+          spark.approaching = false;
+          spark.pending = null;
+          continue;
+        }
+        const choice = this.choose(situation);
+        spark.approaching = choice === 1;
+        spark.pending = { situation, choice, energy: spark.energy };
+      }
+    }
+
+    choose(situation) {
+      const [drift, approach] = this.q[situation];
+      if (Math.random() < CONFIG.exploreChance || drift === approach) return Math.random() < 0.5 ? 0 : 1;
+      return approach > drift ? 1 : 0;
+    }
+
+    learn(situation, choice, reward, nextSituation) {
+      const best = Math.max(this.q[nextSituation][0], this.q[nextSituation][1]);
+      this.q[situation][choice] += CONFIG.learnRate * (reward + CONFIG.discount * best - this.q[situation][choice]);
+    }
+
     update(time) {
       const dt = Math.min((time - this.lastTime) / 1000, 0.1); // Cap dt to prevent jumps
       this.lastTime = time;
@@ -522,6 +607,9 @@
 
       // Process interactions
       this.processInteractions(dt);
+
+      // Choose and learn
+      this.think(dt);
 
       // Update flow particles
       this.flowParticles = this.flowParticles.filter(p => p.update(dt));
@@ -663,6 +751,7 @@
     if (canvas && !still) {
       const system = new SparkSystem(canvas);
       system.start();
+      window.__sparks = system;      // for a look from the console, and for tools/check-sparks.js
     }
   };
 
