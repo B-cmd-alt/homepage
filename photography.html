@@ -59,6 +59,12 @@
       transition: translate 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
     }
     .ambient img:first-child { opacity: 1; }
+    /* The next photograph's colours wait along the bottom edge, then rise as it arrives.
+       --edge is how far up they are solid; above that they fade out over 60% of the screen. */
+    .reel-on .ambient img {
+      -webkit-mask-image: linear-gradient(to top, #000 var(--edge, 100%), transparent calc(var(--edge, 100%) + 60%));
+      mask-image: linear-gradient(to top, #000 var(--edge, 100%), transparent calc(var(--edge, 100%) + 60%));
+    }
     .ambient::after { content: ''; position: absolute; inset: 0; background: var(--bg); opacity: 0.56; }
 
     /* Title, over the first photograph */
@@ -230,7 +236,19 @@
             hold.style.opacity = (1 - clamp(d * 1.15)).toFixed(3);
           }
         }
-        for (var k = 0; k < ambient.length; k++) ambient[k].style.opacity = clamp(1 - Math.abs(pos - k)).toFixed(3);
+        for (var k = 0; k < ambient.length; k++) {
+          var a = ambient[k], dk = pos - k;
+          if (dk >= 1 || dk < -1.001) {                                 // long gone, or not the next one yet
+            a.style.opacity = '0';
+          } else if (dk >= 0) {                                        // this photograph's colours fill the screen
+            a.style.setProperty('--edge', '100%');
+            a.style.opacity = k === n - 1 ? (1 - dk).toFixed(3) : '1';  // the last one fades out into the closing screen
+          } else {                                                     // the next photograph: a glow along the bottom that rises
+            var rise = 1 + dk;
+            a.style.setProperty('--edge', (10 + rise * 90).toFixed(1) + '%');   // at rest: solid over the bottom tenth
+            a.style.opacity = '1';
+          }
+        }
         var shown = Math.min(n, Math.max(1, Math.round(pos) + 1));
         count.textContent = two(shown) + ' / ' + two(n);
         count.style.opacity = clamp(1 - (pos - (n - 1)) * 2).toFixed(2);

@@ -34,8 +34,9 @@ Static site served by GitHub Pages from `main`. Plain HTML, CSS and JS: no build
   centre from `tools/watermark.png` and carrying author and copyright, and `NN-a.webp` (96 px, colours only).
 - The page is a full-screen reel, made to impress at first sight: one photograph per screen, shown whole
   (never cropped), with the entire background taking on that photograph's colours from its `-a` copy.
-  Scrolling slides the next photograph up over the current one; the pointer makes photo and backdrop lean
-  slightly. Arrow keys, clicking, and swiping also move one photograph at a time.
+  While a photograph is showing, the colours of the next one glow along the bottom of the background.
+  Scrolling slides the next photograph up over the current one as its colours rise to fill the screen;
+  the pointer makes photo and backdrop lean slightly. Arrow keys, clicking, and swiping also move one photograph at a time.
 - To add a photo, paste the two pieces of markup the tool prints: an `<img>` into `.ambient` and a
   `<li class="frame">` into `.frames`, in the same order. Write a plain description as `alt`.
   Do not invent titles or places.
