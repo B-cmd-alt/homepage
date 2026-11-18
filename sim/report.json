@@ -34,46 +34,30 @@
     "explore": 0.06,
     "copyNoise": 0.01,
     "copyTrust": 12,
-    "reward": "near",
+    "copyFar": true,
+    "reward": "life",
     "learn": true,
     "copy": true,
     "policy": null,
     "seed": 1
   },
   "variants": {
-    "learning + copying, reward: own light": {
-      "lifetimeMean": 71.68,
-      "lifetimeSd": 0.76,
+    "learning + copying (the page)": {
+      "lifetimeMean": 87.23,
+      "lifetimeSd": 1.13,
       "lifetimeBySeed": [
-        73.11,
-        71.67,
-        70.96,
-        71.52,
-        71.12
+        87.91,
+        88.11,
+        87.73,
+        85.02,
+        87.39
       ],
-      "alive": 26.4,
-      "generation": 9.67,
-      "approachInCompany": 0.61,
-      "approachAlone": 0.71,
-      "giveWhenFine": 0.19,
-      "giveWhenLow": 0.55
-    },
-    "learning + copying, reward: own + nearby light": {
-      "lifetimeMean": 79.82,
-      "lifetimeSd": 0.68,
-      "lifetimeBySeed": [
-        78.99,
-        79.03,
-        80.27,
-        80.19,
-        80.64
-      ],
-      "alive": 26.33,
-      "generation": 6.62,
-      "approachInCompany": 0.6,
-      "approachAlone": 0.68,
-      "giveWhenFine": 0.67,
-      "giveWhenLow": 0.73
+      "alive": 26.19,
+      "generation": 310.96,
+      "approachInCompany": 0.86,
+      "approachAlone": 0.92,
+      "giveWhenFine": 0.8,
+      "giveWhenLow": 0.56
     },
     "copying only (no learning in life)": {
       "lifetimeMean": 70.92,
@@ -86,28 +70,79 @@
         71.88
       ],
       "alive": 26.4,
-      "generation": 7.12,
+      "generation": 300.11,
       "approachInCompany": 0.5,
       "approachAlone": 0.5,
       "giveWhenFine": 0.5,
       "giveWhenLow": 0.5
     },
     "learning only (no copying)": {
-      "lifetimeMean": 75.54,
-      "lifetimeSd": 0.42,
+      "lifetimeMean": 75.26,
+      "lifetimeSd": 0.72,
       "lifetimeBySeed": [
-        76.08,
-        76.01,
-        75.26,
-        75.14,
-        75.2
+        75.1,
+        75.17,
+        75.55,
+        74.13,
+        76.35
       ],
-      "alive": 26.37,
+      "alive": 26.29,
       "generation": 0,
-      "approachInCompany": 0.52,
-      "approachAlone": 0.56,
-      "giveWhenFine": 0.63,
-      "giveWhenLow": 0.74
+      "approachInCompany": 0.53,
+      "approachAlone": 0.57,
+      "giveWhenFine": 0.74,
+      "giveWhenLow": 0.75
+    },
+    "born alone starts empty (earlier rule)": {
+      "lifetimeMean": 82.53,
+      "lifetimeSd": 0.8,
+      "lifetimeBySeed": [
+        81.15,
+        83.23,
+        82.44,
+        82.42,
+        83.39
+      ],
+      "alive": 26.38,
+      "generation": 8.18,
+      "approachInCompany": 0.6,
+      "approachAlone": 0.7,
+      "giveWhenFine": 0.85,
+      "giveWhenLow": 0.78
+    },
+    "reward: own + nearby light, pooled (earlier)": {
+      "lifetimeMean": 77.98,
+      "lifetimeSd": 1,
+      "lifetimeBySeed": [
+        77.71,
+        76.27,
+        78.38,
+        78.19,
+        79.33
+      ],
+      "alive": 26.48,
+      "generation": 322.98,
+      "approachInCompany": 0.9,
+      "approachAlone": 0.94,
+      "giveWhenFine": 0.16,
+      "giveWhenLow": 0.35
+    },
+    "reward: own light only": {
+      "lifetimeMean": 73.53,
+      "lifetimeSd": 0.48,
+      "lifetimeBySeed": [
+        73.57,
+        72.67,
+        73.51,
+        73.78,
+        74.13
+      ],
+      "alive": 26.76,
+      "generation": 320.55,
+      "approachInCompany": 0.85,
+      "approachAlone": 0.94,
+      "giveWhenFine": 0.03,
+      "giveWhenLow": 0.22
     },
     "baseline: random choices": {
       "lifetimeMean": 71.45,
