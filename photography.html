@@ -8,7 +8,7 @@
 
   <title>Photography | BB.STYLE</title>
   <meta name="title" content="Photography | BB.STYLE">
-  <meta name="description" content="BB's photography: capturing moments, chasing light, and finding beauty in the everyday.">
+  <meta name="description" content="Photographs by Bihan Qian (BB): mountains in cloud, temple roofs, and small things growing where they can.">
   <meta name="author" content="Bihan Qian">
   <meta name="robots" content="noindex, follow">
   <link rel="canonical" href="https://bb.style/photography.html">
@@ -35,22 +35,130 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <script>document.documentElement.classList.add('reel-on');</script>
   <style>
+    /* ───────── Photography: one photograph at a time, filling the screen ─────────
+       Behind each photograph the whole background takes on its colours (a tiny blurred copy).
+       Scrolling slides the next photograph up over the last. Without JavaScript the page is
+       simply one full-height photograph after another. */
+    html { scroll-snap-type: y mandatory; }
+    body { overflow-x: clip; }
     .back-link {
       position: fixed; top: 1.5rem; left: 1.5rem; z-index: 10;
       font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-muted);
       border-bottom: 1px solid transparent; transition: all 0.2s ease;
     }
     .back-link:hover { color: var(--accent); border-bottom-color: var(--accent); }
-    .page { position: relative; z-index: 1; max-width: 760px; margin: 0 auto; padding: 7rem 1.5rem 5rem; }
-    .page-title { font-family: var(--font-display); font-size: clamp(2.6rem, 8vw, 4.5rem); font-weight: 700; line-height: 1; margin-bottom: 1rem; }
-    .lede { font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.9; color: var(--text-muted); max-width: 600px; margin-bottom: 1.8rem; }
-    .soon {
-      display: inline-block; font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-muted);
-      padding: 0.4rem 0.85rem; border: 1px dashed var(--line-dash); border-radius: 100px;
+
+    /* Backdrop: the photograph's own colours, softened towards the page colour so text stays readable */
+    .ambient { position: absolute; inset: 0; overflow: hidden; }
+    .ambient img {
+      position: absolute; inset: -8%; width: 116%; height: 116%; object-fit: cover; opacity: 0;
+      filter: blur(42px) saturate(1.15);
+      translate: calc(var(--mx, 0) * 26px) calc(var(--my, 0) * 26px);
+      transition: translate 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
     }
-    .nav-foot { text-align: center; margin-top: 3rem; }
-    @media (max-width: 480px) { .page { padding-top: 5.5rem; } .back-link { top: 1rem; left: 1rem; } }
+    .ambient img:first-child { opacity: 1; }
+    /* The next photograph's colours wait along the bottom edge, then rise as it arrives.
+       --edge is how far up they are solid; above that they fade out over 60% of the screen. */
+    .reel-on .ambient img {
+      -webkit-mask-image: linear-gradient(to top, #000 var(--edge, 100%), transparent calc(var(--edge, 100%) + 60%));
+      mask-image: linear-gradient(to top, #000 var(--edge, 100%), transparent calc(var(--edge, 100%) + 60%));
+    }
+    .ambient::after { content: ''; position: absolute; inset: 0; background: var(--bg); opacity: 0.56; }
+
+    /* Title, over the first photograph */
+    /* It lives in the margin to the left of the photograph and is sized to fit there.
+       The photograph is (100vh - 7.5rem) tall and two-thirds as wide, so the margin is 50vw - 33.4vh + 2.5rem. */
+    .intro {
+      position: absolute; z-index: 3; top: 0; left: 0; height: 100vh; height: 100svh; width: calc(50vw - 33.4vh + 2.5rem);
+      padding: 0 1.5rem 11vh 4vw; display: flex; flex-direction: column; justify-content: flex-end; pointer-events: none;
+    }
+    .page-title { font-family: var(--font-display); font-size: clamp(1.9rem, calc((50vw - 33.4vh - 4vw) / 6.5), 4.5rem); font-weight: 700; line-height: 1; margin-bottom: 1rem; }
+    .lede { font-family: var(--font-mono); font-size: 0.9rem; line-height: 1.9; color: var(--text-muted); }
+
+    /* One screen per photograph */
+    .reel { position: relative; z-index: 1; }
+    .frames { list-style: none; }
+    .frame { height: 100vh; height: 100svh; scroll-snap-align: start; scroll-snap-stop: always; }
+    .pin { height: 100%; display: grid; place-items: center; }
+    .hold { display: block; }
+    .shot {
+      display: block; width: auto; height: auto; max-width: 92vw; max-height: calc(100vh - 7.5rem); max-height: calc(100svh - 7.5rem);
+      box-shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.45);
+      translate: calc(var(--mx, 0) * -14px) calc(var(--my, 0) * -14px);
+      transition: translate 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+    }
+
+    /* With JavaScript every photograph is pinned to the screen and moved by the scroll position */
+    .reel-on .intro { position: fixed; }
+    .reel-on .pin { position: fixed; inset: 0; height: auto; visibility: hidden; will-change: transform; cursor: pointer; }
+    .reel-on .pin:not(.near) { display: none; }   /* far photographs are not rendered, so not downloaded */
+    .reel-on .hold { will-change: transform, opacity; }
+    .reel-on .ambient img { opacity: 0; }
+
+    /* Last screen: the usual foot of a page */
+    .outro {
+      position: relative; z-index: 2; height: 100vh; height: 100svh; scroll-snap-align: start;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2.6rem; padding: 2rem 1.5rem;
+    }
+    .rights { font-family: var(--font-mono); font-size: 0.82rem; color: var(--text-muted); text-align: center; }
+
+    /* ───────── The scroll sign ─────────
+       The one thing that tells a first-time visitor what to do. It sits in the band the photograph
+       leaves free at the bottom of the screen: a small mouse with a moving wheel and the word "Scroll" (on touch screens,
+       an arrow and "Swipe up"). Nothing else on the page moves until the visitor does. */
+    .sign {
+      position: fixed; z-index: 5; left: 50%; bottom: 1.15rem; transform: translateX(-50%);
+      display: flex; align-items: center; gap: 0.65rem; white-space: nowrap; pointer-events: none;
+      font-family: var(--font-mono); font-size: 0.72rem; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--text); transition: opacity 0.4s ease;
+    }
+    .sign .mouse { position: relative; width: 15px; height: 23px; border: 1.5px solid var(--text); border-radius: 8px; }
+    .sign .mouse::after {
+      content: ''; position: absolute; left: 50%; top: 4px; width: 3px; height: 5px; margin-left: -1.5px; border-radius: 2px;
+      background: var(--accent); animation: wheel 1.7s cubic-bezier(0.6, 0, 0.3, 1) infinite;
+    }
+    @keyframes wheel { 0% { transform: translateY(0); opacity: 0; } 25% { opacity: 1; } 100% { transform: translateY(8px); opacity: 0; } }
+    .sign .swipe { width: 9px; height: 9px; border-left: 1.5px solid var(--accent); border-top: 1.5px solid var(--accent); transform: rotate(45deg); margin-top: 5px; animation: swipe 1.7s ease-in-out infinite; }
+    @keyframes swipe { 0%, 100% { translate: 0 3px; opacity: 0.35; } 50% { translate: 0 -3px; opacity: 1; } }
+    .by-wheel, .by-touch { display: inline-flex; align-items: center; gap: 0.65rem; }
+    .by-touch { display: none; }
+    @media (hover: none) and (pointer: coarse) { .by-wheel { display: none; } .by-touch { display: inline-flex; } }
+
+    .count {
+      position: fixed; z-index: 5; right: 1.5rem; bottom: 1.4rem; font-family: var(--font-mono); font-size: 0.78rem;
+      letter-spacing: 0.12em; color: var(--text); pointer-events: none; transition: opacity 0.4s ease;
+    }
+
+    /* Rail: one tick per photograph; the current one is long and orange. Click a tick to go there. */
+    .rail { position: fixed; z-index: 5; right: 1.5rem; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; transition: opacity 0.4s ease; }
+    .rail button { position: relative; width: 30px; height: 13px; padding: 0; border: 0; background: none; cursor: pointer; }
+    .rail button::before {
+      content: ''; position: absolute; right: 0; top: 6px; width: 10px; height: 1.5px; background: var(--text-muted); opacity: 0.6;
+      transition: width 0.35s ease, background-color 0.35s ease, opacity 0.35s ease;
+    }
+    .rail button:hover::before { width: 18px; opacity: 1; }
+    .rail button[aria-current="true"]::before { width: 26px; background: var(--accent); opacity: 1; }
+    .rail button:focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 2px; }
+    html:not(.reel-on) .count, html:not(.reel-on) .rail { display: none; }
+    html:not(.reel-on) .sign { position: absolute; }
+
+    @media (max-aspect-ratio: 4/5) {
+      .intro { width: 100%; justify-content: flex-start; padding: 3.9rem 1.5rem 0; }
+      .page-title { font-size: 2.1rem; margin-bottom: 0; }
+      .lede { display: none; }
+      .shot { max-height: 66vh; max-height: 66svh; }
+      .pin { padding-top: 5.6rem; }
+      .rail { display: none; }
+      .sign { bottom: 1.3rem; }
+    }
+    @media (max-width: 480px) { .back-link { top: 1rem; left: 1rem; } .count { right: 1rem; } }
+    @media (prefers-reduced-motion: reduce) {
+      .shot, .ambient img { translate: none; transition: none; }
+      .sign .mouse::after { animation: none; top: 8px; }
+      .sign .swipe { animation: none; }
+    }
   </style>
 </head>
 <body>
@@ -58,23 +166,228 @@
   <div class="bg-animation" aria-hidden="true">
     <div class="bg-texture"></div>
     <div class="bg-grid"></div>
+    <!-- tiny colour-only copies of the photographs, in the same order -->
+    <div class="ambient">
+      <img src="photography/01-a.webp" alt="">
+      <img src="photography/02-a.webp" alt="">
+      <img src="photography/03-a.webp" alt="">
+      <img src="photography/04-a.webp" alt="">
+      <img src="photography/05-a.webp" alt="">
+    </div>
     <canvas id="nn-canvas"></canvas>
     <div class="bg-glow"></div>
   </div>
 
   <a href="index.html" class="back-link">← bb.style</a>
 
-  <main class="page">
-    <div class="kicker">Off work</div>
-    <h1 class="page-title">Photography<span class="accent">.</span></h1>
-    <p class="lede">Capturing moments, chasing light, and finding beauty in the everyday.</p>
-    <span class="soon">Coming soon</span>
+  <main class="reel">
+    <header class="intro">
+      <div class="kicker">Off work</div>
+      <h1 class="page-title">Photography<span class="accent">.</span></h1>
+      <p class="lede">Capturing moments, chasing light, and finding beauty in the everyday.</p>
+    </header>
 
-    <nav class="links nav-foot">
-      <a href="index.html">Home</a>
-    </nav>
+    <!-- Only web-size, watermarked copies live in this repository. Make them with tools/prepare-photos.py. -->
+    <ol class="frames">
+      <li class="frame"><figure class="pin near"><span class="hold">
+        <img class="shot" src="photography/01-s.webp" srcset="photography/01-s.webp 720w, photography/01-l.webp 1066w"
+             sizes="(max-aspect-ratio: 2/3) 92vw, 60vh" width="1066" height="1600" fetchpriority="high" decoding="async"
+             alt="The upturned corner of a tiled temple roof with small ridge figures, and a forested peak rising out of cloud behind it.">
+      </span></figure></li>
+      <li class="frame"><figure class="pin"><span class="hold">
+        <img class="shot" src="photography/02-s.webp" srcset="photography/02-s.webp 720w, photography/02-l.webp 1066w"
+             sizes="(max-aspect-ratio: 2/3) 92vw, 60vh" width="1066" height="1600" loading="lazy" decoding="async"
+             alt="Mountain tops surfacing from a sea of cloud under a grey sky, with a pale band of light on the horizon.">
+      </span></figure></li>
+      <li class="frame"><figure class="pin"><span class="hold">
+        <img class="shot" src="photography/03-s.webp" srcset="photography/03-s.webp 720w, photography/03-l.webp 1066w"
+             sizes="(max-aspect-ratio: 2/3) 92vw, 60vh" width="1066" height="1600" loading="lazy" decoding="async"
+             alt="A single tall conifer standing above a forested ridge in fog, framed by out-of-focus leaves.">
+      </span></figure></li>
+      <li class="frame"><figure class="pin"><span class="hold">
+        <img class="shot" src="photography/04-s.webp" srcset="photography/04-s.webp 720w, photography/04-l.webp 1066w"
+             sizes="(max-aspect-ratio: 2/3) 92vw, 60vh" width="1066" height="1600" loading="lazy" decoding="async"
+             alt="Bare branches heavy with orange and red persimmons against green leaves.">
+      </span></figure></li>
+      <li class="frame"><figure class="pin"><span class="hold">
+        <img class="shot" src="photography/05-s.webp" srcset="photography/05-s.webp 720w, photography/05-l.webp 1066w"
+             sizes="(max-aspect-ratio: 2/3) 92vw, 60vh" width="1066" height="1600" loading="lazy" decoding="async"
+             alt="Yellow stonecrop flowers and purple-green leaves growing from cracks in grey rock.">
+      </span></figure></li>
+    </ol>
+
+    <section class="outro">
+      <p class="rights">All photographs © Bihan Qian.</p>
+      <nav class="links">
+        <a href="index.html">Home</a>
+      </nav>
+    </section>
   </main>
 
+  <p class="count" aria-hidden="true"></p>
+  <p class="sign" aria-hidden="true"><span class="by-wheel"><i class="mouse"></i>Scroll</span><span class="by-touch"><i class="swipe"></i>Swipe up</span></p>
+  <nav class="rail" aria-label="Photographs"></nav>
+
   <script src="script.js"></script>
+  <script>
+    /* The reel: pin each photograph to the screen and place it from the scroll position.
+       The next photograph rises over the current one, which steps back and fades.
+       Nothing moves until the visitor does. */
+    (function () {
+      var root = document.documentElement;
+      var frames = [].slice.call(document.querySelectorAll('.frame'));
+      var ambient = [].slice.call(document.querySelectorAll('.ambient img'));
+      var intro = document.querySelector('.intro'), count = document.querySelector('.count'), sign = document.querySelector('.sign');
+      var rail = document.querySelector('.rail'), ticks = [], marked = -1;
+      if (!frames.length) return;
+      var pins = frames.map(function (f) { return f.querySelector('.pin'); });
+      var holds = frames.map(function (f) { return f.querySelector('.hold'); });
+      var calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var n = frames.length, queued = false;
+
+      function two(v) { return (v < 10 ? '0' : '') + v; }
+      function clamp(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
+
+      function place() {
+        queued = false;
+        var h = frames[0].offsetHeight || window.innerHeight;
+        var pos = (window.scrollY - frames[0].offsetTop) / h;           // 0 = first photograph, n = the last screen
+        var real = pos;
+        var cur = Math.max(0, Math.min(n - 1, Math.round(pos)));
+        for (var j = 0; j < n; j++) pins[j].classList.toggle('near', Math.abs(pos - j) <= 1.6);   // only the current photograph and its neighbours exist
+
+        for (var i = 0; i < n; i++) {
+          var d = pos - i;                                             // < 0 still to come, > 0 already passed
+          var pin = pins[i], hold = holds[i];
+          if (d <= -0.999 || d >= 1 || !pin.classList.contains('near')) { pin.style.visibility = 'hidden'; continue; }
+          pin.style.visibility = 'visible';
+          pin.style.zIndex = i + 1;
+          if (d < 0) {                                                 // arriving: rises from just below the screen
+            var t = Math.min(1, -d);
+            var rest = h - hold.offsetTop + 2;                         // its top edge starts at the bottom of the screen, out of sight
+            pin.style.transform = 'translate3d(0,' + (t * rest).toFixed(1) + 'px,0)';
+            hold.style.transformOrigin = '50% 0';
+            hold.style.transform = calm ? '' : 'scale(' + (1 + 0.07 * Math.sin(Math.PI * t)).toFixed(4) + ')';   // swells on the way, true size at both ends
+            hold.style.opacity = '';
+          } else {                                                     // leaving: steps back and fades
+            pin.style.transform = calm ? '' : 'translate3d(0,' + (-d * h * 0.06).toFixed(1) + 'px,0)';
+            hold.style.transformOrigin = '';
+            hold.style.transform = calm ? '' : 'scale(' + (1 - d * 0.08).toFixed(4) + ')';
+            hold.style.opacity = (1 - clamp(d * 1.15)).toFixed(3);
+          }
+        }
+        for (var k = 0; k < ambient.length; k++) {
+          var a = ambient[k], dk = pos - k;
+          if (dk >= 1 || dk < -1.001) {                                 // long gone, or not the next one yet
+            a.style.opacity = '0';
+          } else if (dk >= 0) {                                        // this photograph's colours fill the screen
+            a.style.setProperty('--edge', '100%');
+            a.style.opacity = k === n - 1 ? (1 - dk).toFixed(3) : '1';  // the last one fades out into the closing screen
+          } else {                                                     // the next photograph: a glow along the bottom that rises
+            var rise = 1 + dk;
+            a.style.setProperty('--edge', (10 + rise * 90).toFixed(1) + '%');   // at rest: solid over the bottom tenth
+            a.style.opacity = '1';
+          }
+        }
+        count.textContent = two(cur + 1) + ' / ' + two(n);
+        count.style.opacity = rail.style.opacity = clamp(1 - (real - (n - 1)) * 2).toFixed(2);
+        rail.style.visibility = real > n - 0.5 ? 'hidden' : 'visible';
+        if (cur !== marked) {
+          marked = cur;
+          for (var m = 0; m < n; m++) ticks[m].setAttribute('aria-current', m === cur ? 'true' : 'false');
+        }
+        intro.style.opacity = clamp(1 - real * 2.2).toFixed(2);
+        intro.style.visibility = real > 0.5 ? 'hidden' : 'visible';
+        sign.style.opacity = real > 0.08 ? '0' : '1';
+      }
+      function queue() { if (!queued) { queued = true; requestAnimationFrame(place); } }
+
+      // Every way of moving ends in the same smooth glide to a whole photograph.
+      var moving = false, glideFrame = 0, target = -1;
+      function glide(to) {
+        cancelAnimationFrame(glideFrame);
+        var from = window.scrollY, dist = to - from;
+        if (Math.abs(dist) < 1) { moving = false; return; }
+        if (calm) { window.scrollTo(0, to); return; }
+        var took = Math.min(1250, 780 + Math.abs(dist) / window.innerHeight * 110), began = performance.now();
+        moving = true;
+        root.style.scrollSnapType = 'none';                             // the browser's own snapping would fight the glide
+        (function step(now) {
+          var x = Math.min(1, (now - began) / took);
+          window.scrollTo(0, from + dist * (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2));
+          place();                                                      // in the same frame, so nothing trails behind
+          if (x < 1) glideFrame = requestAnimationFrame(step);
+          else { root.style.scrollSnapType = ''; moving = false; target = -1; }
+        })(began);
+      }
+      function goTo(index) {
+        target = Math.max(0, Math.min(n, index));
+        glide(frames[0].offsetTop + target * frames[0].offsetHeight);
+      }
+      function go(step) {
+        var at = moving && target >= 0 ? target : Math.round((window.scrollY - frames[0].offsetTop) / frames[0].offsetHeight);
+        goTo(at + step);
+      }
+
+      // Mouse wheel and trackpad: one push moves one photograph, however small the push.
+      // A trackpad swipe sends a burst that swells, peaks, then fades for a second or more. Once a push
+      // has been used, the rest of its burst is ignored; a pause, or a clear rise out of the fading tail,
+      // is the next push. A push that arrives mid-glide simply extends the glide by one photograph.
+      var spent = false, lastWheel = 0, pushed = 0, peak = 0, fading = false, floor = 0;
+      window.addEventListener('wheel', function (e) {
+        if (e.ctrlKey) return;                                          // pinch to zoom
+        e.preventDefault();
+        // e.timeStamp is when the push happened, not when this code got round to it, so a busy moment
+        // on a slow device is never mistaken for a pause.
+        var now = e.timeStamp || performance.now(), dy = e.deltaY * (e.deltaMode === 1 ? 32 : 1), size = Math.abs(dy);
+        var pause = now - lastWheel > 180;
+        lastWheel = now;
+        if (spent && !pause) {
+          if (!fading) {                                                // still swelling, or just past the peak
+            if (size > peak) peak = size;
+            else if (size < peak * 0.6) { fading = true; floor = size; }
+            return;
+          }
+          if (size <= floor * 3 + 10) { floor = Math.min(floor, size); return; }   // the tail, fading out
+        }
+        if (spent) { spent = false; pushed = 0; }                       // a new push begins
+        pushed += dy;
+        if (Math.abs(pushed) >= 24) {
+          spent = true; peak = size; fading = false;
+          var dir = pushed > 0 ? 1 : -1; pushed = 0;
+          go(dir);
+        }
+      }, { passive: false });
+      window.addEventListener('touchstart', function () {               // a finger takes over from any glide in progress
+        if (moving) { cancelAnimationFrame(glideFrame); root.style.scrollSnapType = ''; moving = false; target = -1; }
+      }, { passive: true });
+      frames.forEach(function (f, i) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.setAttribute('aria-label', 'Photograph ' + (i + 1) + ' of ' + n);
+        b.addEventListener('click', function () { goTo(i); });
+        rail.appendChild(b); ticks.push(b);
+      });
+
+      window.addEventListener('scroll', queue, { passive: true });
+      window.addEventListener('resize', queue);
+      frames.forEach(function (f) { f.querySelector('.shot').addEventListener('load', queue); });   // sizes are known only once loaded
+      place();
+      pins.forEach(function (pin) { pin.addEventListener('click', function () { go(1); }); });
+      document.addEventListener('keydown', function (e) {
+        if (e.target.closest && e.target.closest('button, a, input')) return;
+        if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); go(1); }
+        if (e.key === 'ArrowUp' || e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); go(-1); }
+      });
+
+      // The photograph and its backdrop lean a little with the pointer, in opposite directions.
+      if (!calm && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+        window.addEventListener('pointermove', function (e) {
+          root.style.setProperty('--mx', (e.clientX / window.innerWidth - 0.5).toFixed(3));
+          root.style.setProperty('--my', (e.clientY / window.innerHeight - 0.5).toFixed(3));
+        }, { passive: true });
+      }
+    })();
+  </script>
 </body>
 </html>

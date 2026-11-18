@@ -24,6 +24,32 @@ Static site served by GitHub Pages from `main`. Plain HTML, CSS and JS: no build
   `projects/memory-evaluator.html` is a generated report: its site look lives in the marked
   "site chrome" blocks in that file and has to be re-applied if the report is regenerated.
 
+## Photography (`photography.html`, `photography/`)
+
+- **Only web-size, watermarked copies are ever committed.** This repository is public: never add an original
+  or full-resolution photograph, not even temporarily.
+- Make the copies with `python3 tools/prepare-photos.py --start <next number> <originals...>` (needs Pillow).
+  It drops all camera data (including location) and writes three files per photo: `NN-s.webp` (720 px wide),
+  `NN-l.webp` (1600 px on the long side; nothing larger is published), both stamped `@bb.style` at the bottom
+  centre from `tools/watermark.png` and carrying author and copyright, and `NN-a.webp` (96 px, colours only).
+- The page is a full-screen reel, made to impress at first sight: one photograph per screen, shown whole
+  (never cropped), with the entire background taking on that photograph's colours from its `-a` copy.
+  While a photograph is showing, the colours of the next one glow along the bottom of the background.
+  Scrolling slides the next photograph up over the current one as its colours rise to fill the screen;
+  the pointer makes photo and backdrop lean slightly.
+- **Nothing moves until the visitor does.** No previews, no nudges, no edge of the next photograph showing:
+  moving pictures made the page look messy. The only cue is the scroll sign in the band the photograph leaves
+  free at the bottom of the first screen: a small mouse with a moving wheel and "Scroll" ("Swipe up" on touch
+  screens). A rail of ticks on the right shows how many photographs there are and jumps to any of them.
+- **One push moves exactly one photograph**, always ending in the same smooth glide: one wheel notch
+  however small, one trackpad swipe (its fading tail is ignored), one arrow key, one click, one swipe.
+  Never rely on the browser's scroll snapping alone for the wheel: a single notch springs back.
+- To add a photo, paste the two pieces of markup the tool prints: an `<img>` into `.ambient` and a
+  `<li class="frame">` into `.frames`, in the same order. Write a plain description as `alt`.
+  Do not invent titles or places.
+- Only the current photograph and its neighbours are rendered, so the rest are not downloaded until needed.
+  Without JavaScript the page is one full-height photograph after another.
+
 ## Cooking (`cooking.html`, `cooking/`)
 
 Design principles. These always hold:
