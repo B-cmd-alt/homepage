@@ -68,12 +68,13 @@
     .ambient::after { content: ''; position: absolute; inset: 0; background: var(--bg); opacity: 0.56; }
 
     /* Title, over the first photograph */
-    /* It lives in the margin to the left of the photograph (50vw - 30vh wide) and is sized to fit there */
+    /* It lives in the margin to the left of the photograph and is sized to fit there.
+       The photograph is (100vh - 7.5rem) tall and two-thirds as wide, so the margin is 50vw - 33.4vh + 2.5rem. */
     .intro {
-      position: absolute; z-index: 3; top: 0; left: 0; height: 100vh; height: 100svh; width: calc(50vw - 30vh);
+      position: absolute; z-index: 3; top: 0; left: 0; height: 100vh; height: 100svh; width: calc(50vw - 33.4vh + 2.5rem);
       padding: 0 1.5rem 11vh 4vw; display: flex; flex-direction: column; justify-content: flex-end; pointer-events: none;
     }
-    .page-title { font-family: var(--font-display); font-size: clamp(1.9rem, calc((50vw - 30vh - 4vw - 2.5rem) / 6.5), 4.5rem); font-weight: 700; line-height: 1; margin-bottom: 1rem; }
+    .page-title { font-family: var(--font-display); font-size: clamp(1.9rem, calc((50vw - 33.4vh - 4vw) / 6.5), 4.5rem); font-weight: 700; line-height: 1; margin-bottom: 1rem; }
     .lede { font-family: var(--font-mono); font-size: 0.9rem; line-height: 1.9; color: var(--text-muted); }
 
     /* One screen per photograph */
@@ -83,7 +84,7 @@
     .pin { height: 100%; display: grid; place-items: center; }
     .hold { display: block; }
     .shot {
-      display: block; width: auto; height: auto; max-width: 92vw; max-height: 90vh; max-height: 90svh;
+      display: block; width: auto; height: auto; max-width: 92vw; max-height: calc(100vh - 7.5rem); max-height: calc(100svh - 7.5rem);
       box-shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.45);
       translate: calc(var(--mx, 0) * -14px) calc(var(--my, 0) * -14px);
       transition: translate 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
@@ -103,30 +104,32 @@
     }
     .rights { font-family: var(--font-mono); font-size: 0.82rem; color: var(--text-muted); text-align: center; }
 
-    /* ───────── How a visitor learns to move ─────────
-       1. The top edge of the next photograph rests just above the bottom of the screen, on its own glow.
-       2. Until the visitor has moved once, it rises a little and settles back every few seconds:
-          a short preview of exactly what scrolling does.
-       3. Words beside the title say it plainly, and a rail on the right shows how many there are. */
-    .cue {
-      display: flex; align-items: center; gap: 0.85rem; margin-top: 1.7rem;
-      font-family: var(--font-mono); font-size: 0.74rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text);
+    /* ───────── The scroll sign ─────────
+       The one thing that tells a first-time visitor what to do. It sits in the band the photograph
+       leaves free at the bottom of the screen: a small mouse with a moving wheel and the word "Scroll" (on touch screens,
+       an arrow and "Swipe up"). Nothing else on the page moves until the visitor does. */
+    .sign {
+      position: fixed; z-index: 5; left: 50%; bottom: 1.15rem; transform: translateX(-50%);
+      display: flex; align-items: center; gap: 0.65rem; white-space: nowrap; pointer-events: none;
+      font-family: var(--font-mono); font-size: 0.72rem; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--text); transition: opacity 0.4s ease;
     }
-    .cue i { position: relative; flex: none; width: 1px; height: 34px; background: var(--line-dash); }
-    .cue i::after {
-      content: ''; position: absolute; left: -2.5px; top: 0; width: 6px; height: 6px; border-radius: 50%;
-      background: var(--accent); animation: drop 2s cubic-bezier(0.6, 0, 0.3, 1) infinite;
+    .sign .mouse { position: relative; width: 15px; height: 23px; border: 1.5px solid var(--text); border-radius: 8px; }
+    .sign .mouse::after {
+      content: ''; position: absolute; left: 50%; top: 4px; width: 3px; height: 5px; margin-left: -1.5px; border-radius: 2px;
+      background: var(--accent); animation: wheel 1.7s cubic-bezier(0.6, 0, 0.3, 1) infinite;
     }
-    @keyframes drop { 0% { transform: translateY(-3px); opacity: 0; } 20%, 78% { opacity: 1; } 100% { transform: translateY(31px); opacity: 0; } }
+    @keyframes wheel { 0% { transform: translateY(0); opacity: 0; } 25% { opacity: 1; } 100% { transform: translateY(8px); opacity: 0; } }
+    .sign .swipe { width: 9px; height: 9px; border-left: 1.5px solid var(--accent); border-top: 1.5px solid var(--accent); transform: rotate(45deg); margin-top: 5px; animation: swipe 1.7s ease-in-out infinite; }
+    @keyframes swipe { 0%, 100% { translate: 0 3px; opacity: 0.35; } 50% { translate: 0 -3px; opacity: 1; } }
+    .by-wheel, .by-touch { display: inline-flex; align-items: center; gap: 0.65rem; }
     .by-touch { display: none; }
-    @media (hover: none) and (pointer: coarse) { .by-wheel { display: none; } .by-touch { display: inline; } }
+    @media (hover: none) and (pointer: coarse) { .by-wheel { display: none; } .by-touch { display: inline-flex; } }
 
-    .count, .hint {
-      position: fixed; z-index: 5; font-family: var(--font-mono); font-size: 0.78rem;
-      letter-spacing: 0.12em; pointer-events: none; transition: opacity 0.4s ease;
+    .count {
+      position: fixed; z-index: 5; right: 1.5rem; bottom: 1.4rem; font-family: var(--font-mono); font-size: 0.78rem;
+      letter-spacing: 0.12em; color: var(--text); pointer-events: none; transition: opacity 0.4s ease;
     }
-    .count { right: 1.5rem; bottom: 1.4rem; color: var(--text); }
-    .hint { display: none; left: 1.5rem; font-size: 0.7rem; font-weight: 500; text-transform: uppercase; color: var(--text); }   /* small screens only */
 
     /* Rail: one tick per photograph; the current one is long and orange. Click a tick to go there. */
     .rail { position: fixed; z-index: 5; right: 1.5rem; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; transition: opacity 0.4s ease; }
@@ -139,6 +142,7 @@
     .rail button[aria-current="true"]::before { width: 26px; background: var(--accent); opacity: 1; }
     .rail button:focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 2px; }
     html:not(.reel-on) .count, html:not(.reel-on) .rail { display: none; }
+    html:not(.reel-on) .sign { position: absolute; }
 
     @media (max-aspect-ratio: 4/5) {
       .intro { width: 100%; justify-content: flex-start; padding: 3.9rem 1.5rem 0; }
@@ -146,14 +150,14 @@
       .lede { display: none; }
       .shot { max-height: 66vh; max-height: 66svh; }
       .pin { padding-top: 5.6rem; }
-      .cue, .rail { display: none; }
-      .reel-on .hint { display: block; }
-      .count, .hint { bottom: calc(var(--peek, 0px) + 0.85rem); }
+      .rail { display: none; }
+      .sign { bottom: 1.3rem; }
     }
-    @media (max-width: 480px) { .back-link { top: 1rem; left: 1rem; } .count { right: 1rem; } .hint { left: 1rem; } }
+    @media (max-width: 480px) { .back-link { top: 1rem; left: 1rem; } .count { right: 1rem; } }
     @media (prefers-reduced-motion: reduce) {
       .shot, .ambient img { translate: none; transition: none; }
-      .cue i::after { animation: none; top: 14px; }
+      .sign .mouse::after { animation: none; top: 8px; }
+      .sign .swipe { animation: none; }
     }
   </style>
 </head>
@@ -181,7 +185,6 @@
       <div class="kicker">Off work</div>
       <h1 class="page-title">Photography<span class="accent">.</span></h1>
       <p class="lede">Capturing moments, chasing light, and finding beauty in the everyday.</p>
-      <p class="cue"><i></i><span><span class="by-wheel">Scroll</span><span class="by-touch">Swipe up</span> for the next photograph</span></p>
     </header>
 
     <!-- Only web-size, watermarked copies live in this repository. Make them with tools/prepare-photos.py. -->
@@ -222,26 +225,25 @@
   </main>
 
   <p class="count" aria-hidden="true"></p>
-  <p class="hint" aria-hidden="true"><span class="by-wheel">Scroll ↓</span><span class="by-touch">Swipe up ↑</span></p>
+  <p class="sign" aria-hidden="true"><span class="by-wheel"><i class="mouse"></i>Scroll</span><span class="by-touch"><i class="swipe"></i>Swipe up</span></p>
   <nav class="rail" aria-label="Photographs"></nav>
 
   <script src="script.js"></script>
   <script>
     /* The reel: pin each photograph to the screen and place it from the scroll position.
        The next photograph rises over the current one, which steps back and fades.
-       While a photograph is showing, the top edge of the next one waits at the bottom of the screen. */
+       Nothing moves until the visitor does. */
     (function () {
       var root = document.documentElement;
       var frames = [].slice.call(document.querySelectorAll('.frame'));
       var ambient = [].slice.call(document.querySelectorAll('.ambient img'));
-      var intro = document.querySelector('.intro'), count = document.querySelector('.count'), hint = document.querySelector('.hint');
+      var intro = document.querySelector('.intro'), count = document.querySelector('.count'), sign = document.querySelector('.sign');
       var rail = document.querySelector('.rail'), ticks = [], marked = -1;
       if (!frames.length) return;
       var pins = frames.map(function (f) { return f.querySelector('.pin'); });
       var holds = frames.map(function (f) { return f.querySelector('.hold'); });
       var calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       var n = frames.length, queued = false;
-      var tease = 0;                       // a little pretend scrolling, used only for the preview nudge
 
       function two(v) { return (v < 10 ? '0' : '') + v; }
       function clamp(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
@@ -249,26 +251,20 @@
       function place() {
         queued = false;
         var h = frames[0].offsetHeight || window.innerHeight;
-        var real = (window.scrollY - frames[0].offsetTop) / h;          // 0 = first photograph, n = the last screen
-        var resting = Math.abs(real - Math.round(real)) < 0.02;
-        var pos = real + (resting ? tease : 0);
-        var cur = Math.max(0, Math.min(n - 1, Math.round(real)));
-        for (var j = 0; j < n; j++) pins[j].classList.toggle('near', Math.abs(real - j) <= 1.6);   // only the current photograph and its neighbours exist
-
-        // How much of the next photograph may show: a sliver inside the empty band under the current one.
-        var below = h - (holds[cur].offsetTop + holds[cur].offsetHeight);
-        var peek = Math.max(0, Math.min(h * 0.034, below * 0.62));
-        root.style.setProperty('--peek', Math.round(peek) + 'px');
+        var pos = (window.scrollY - frames[0].offsetTop) / h;           // 0 = first photograph, n = the last screen
+        var real = pos;
+        var cur = Math.max(0, Math.min(n - 1, Math.round(pos)));
+        for (var j = 0; j < n; j++) pins[j].classList.toggle('near', Math.abs(pos - j) <= 1.6);   // only the current photograph and its neighbours exist
 
         for (var i = 0; i < n; i++) {
           var d = pos - i;                                             // < 0 still to come, > 0 already passed
           var pin = pins[i], hold = holds[i];
-          if (d < -1.001 || d >= 1 || !pin.classList.contains('near')) { pin.style.visibility = 'hidden'; continue; }
+          if (d <= -0.999 || d >= 1 || !pin.classList.contains('near')) { pin.style.visibility = 'hidden'; continue; }
           pin.style.visibility = 'visible';
           pin.style.zIndex = i + 1;
-          if (d < 0) {                                                 // arriving: rises from its waiting place, settling in size
+          if (d < 0) {                                                 // arriving: rises from just below the screen
             var t = Math.min(1, -d);
-            var rest = h - hold.offsetTop - peek;                      // waiting place: top edge just above the bottom of the screen
+            var rest = h - hold.offsetTop + 2;                         // its top edge starts at the bottom of the screen, out of sight
             pin.style.transform = 'translate3d(0,' + (t * rest).toFixed(1) + 'px,0)';
             hold.style.transformOrigin = '50% 0';
             hold.style.transform = calm ? '' : 'scale(' + (1 + 0.07 * Math.sin(Math.PI * t)).toFixed(4) + ')';   // swells on the way, true size at both ends
@@ -302,8 +298,7 @@
         }
         intro.style.opacity = clamp(1 - real * 2.2).toFixed(2);
         intro.style.visibility = real > 0.5 ? 'hidden' : 'visible';
-        hint.style.opacity = real > 0.08 ? '0' : '1';
-        if (cur !== startAt) learned();
+        sign.style.opacity = real > 0.08 ? '0' : '1';
       }
       function queue() { if (!queued) { queued = true; requestAnimationFrame(place); } }
 
@@ -374,37 +369,10 @@
         rail.appendChild(b); ticks.push(b);
       });
 
-      // The preview nudge: until the visitor has moved to another photograph, the next one rises a little
-      // and settles back every few seconds, showing what scrolling will do. Then it never plays again.
-      var startAt = Math.max(0, Math.min(n - 1, Math.round((window.scrollY - frames[0].offsetTop) / (frames[0].offsetHeight || 1))));
-      var teaching = !calm, timer = 0, frame = 0;
-      try { if (sessionStorage.getItem('reel-learned')) teaching = false; } catch (e) {}
-      function learned() {
-        if (!teaching) return;
-        teaching = false; clearTimeout(timer); cancelAnimationFrame(frame); tease = 0;
-        try { sessionStorage.setItem('reel-learned', '1'); } catch (e) {}
-      }
-      function nudge() {
-        if (!teaching) return;
-        var real = (window.scrollY - frames[0].offsetTop) / frames[0].offsetHeight;
-        if (document.hidden || Math.abs(real - Math.round(real)) > 0.02 || Math.round(real) >= n - 1) { timer = setTimeout(nudge, 2500); return; }
-        var began = performance.now(), UP = 650, DOWN = 950;
-        (function step(now) {
-          if (!teaching) return;
-          var e = now - began;
-          if (e < UP) tease = 0.1 * (1 - Math.pow(1 - e / UP, 3));                               // up: quick, easing out
-          else { var x = Math.min(1, (e - UP) / DOWN); tease = 0.1 * (1 - (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2)); }   // back: slower
-          place();
-          if (e < UP + DOWN) frame = requestAnimationFrame(step);
-          else { tease = 0; place(); timer = setTimeout(nudge, 3400); }
-        })(began);
-      }
-
       window.addEventListener('scroll', queue, { passive: true });
       window.addEventListener('resize', queue);
       frames.forEach(function (f) { f.querySelector('.shot').addEventListener('load', queue); });   // sizes are known only once loaded
       place();
-      timer = setTimeout(nudge, 1500);
       pins.forEach(function (pin) { pin.addEventListener('click', function () { go(1); }); });
       document.addEventListener('keydown', function (e) {
         if (e.target.closest && e.target.closest('button, a, input')) return;

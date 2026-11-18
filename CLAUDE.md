@@ -37,11 +37,10 @@ Static site served by GitHub Pages from `main`. Plain HTML, CSS and JS: no build
   While a photograph is showing, the colours of the next one glow along the bottom of the background.
   Scrolling slides the next photograph up over the current one as its colours rise to fill the screen;
   the pointer makes photo and backdrop lean slightly.
-- **A first-time visitor must see at once how to move.** The page shows it rather than only saying it:
-  the top edge of the next photograph waits at the bottom of the screen; until the visitor has moved once
-  it rises a little and settles back every few seconds (a preview of the scroll, never a real scroll);
-  "Scroll for the next photograph" sits beside the title ("Swipe up" on touch screens); and a rail of
-  ticks on the right shows how many photographs there are and jumps to any of them.
+- **Nothing moves until the visitor does.** No previews, no nudges, no edge of the next photograph showing:
+  moving pictures made the page look messy. The only cue is the scroll sign in the band the photograph leaves
+  free at the bottom of the first screen: a small mouse with a moving wheel and "Scroll" ("Swipe up" on touch
+  screens). A rail of ticks on the right shows how many photographs there are and jumps to any of them.
 - **One push moves exactly one photograph**, always ending in the same smooth glide: one wheel notch
   however small, one trackpad swipe (its fading tail is ignored), one arrow key, one click, one swipe.
   Never rely on the browser's scroll snapping alone for the wheel: a single notch springs back.
