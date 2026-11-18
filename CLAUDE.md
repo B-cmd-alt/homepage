@@ -6,8 +6,10 @@ Static site served by GitHub Pages from `main`. Plain HTML, CSS and JS: no build
 ## Site-wide
 
 - **Style**: succinct, clean, open. Bodoni Moda for display, JetBrains Mono for text, one orange accent.
-- **Theme**: follows the browser (`prefers-color-scheme`). There is no theme switch. Colours come from the
-  tokens at the top of `style.css`; never hard-code a colour that has to change between light and dark.
+- **Theme**: follows the browser (`prefers-color-scheme`) until the reader picks Light or Dark with the switch
+  at the top right of every page (`theme.js`, loaded in each page's `<head>`); the choice is remembered.
+  Colours come from the tokens at the top of `style.css`; never hard-code a colour that has to change between
+  light and dark. Dark values are written twice (browser setting, reader's choice): keep the two blocks equal.
 - **Loading comes first**: no images or video where inline SVG and CSS will do, no extra font files,
   nothing fetched that the page does not need.
 - **Homepage**: Projects and Experience are the two main links. Everything else sits on the small line below them.
