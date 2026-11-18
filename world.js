@@ -114,7 +114,7 @@
     var p = {
       id: this.nextId++, x: x, y: y, vx: 0, vy: 0,
       light: c.birthLight[0] + this.rng() * (c.birthLight[1] - c.birthLight[0]),
-      age: 0, generation: 0,
+      age: 0, generation: 0, parent: null,       // parent: the point whose notebook it copied
       q: new Float64Array(8),          // the notebook
       n: new Uint8Array(8),            // how many times each entry has been judged (0 = never tried)
       wander: this.rng() * Math.PI * 2,
@@ -135,6 +135,7 @@
           p.n[k] = Math.min(teacher.n[k], c.copyTrust);
         }
         p.generation = teacher.generation + 1;
+        p.parent = teacher;
       }
     }
     this.points.push(p);

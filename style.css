@@ -429,6 +429,80 @@ a:focus-visible {
   transition: opacity 0.6s ease;
 }
 
+.society-chart,
+.society-gauge {
+  display: block;
+  width: 170px;
+  margin-top: 0.55rem;
+  overflow: visible;
+  font-size: 7.5px;
+  fill: var(--text-muted);
+}
+
+.society-chart .life {
+  fill: none;
+  stroke: var(--accent-ink);
+  stroke-width: 1.3;
+  stroke-linejoin: round;
+}
+
+.society-chart .now {
+  fill: var(--accent-ink);
+}
+
+.society-chart .life-label {
+  fill: var(--text);
+}
+
+.society-chart .base {
+  fill: none;
+  stroke: rgba(26, 26, 26, 0.45);
+  stroke-width: 1;
+  stroke-dasharray: 2 2.5;
+}
+
+.society-key {
+  margin-top: 0.7rem;
+  font-size: 0.58rem;
+}
+
+.society-key span {
+  display: inline-block;
+  width: 14px;
+  margin: 0 0.35rem 0 0;
+  vertical-align: middle;
+  border-top: 1.5px solid var(--accent-ink);
+}
+
+.society-key .key-base {
+  margin-left: 0.8rem;
+  border-top: 1px dashed rgba(26, 26, 26, 0.55);
+}
+
+.society-chart {
+  margin-top: 0.2rem;
+}
+
+.society-gauge text {
+  font-size: 10px;
+  fill: var(--text);
+}
+
+.society-gauge .track {
+  stroke: rgba(26, 26, 26, 0.18);
+  stroke-width: 1;
+}
+
+.society-gauge .alpha {
+  stroke: var(--text);
+  stroke-width: 1.2;
+}
+
+.society-gauge .step {
+  fill: var(--accent-ink);
+  transition: cx 0.6s ease;
+}
+
 .society-tally {
   margin-top: 0.45rem;
   color: var(--text);
@@ -518,8 +592,9 @@ a:focus-visible {
   }
 
   .society-panel table,
-  .society-head span,
-  .society-more {
+  .society-panel svg,
+  .society-key,
+  .society-head span {
     display: none;
   }
 

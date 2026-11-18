@@ -2,13 +2,14 @@
  * The background of every page: draws the society of light simulated by world.js.
  *
  * What is on screen:
- *   - A point's size and glow are its light. Its colour is how much its notebook prefers giving:
- *     gold gives, terracotta is undecided, purple keeps.
+ *   - A point's size and glow are its light. Its colour is its family: a newborn takes the colour
+ *     of the point whose notebook it copied, slightly shifted; a point born alone starts a new one.
+ *     Colours blend when light is passed.
  *   - A faint line joins points that are within reach of each other (company).
  *   - A brighter line with moving pulses is light being given, in the direction it flows.
  *   - A ring is a birth; a point that goes out shrinks and fades.
- * Nothing is written in the field. On the home page a small panel in the corner shows what the
- * society currently believes, and its "?" explains the scene.
+ * Nothing is written in the field. On the home page a small panel in the corner graphs what the
+ * society has learned and how long its points live, and its "?" explains the scene.
  *
  * Points keep to the space the page's text leaves free. Where the text leaves no room (a phone, a
  * narrow window on a long page) the field runs behind the text, dimmed.
@@ -17,6 +18,8 @@
   'use strict';
 
   const GOLD = [235, 170, 60], TERRACOTTA = [210, 100, 60], PURPLE = [150, 110, 190];
+  const ROSE = [216, 110, 150], BLUE = [100, 140, 205], TEAL = [80, 165, 150];
+  const PALETTE = [GOLD, TERRACOTTA, PURPLE, ROSE, BLUE, TEAL];
   const MAX_DPR = 2;
 
   const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
@@ -27,8 +30,6 @@
   const mix = (a, b, t) => [0, 1, 2].map((k) => toSRGB(lerp(toLinear(a[k]), toLinear(b[k]), t)));
   const css = (rgb, alpha) => `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${alpha})`;
 
-  // Generosity 0..1 -> purple .. terracotta .. gold
-  const colourOf = (g) => (g < 0.5 ? mix(PURPLE, TERRACOTTA, g * 2) : mix(TERRACOTTA, GOLD, (g - 0.5) * 2));
 
   class Field {
     constructor(canvas) {
@@ -43,10 +44,20 @@
       this.lifetime = (window.LIGHT_START && window.LIGHT_START.lifetime) || 0;
       this.panel = canvas.hasAttribute('data-panel') ? buildPanel() : null;
 
-      this.world = new LightWorld({ seed: (Date.now() ^ (Math.random() * 0x7fffffff)) >>> 0 });
-      this.world.keepOut = (x, y) => this.inAvoid(x, y, 12);
-      this.world.blocked = (p, o) => this.crossesText(p, o);
-      this.world.confine = (p, dt) => this.pushOut(p, dt);
+      const seed = (Date.now() ^ (Math.random() * 0x7fffffff)) >>> 0;
+      this.world = new LightWorld({ seed });
+      // Only for the panel's chart: the same world, on the same page, with points that never learn
+      // and choose at random. It is simulated but not drawn.
+      this.shadow = this.panel
+        ? new LightWorld({ seed: seed + 1, learn: false, copy: false, policy: (rule, second, rng) => (rng() < 0.5 ? 1 : 0) })
+        : null;
+      this.shadowLifetime = (window.LIGHT_START && window.LIGHT_START.withoutLearning) || 0;
+      for (const w of [this.world, this.shadow]) {
+        if (!w) continue;
+        w.keepOut = (x, y) => this.inAvoid(x, y, 12);
+        w.blocked = (p, o) => this.crossesText(p, o);
+        w.confine = (p, dt) => this.pushOut(p, dt);
+      }
 
       this.resize();
       window.addEventListener('resize', () => this.resize());
@@ -71,14 +82,16 @@
 
     layout() {
       this.measureAvoid();
-      const cfg = this.world.cfg;
-      cfg.width = this.width;
-      cfg.height = this.height;
       const small = this.width < 700;
       const area = (this.width * this.height) / (1440 * 900);
       const room = clamp(this.freeShare / 0.7, 0.6, 1);
-      cfg.cap = Math.round(clamp(28 * area * room, small ? 10 : 14, 32));
-      cfg.sight = small ? 240 : 320;
+      for (const w of [this.world, this.shadow]) {
+        if (!w) continue;
+        w.cfg.width = this.width;
+        w.cfg.height = this.height;
+        w.cfg.cap = Math.round(clamp(28 * area * room, small ? 10 : 14, 32));
+        w.cfg.sight = small ? 240 : 320;
+      }
       this.dim = this.quiet ? 0.45 : 1;
     }
 
@@ -186,22 +199,35 @@
     step(dt) {
       const world = this.world;
       world.step(dt);
+      if (this.shadow) {
+        this.shadow.step(dt);
+        for (const ev of this.shadow.events) {
+          if (ev.type === 'death') this.shadowLifetime = this.shadowLifetime ? this.shadowLifetime * 0.97 + ev.point.age * 0.03 : ev.point.age;
+        }
+      }
 
       for (const ev of world.events) {
         if (ev.type === 'birth') { ev.point.seen = 0; ev.point.pop = 1; }
         else {
           const p = ev.point;
           this.ghosts.push({ x: p.x, y: p.y, colour: p.colour || TERRACOTTA, radius: this.radius(p), fade: (p.seen || 0) });
-          this.lifetime = this.lifetime ? this.lifetime * 0.96 + p.age * 0.04 : p.age;
+          this.lifetime = this.lifetime ? this.lifetime * 0.97 + p.age * 0.03 : p.age;
         }
       }
       for (const p of world.points) {
         p.seen = Math.min(1, (p.seen || 0) + dt / 0.9);
         p.pop = Math.max(0, (p.pop || 0) - dt / 0.9);
-        const g = LightWorld.generosity(p);
-        p.shown = p.shown === undefined ? g : p.shown + (g - p.shown) * Math.min(1, dt * 1.5);
-        p.colour = colourOf(p.shown);
+        if (!p.colour) {              // family colour: the parent's, a little shifted, or a new one
+          const fresh = PALETTE[Math.floor(Math.random() * PALETTE.length)];
+          p.colour = p.parent && p.parent.colour ? mix(p.parent.colour, fresh, 0.4) : fresh;
+        }
       }
+      for (const f of world.flows) {  // light carries colour with it
+        const share = clamp(0.5 * f.amount / Math.max(f.to.light, 0.05), 0, 0.2);
+        f.to.colour = mix(f.to.colour || f.from.colour, f.from.colour, share);
+      }
+      this.sampleClock = (this.sampleClock || 0) + dt;
+      if (this.sampleClock >= 2) { this.sampleClock -= 2; if (this.panel && this.lifetime) this.panel.sample(this.lifetime, this.shadowLifetime); }
       for (const g of this.ghosts) g.fade -= dt / 1.3;
       this.ghosts = this.ghosts.filter((g) => g.fade > 0);
 
@@ -299,7 +325,7 @@
           ctx.stroke();
         }
       }
-      if (this.panel) this.panel.update(world, this.lifetime);
+      if (this.panel) this.panel.update(world, this.lifetime, this.shadowLifetime);
     }
 
     drawSpark(x, y, radius, colour, shine, alpha) {
@@ -334,7 +360,8 @@
     start() {
       const world = this.world;
       if (window.LIGHT_START) world.load(window.LIGHT_START.points);
-      for (let t = 0; t < 30; t += 1 / 20) this.step(1 / 20);      // let the groups form before the first frame
+      // Before the first frame: let the groups form, and fill the panel's chart with three minutes
+      for (let t = 0; t < 180; t += 1 / 20) this.step(1 / 20);
       for (const p of world.points) { p.seen = 1; p.pop = 0; }
       this.ghosts = [];
 
@@ -373,8 +400,21 @@
         <tr><td>light is fine</td><td><i data-cell="4"></i></td><td><i data-cell="5"></i></td></tr>
         <tr><td>light is low</td><td><i data-cell="6"></i></td><td><i data-cell="7"></i></td></tr>
       </table>
-      <div class="society-tally"></div>
-      <div class="society-more"></div>`;
+      <div class="society-key"><span class="key-life"></span>learning<span class="key-base"></span>not learning</div>
+      <svg class="society-chart" viewBox="0 0 170 50" role="img" aria-label="Average life over the last three minutes: this society against the same world with points that never learn">
+        <polyline class="base" points=""></polyline>
+        <polyline class="life" points=""></polyline>
+        <circle class="now" r="2.2"></circle>
+        <text class="life-label" text-anchor="end"></text>
+        <text class="base-label" text-anchor="end"></text>
+      </svg>
+      <svg class="society-gauge" viewBox="0 0 170 16" role="img" aria-label="Learning rate">
+        <text x="0" y="11">α</text>
+        <line class="track" x1="14" x2="166" y1="8" y2="8"></line>
+        <line class="alpha" y1="3.5" y2="12.5"></line>
+        <circle class="step" cy="8" r="2.6"></circle>
+      </svg>
+      <div class="society-tally"></div>`;
     document.body.appendChild(panel);
 
     const backdrop = document.createElement('div');
@@ -393,7 +433,7 @@
         <li><b>points of light</b> &mdash; each one fades all the time. a brighter one burns faster, and one with nobody near burns fastest.</li>
         <li><b>what they learn</b> &mdash; two things, from their own lives: whether to move toward another light, and whether to pass light to a dimmer neighbour. each keeps a tiny notebook (a Q-table) of what worked.</li>
         <li><b>why it is hard</b> &mdash; giving costs light now. the payoff, a neighbour who stays lit beside you, comes later.</li>
-        <li><b>inheritance</b> &mdash; a newborn copies the notebook of the nearest light. colour shows it: gold gives, purple keeps.</li>
+        <li><b>inheritance</b> &mdash; a newborn copies the notebook of the nearest light, and takes its colour. colours blend when light is passed.</li>
         <li><b>you</b> &mdash; click or tap anywhere to add a light.</li>
       </ul>`;
     document.body.append(backdrop, card);
@@ -407,10 +447,15 @@
 
     const cells = Array.from(panel.querySelectorAll('[data-cell]'));
     const tally = panel.querySelector('.society-tally');
-    const more = panel.querySelector('.society-more');
-    const baseline = window.LIGHT_START && window.LIGHT_START.withoutLearning;
+    const chart = panel.querySelector('.society-chart');
+    const gauge = panel.querySelector('.society-gauge');
+    const history = [], shadowHistory = [];     // average life with and without learning, every two seconds
     let clock = 0;
-    panel.update = (world, lifetime) => {
+    panel.sample = (lifetime, without) => {
+      history.push(lifetime); shadowHistory.push(without);
+      if (history.length > 90) { history.shift(); shadowHistory.shift(); }
+    };
+    panel.update = (world, lifetime, without) => {
       if (++clock % 20 !== 1) return;                 // a few times a second is plenty
       const b = world.beliefs();
       const share = [1 - b.approachCompany, b.approachCompany, 1 - b.approachAlone, b.approachAlone,
@@ -421,9 +466,30 @@
       let rate = 0;
       for (const p of world.points) for (let k = 0; k < 8; k++) rate += p.n[k] ? Math.max(cfg.alpha, 1 / p.n[k]) : 1;
       rate /= Math.max(1, world.points.length * 8);
-      tally.innerHTML = `${b.alive} alight · average life ${Math.round(lifetime)} s<span class="society-short"> · α ${cfg.alpha}</span>`;
-      more.innerHTML = (baseline ? `without learning ${baseline} s<br>` : '')
-        + `learning rate α ${cfg.alpha} · now ${rate.toFixed(2)}<br>discount γ ${cfg.gamma} · explore ε ${cfg.explore}`;
+      tally.innerHTML = `${b.alive} alight<span class="society-short"> · life ${Math.round(lifetime)} s · α ${cfg.alpha}</span>`;
+
+      // Average life over the last three minutes: this society (line) and the same world with
+      // points that never learn (dashes)
+      const values = history.length ? history : [lifetime];
+      const others = shadowHistory.length ? shadowHistory : [without];
+      const lo = Math.min(...values, ...others) - 3, hi = Math.max(...values, ...others) + 3;
+      const y = (v) => 46 - (v - lo) / (hi - lo) * 42;
+      const x = (k) => 1 + k * (132 / 89);
+      const path = (vs) => vs.map((v, k) => `${x(k).toFixed(1)},${y(v).toFixed(1)}`).join(' ');
+      chart.querySelector('.life').setAttribute('points', path(values));
+      chart.querySelector('.base').setAttribute('points', path(others));
+      const endY = y(values[values.length - 1]), otherY = y(others[others.length - 1]);
+      const dot = chart.querySelector('.now'); dot.setAttribute('cx', x(values.length - 1)); dot.setAttribute('cy', endY);
+      // the two end labels, kept from sitting on each other
+      const up = endY <= otherY ? -1 : 1, gap = Math.max(0, 9 - Math.abs(endY - otherY)) / 2;
+      const label = chart.querySelector('.life-label'), baseLabel = chart.querySelector('.base-label');
+      label.setAttribute('x', 170); label.setAttribute('y', clamp(endY + 3 + up * gap, 7, 49)); label.textContent = `${Math.round(lifetime)} s`;
+      baseLabel.setAttribute('x', 170); baseLabel.setAttribute('y', clamp(otherY + 3 - up * gap, 7, 49)); baseLabel.textContent = `${Math.round(without)} s`;
+
+      // Learning rate: the track runs from 0 to 1, the tick is alpha, the dot is the step size now
+      const gx = (v) => 14 + v * 152;
+      const tick = gauge.querySelector('.alpha'); tick.setAttribute('x1', gx(cfg.alpha)); tick.setAttribute('x2', gx(cfg.alpha));
+      gauge.querySelector('.step').setAttribute('cx', gx(rate));
     };
     return panel;
   }
