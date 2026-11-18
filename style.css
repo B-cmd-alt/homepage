@@ -356,46 +356,173 @@ a:focus-visible {
   }
 }
 
-/* What the homepage background is doing */
-.bg-note {
+/* ============================================
+   Corner panel: what the points have learned (home page)
+   ============================================ */
+.society-panel {
   position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 1.1rem;
-  z-index: 1;
-  padding: 0 1rem;
-  text-align: center;
+  right: 1.4rem;
+  bottom: 1.2rem;
+  z-index: 2;
   font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: 0.64rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.society-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  margin-bottom: 0.35rem;
+  color: var(--text);
+}
+
+.society-ask {
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 1px solid rgba(26, 26, 26, 0.3);
+  border-radius: 50%;
+  background: transparent;
+  font: inherit;
+  line-height: 1;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.society-ask:hover {
+  border-color: var(--accent-ink);
+  color: var(--accent-ink);
+}
+
+.society-panel table {
+  border-collapse: collapse;
+}
+
+.society-panel th {
+  padding: 0.3rem 0 0.1rem;
+  font-weight: 400;
+  text-align: center;
+  opacity: 0.8;
+}
+
+.society-panel td {
+  padding: 0.08rem 0;
+  text-align: center;
+}
+
+.society-panel td:first-child {
+  padding-right: 0.8rem;
+  text-align: left;
+}
+
+/* One cell: the darker it is, the more points prefer that choice */
+.society-panel i {
+  display: inline-block;
+  width: 2.6rem;
+  height: 0.62rem;
+  border-radius: 2px;
+  background: var(--accent-ink);
+  vertical-align: middle;
+  transition: opacity 0.6s ease;
+}
+
+.society-tally {
+  margin-top: 0.45rem;
+}
+
+.society-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: rgba(250, 249, 247, 0.6);
+}
+
+.society-card {
+  position: fixed;
+  z-index: 60;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(400px, calc(100vw - 2.5rem));
+  padding: 1.5rem 1.6rem 1.3rem;
+  background: var(--bg);
+  border: 1px solid rgba(26, 26, 26, 0.14);
+  border-radius: 12px;
+  box-shadow: 0 18px 50px rgba(26, 26, 26, 0.1);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
   line-height: 1.7;
   color: var(--text-muted);
-  pointer-events: none;
 }
 
-.bg-note span {
-  display: block;
-  width: fit-content;     /* the box is the text, so the background can measure it */
-  margin: 0 auto;
+.society-card[hidden],
+.society-backdrop[hidden] {
+  display: none;
 }
 
-.bg-formula {
+.society-card h2 {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 700;
   color: var(--text);
-  letter-spacing: 0.02em;
+  margin-bottom: 0.8rem;
 }
 
-.bg-formula sup,
-.bg-formula sub {
-  font-size: 0.75em;
-  line-height: 0;
+.society-card ul {
+  list-style: none;
 }
 
-.bg-legend {
-  opacity: 0.85;
+.society-card li + li {
+  margin-top: 0.6rem;
 }
 
+.society-card b {
+  font-weight: 500;
+  color: var(--text);
+}
+
+.society-close {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.8rem;
+  border: 0;
+  background: transparent;
+  font-size: 1.3rem;
+  line-height: 1;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.society-close:hover {
+  color: var(--accent-ink);
+}
+
+/* Small screens: keep the count and the "?", drop the grid */
 @media (max-width: 700px), (max-height: 640px) {
-  .bg-note .bg-legend {
+  .society-panel {
+    right: 0;
+    left: 0;
+    bottom: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.7rem;
+  }
+
+  .society-panel table,
+  .society-head span {
     display: none;
   }
-}
 
+  .society-head {
+    order: 2;
+    margin: 0;
+  }
+
+  .society-tally {
+    margin: 0;
+  }
+}

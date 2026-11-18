@@ -73,11 +73,12 @@
 </head>
 <body>
 
-  <!-- Animated background, same on every page: sparks as tokens, exchanging energy by self-attention (attention.js) -->
+  <!-- Animated background, same on every page: a small society of light (world.js simulates, society.js draws).
+       data-panel adds the corner panel that shows what the points have learned. -->
   <div class="bg-animation" aria-hidden="true">
     <div class="bg-texture"></div>
     <div class="bg-grid"></div>
-    <canvas id="nn-canvas"></canvas>
+    <canvas id="nn-canvas" data-panel></canvas>
     <div class="bg-glow"></div>
   </div>
 
@@ -107,12 +108,9 @@
     </div>
   </main>
 
-  <!-- What the background is doing, for anyone who wonders -->
-  <p class="bg-note" aria-hidden="true">
-    <span class="bg-formula">Attention(Q, K, V) = softmax(QK<sup>T</sup> / √d<sub>k</sub>) · V</span>
-    <span class="bg-legend">each spark is a token · each line an attention weight · observe → attend → act → a new spark is born</span>
-  </p>
 
-  <script src="attention.js"></script>
+  <script src="world.js"></script>
+  <script src="start.js"></script>
+  <script src="society.js"></script>
 </body>
 </html>

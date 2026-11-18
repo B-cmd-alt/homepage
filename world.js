@@ -90,7 +90,10 @@
     this.deaths = 0;
     this.lifeSum = 0;                    // total lifetime of the points that have gone out
     this.chosen = new Float64Array(8);   // how often each choice was actually made, by notebook entry
-    this.keepOut = null;                 // optional function (x, y) -> true where points should not be born
+    // Optional hooks the page uses to keep the points off its text. Unset when run headless.
+    this.keepOut = null;                 // function (x, y) -> true where points should not be born
+    this.blocked = null;                 // function (p, o) -> true if p cannot see o
+    this.confine = null;                 // function (p, dt): called after p has moved
   }
 
   World.prototype.gauss = function () {
@@ -166,7 +169,7 @@
       var o = pts[i];
       if (o === p) continue;
       var d = Math.hypot(o.x - p.x, o.y - p.y);
-      if (d < nearestD) { nearestD = d; nearest = o; }
+      if (d < nearestD && !(this.blocked && this.blocked(p, o))) { nearestD = d; nearest = o; }
       if (d < c.reach) {
         company = true;
         if (o.light < p.light && d < receiverD) { receiverD = d; receiver = o; }
@@ -230,6 +233,7 @@
       if (p.x > c.width - m) { p.x = c.width - m; p.wander = Math.PI - p.wander; }
       if (p.y < m) { p.y = m; p.wander = -p.wander; }
       if (p.y > c.height - m) { p.y = c.height - m; p.wander = -p.wander; }
+      if (this.confine) this.confine(p, dt);
     }
 
     // Light. Changes are collected first so the order of the points does not matter.
