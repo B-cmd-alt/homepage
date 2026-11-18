@@ -59,7 +59,7 @@ html:not(.js) .lang-switch { display: none; }
 .page .facts { grid-template-columns: repeat(3, 1fr); margin: 0 0 2.2rem; }
 .fact b { font-size: clamp(1.3rem, 4.6vw, 1.65rem); }
 .label {
-  font-family: var(--font-mono); font-size: 0.72rem; font-weight: 500; letter-spacing: 0.12em;
+  font-family: var(--font-mono); font-size: 0.75rem; font-weight: 500; letter-spacing: 0.12em;
   text-transform: uppercase; color: var(--text); margin: 0 0 0.8rem;
 }
 .block { margin-bottom: 2.4rem; }
@@ -72,7 +72,7 @@ html:not(.js) .lang-switch { display: none; }
   padding: 0.4rem 0.75rem; border: 1px dashed var(--line-dash); border-radius: 100px; background: var(--surface);
 }
 .need li.opt { color: var(--text-muted); }
-.sub { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.06em; color: var(--text-muted); margin: 1.1rem 0 0.55rem; }
+.sub { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.06em; color: var(--text-muted); margin: 1.1rem 0 0.55rem; }
 .sub:first-of-type { margin-top: 0; }
 
 /* A row of measured options, e.g. time by thickness */

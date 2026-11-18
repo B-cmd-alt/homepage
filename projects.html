@@ -54,16 +54,16 @@
 
     /* ───────── One picture per project, drawn from the site tokens so it follows the theme ───────── */
     .figure { margin: 1.7rem 0 0; padding: 1.2rem 1.3rem 1.15rem; background: var(--surface); border: 1px solid var(--hairline); border-radius: 12px; }
-    .figure-title { font-family: var(--font-mono); font-size: 0.72rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text); margin-bottom: 1rem; }
-    .project p.figure-note { font-size: 0.74rem; line-height: 1.7; margin: 1rem 0 0; }
+    .figure-title { font-family: var(--font-mono); font-size: 0.75rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text); margin-bottom: 1rem; }
+    .project p.figure-note { font-size: 0.78rem; line-height: 1.7; margin: 1rem 0 0; }
 
     /* Chart: one row per system. The bar is the share of update questions; the two columns beside it are the same numbers. */
     .served { width: 100%; border-collapse: collapse; font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-muted); }
     .served th { font-weight: 400; text-align: left; }
-    .served thead th { font-size: 0.7rem; padding-bottom: 0.6rem; white-space: nowrap; }
+    .served thead th { font-size: 0.75rem; padding-bottom: 0.6rem; white-space: nowrap; }
     .served thead th:nth-child(n+3), .served td.n { text-align: right; padding-left: 0.9rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
     .served tbody th { color: var(--text); padding: 0.32rem 1rem 0.32rem 0; white-space: nowrap; width: 1%; }
-    .served tbody th small { font-size: 0.7rem; color: var(--text-muted); margin-left: 0.4rem; }
+    .served tbody th small { font-size: 0.75rem; color: var(--text-muted); margin-left: 0.4rem; }
     .served td.bar { width: 100%; }
     .key { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 0.4rem; }
     .track { display: flex; gap: 2px; height: 10px; border-radius: 0 4px 4px 0; background: var(--hairline); }
@@ -74,7 +74,7 @@
 
     /* Diagram: the repair loop, left to right; top to bottom on a phone */
     .loop { list-style: none; display: grid; grid-template-columns: repeat(5, 1fr); gap: 1.6rem; }
-    .loop li { position: relative; font-family: var(--font-mono); font-size: 0.74rem; line-height: 1.6; color: var(--text-muted); }
+    .loop li { position: relative; font-family: var(--font-mono); font-size: 0.76rem; line-height: 1.6; color: var(--text-muted); }
     .loop li + li::before { content: '→'; position: absolute; left: -1.25rem; top: 0.5rem; color: var(--accent-ink); }
     .loop svg { display: block; width: 34px; height: 34px; margin-bottom: 0.55rem; fill: none; stroke: var(--text); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
     .loop b { display: block; font-family: var(--font-display); font-variation-settings: 'opsz' 14; font-size: 1.05rem; font-weight: 700; line-height: 1.25; color: var(--text); margin-bottom: 0.2rem; }

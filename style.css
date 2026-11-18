@@ -274,7 +274,7 @@ a:focus-visible {
 
 .fact span {
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   line-height: 1.5;
   color: var(--text-muted);
 }
@@ -583,6 +583,54 @@ a:focus-visible {
 .contact a:hover {
   color: var(--accent-ink);
   border-bottom-color: var(--accent-ink);
+}
+
+/* ============================================
+   Comfort
+   ============================================ */
+
+/* Going from one page to the next is a short cross-fade, not a hard cut */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 0.28s;
+  }
+}
+
+/* On touch screens the small links keep their look but answer to a finger-sized area around them */
+@media (pointer: coarse) {
+  .also a,
+  .contact a,
+  .cta a,
+  .theme-switch button,
+  .lang-switch button,
+  .toggle {
+    position: relative;
+  }
+
+  .back-link::after,
+  .also a::after,
+  .contact a::after,
+  .cta a::after,
+  .theme-switch button::after,
+  .lang-switch button::after,
+  .toggle::after {
+    content: '';
+    position: absolute;
+    inset: -0.55rem -0.3rem;
+  }
+
+  .back-link::after {
+    inset: -0.8rem -0.7rem;
+  }
+
+  .contact a::after {
+    inset: -0.5rem -0.3rem -0.9rem;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

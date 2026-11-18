@@ -26,11 +26,14 @@ Static site served by GitHub Pages from `main`. Plain HTML, CSS and JS: no build
   The frame these are built from (`.back-link`, `.page`, `.page-title`, `.lede`, `.nav-foot`, `.soon`, the number
   cards) lives once in `style.css`. A page's own `<style>` holds only what that page alone needs; never copy the
   frame into a page.
+  Comfort, on every page: nothing a visitor has to read is smaller than 12px; on touch screens every link and
+  switch answers to a finger-sized area (the `pointer: coarse` block in `style.css`); going from page to page is
+  a short cross-fade (`@view-transition`), switched off for readers who ask for reduced motion.
   Links are underlined text in one of the homepage's two styles (`.links a` / `.cta a` for main links,
   `.also a` / `.cta a.quiet` for quiet ones). No pill buttons, no filled buttons.
   `projects/memory-evaluator.html` is a generated report: its site look lives in the marked
-  "site chrome" blocks in that file (head tags and analytics, palette, background, back link, foot and contact line)
-  and has to be re-applied if the report is regenerated.
+  "site chrome" blocks in that file (head tags and analytics, palette, background, back link, the "On this page"
+  jump links and the Top link, foot and contact line) and has to be re-applied if the report is regenerated.
 
 ## Projects (`projects.html`)
 
@@ -53,7 +56,8 @@ Static site served by GitHub Pages from `main`. Plain HTML, CSS and JS: no build
   (never cropped), with the entire background taking on that photograph's colours from its `-a` copy.
   While a photograph is showing, the colours of the next one glow along the bottom of the background.
   Scrolling slides the next photograph up over the current one as its colours rise to fill the screen;
-  the pointer makes photo and backdrop lean slightly.
+  the pointer makes photo and backdrop lean slightly. The title sits in the margin to the left of the photograph;
+  where the window is too tall or narrow to leave that margin, it goes above the photograph, never over it.
 - **Nothing moves until the visitor does.** No previews, no nudges, no edge of the next photograph showing:
   moving pictures made the page look messy. The only cue is the scroll sign in the band the photograph leaves
   free at the bottom of the first screen: a small mouse with a moving wheel and "Scroll" ("Swipe up" on touch

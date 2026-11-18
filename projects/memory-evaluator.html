@@ -95,6 +95,19 @@ a:focus-visible{outline:2px solid var(--accent-ink);outline-offset:3px;border-ra
 main .contact a{color:var(--text-muted);text-decoration:none;border-bottom:1px solid transparent;transition:all .2s ease}
 main .contact a:hover{color:var(--accent-ink);border-bottom-color:var(--accent-ink)}
 @media(max-width:480px){main{padding-top:5.5rem}.back-link{top:1rem;left:1rem}.corner{top:.85rem;right:1rem;gap:.6rem}}
+/* jump links under the title, built from the section headings; and a way back up from anywhere */
+.toc{display:flex;flex-wrap:wrap;gap:.2rem 1.6rem;margin:0 0 .6rem;font-family:var(--font-mono);font-size:.8rem}
+main .toc a,main .to-top{color:var(--text-muted);text-decoration:none;padding:.35rem 0;border-bottom:1px solid transparent;transition:color .2s ease,border-color .2s ease}
+main .toc a:hover,main .to-top:hover{color:var(--accent-ink);border-bottom-color:var(--accent-ink)}
+.toc-label{font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text);padding:.35rem 0}
+h2{scroll-margin-top:1.5rem}
+.to-top{position:fixed;right:1.5rem;bottom:1.2rem;z-index:10;font-family:var(--font-mono);font-size:.85rem;opacity:0;visibility:hidden;transition:opacity .3s ease,visibility .3s,color .2s ease,border-color .2s ease}
+.to-top.on{opacity:1;visibility:visible}
+html{scroll-behavior:smooth}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+@media(prefers-reduced-motion:no-preference){@view-transition{navigation:auto}::view-transition-old(root),::view-transition-new(root){animation-duration:.28s}}
+@media(pointer:coarse){.contact a,.toc a,.theme-switch button{position:relative}.back-link::after,.contact a::after,.toc a::after,.to-top::after,.theme-switch button::after{content:'';position:absolute;inset:-.55rem -.3rem}.back-link::after,.to-top::after{inset:-.8rem -.7rem}}
+@media(max-width:480px){.to-top{right:1rem}}
 /* wide tables scroll inside themselves on small screens, so the page itself never scrolls sideways */
 @media(max-width:1100px){table{display:block;max-width:100%;overflow-x:auto}}
 </style>
@@ -1674,6 +1687,27 @@ function applyFilters(){
   });
 }
 document.addEventListener('change',e=>{if(e.target.closest('.filters'))applyFilters();});
+</script>
+<!-- site chrome: jump links and the way back to the top (built from the report's own headings, so they survive a regeneration) -->
+<script>
+(function () {
+  var main = document.querySelector('main'), heads = main.querySelectorAll('h2'), lede = main.querySelector('.sub');
+  if (!heads.length || !lede) return;
+  var nav = document.createElement('nav'); nav.className = 'toc'; nav.setAttribute('aria-label', 'On this page');
+  var label = document.createElement('span'); label.className = 'toc-label'; label.textContent = 'On this page'; nav.appendChild(label);
+  heads.forEach(function (h, i) {
+    if (!h.id) h.id = 'section-' + (i + 1);
+    var a = document.createElement('a'); a.href = '#' + h.id;
+    a.textContent = h.textContent.split(' (')[0].split(' for ')[0].split(' \u2014 20')[0];   // the short form of a long heading
+    nav.appendChild(a);
+  });
+  lede.parentNode.insertBefore(nav, lede.nextSibling);
+  var top = document.createElement('a'); top.className = 'to-top'; top.href = '#'; top.textContent = '\u2191 Top';
+  top.addEventListener('click', function (e) { e.preventDefault(); window.scrollTo(0, 0); history.replaceState(null, '', location.pathname); });
+  main.appendChild(top);
+  function show() { top.classList.toggle('on', window.scrollY > window.innerHeight); }
+  window.addEventListener('scroll', show, { passive: true }); show();
+})();
 </script>
 <!-- site chrome: animated background -->
 <script src="../script.js"></script>

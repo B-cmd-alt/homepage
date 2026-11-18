@@ -72,7 +72,7 @@
       position: absolute; z-index: 3; top: 0; left: 0; height: 100vh; height: 100svh; width: calc(50vw - 33.4vh + 2.5rem);
       padding: 0 1.5rem 11vh 4vw; display: flex; flex-direction: column; justify-content: flex-end; pointer-events: none;
     }
-    .page-title { font-size: clamp(1.9rem, calc((50vw - 33.4vh - 4vw) / 6.5), 4.5rem); }
+    .page-title { font-size: clamp(1.4rem, calc((50vw - 33.4vh - 4vw) / 6.5), 4.5rem); }
     .lede { font-size: 0.9rem; max-width: none; margin-bottom: 0; }
 
     /* One screen per photograph */
@@ -84,7 +84,7 @@
     /* When it was taken: one quiet line under the photograph's left corner, moving with it */
     .when {
       position: absolute; left: 0; top: 100%; margin-top: 0.55rem; white-space: nowrap;
-      font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.12em; color: var(--text);
+      font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.12em; color: var(--text);
     }
     .shot {
       display: block; width: auto; height: auto; max-width: 92vw; max-height: calc(100vh - 7.5rem); max-height: calc(100svh - 7.5rem);
@@ -114,7 +114,7 @@
     .sign {
       position: fixed; z-index: 5; left: 50%; bottom: 1.15rem; transform: translateX(-50%);
       display: flex; align-items: center; gap: 0.65rem; white-space: nowrap; pointer-events: none;
-      font-family: var(--font-mono); font-size: 0.72rem; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase;
+      font-family: var(--font-mono); font-size: 0.75rem; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase;
       color: var(--text); transition: opacity 0.4s ease;
     }
     .sign .mouse { position: relative; width: 15px; height: 23px; border: 1.5px solid var(--text); border-radius: 8px; }
@@ -143,6 +143,7 @@
     }
     .count:hover { color: var(--accent-ink); border-bottom-color: var(--accent-ink); }
     .count:focus-visible, .sheet button:focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 3px; }
+    @media (pointer: coarse) { .count::after { content: ''; position: absolute; inset: -0.7rem -0.6rem; } }
 
     /* Overview: every photograph at once, shown whole. Opened from the count; nothing is fetched for it until then. */
     .sheet {
@@ -178,7 +179,9 @@
     html:not(.reel-on) .count, html:not(.reel-on) .rail, html:not(.reel-on) .sheet { display: none; }
     html:not(.reel-on) .sign { position: absolute; }
 
-    @media (max-aspect-ratio: 4/5) {
+    /* Where the margin beside the photograph is too narrow for the title (under about 146px of text room:
+       tall windows, and squarish ones that are also short), the title goes above the photograph instead */
+    @media (max-aspect-ratio: 5/4), (max-aspect-ratio: 3/2) and (max-height: 620px), (max-aspect-ratio: 16/9) and (max-height: 420px) {
       .intro { width: 100%; justify-content: flex-start; padding: 3.9rem 1.5rem 0; }
       .page-title { font-size: 2.1rem; margin-bottom: 0; }
       .lede { display: none; }
@@ -186,6 +189,11 @@
       .pin { padding-top: 5.6rem; }
       .rail { display: none; }
       .sign { bottom: 1.3rem; }
+    }
+    @media (max-height: 480px) { .lede { display: none; } }
+    /* A short, squarish window with the title above: keep the title small enough to clear the photograph */
+    @media (min-aspect-ratio: 5/4) and (max-aspect-ratio: 3/2) and (max-height: 480px), (min-aspect-ratio: 3/2) and (max-aspect-ratio: 16/9) and (max-height: 420px) {
+      .page-title { font-size: 1.4rem; }
     }
     @media (max-width: 480px) { .count { right: 1rem; } .sheet { padding: 4.5rem 1rem 2rem; } .tiles { gap: 1.1rem 0.7rem; } .tiles img { height: 150px; } }
     @media (prefers-reduced-motion: reduce) {
