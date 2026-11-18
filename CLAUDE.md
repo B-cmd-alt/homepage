@@ -29,13 +29,18 @@ Static site served by GitHub Pages from `main`. Plain HTML, CSS and JS: no build
 - **Only web-size, watermarked copies are ever committed.** This repository is public: never add an original
   or full-resolution photograph, not even temporarily.
 - Make the copies with `python3 tools/prepare-photos.py --start <next number> <originals...>` (needs Pillow).
-  It drops all camera data (including location), writes `NN-s.webp` (720 px wide, grid) and `NN-l.webp`
-  (1600 px on the long side, viewer; nothing larger is published), stamps `@bb.style` at the bottom centre
-  from `tools/watermark.png`, and writes the author and copyright into each file.
-- Add each photo as one `<li>` in the `.gallery` list (the tool prints it); write a plain description as `alt`.
-  Do not invent titles or places. The first two photos load at once, the rest use `loading="lazy"`.
-- The page shows photographs only: a two-column grid with a number under each, and a dark full-screen
-  viewer (arrow keys, swipe, Esc).
+  It drops all camera data (including location) and writes three files per photo: `NN-s.webp` (720 px wide),
+  `NN-l.webp` (1600 px on the long side; nothing larger is published), both stamped `@bb.style` at the bottom
+  centre from `tools/watermark.png` and carrying author and copyright, and `NN-a.webp` (96 px, colours only).
+- The page is a full-screen reel, made to impress at first sight: one photograph per screen, shown whole
+  (never cropped), with the entire background taking on that photograph's colours from its `-a` copy.
+  Scrolling slides the next photograph up over the current one; the pointer makes photo and backdrop lean
+  slightly. Arrow keys, clicking, and swiping also move one photograph at a time.
+- To add a photo, paste the two pieces of markup the tool prints: an `<img>` into `.ambient` and a
+  `<li class="frame">` into `.frames`, in the same order. Write a plain description as `alt`.
+  Do not invent titles or places.
+- Only the current photograph and its neighbours are rendered, so the rest are not downloaded until needed.
+  Without JavaScript the page is one full-height photograph after another.
 
 ## Cooking (`cooking.html`, `cooking/`)
 

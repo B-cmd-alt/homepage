@@ -35,59 +35,93 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <script>document.documentElement.classList.add('reel-on');</script>
   <style>
+    /* ───────── Photography: one photograph at a time, filling the screen ─────────
+       Behind each photograph the whole background takes on its colours (a tiny blurred copy).
+       Scrolling slides the next photograph up over the last. Without JavaScript the page is
+       simply one full-height photograph after another. */
+    html { scroll-snap-type: y mandatory; }
+    body { overflow-x: clip; }
     .back-link {
       position: fixed; top: 1.5rem; left: 1.5rem; z-index: 10;
       font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-muted);
       border-bottom: 1px solid transparent; transition: all 0.2s ease;
     }
     .back-link:hover { color: var(--accent); border-bottom-color: var(--accent); }
-    .page { position: relative; z-index: 1; max-width: 760px; margin: 0 auto; padding: 7rem 1.5rem 5rem; }
-    .page-title { font-family: var(--font-display); font-size: clamp(2.6rem, 8vw, 4.5rem); font-weight: 700; line-height: 1; margin-bottom: 1rem; }
-    .lede { font-family: var(--font-mono); font-size: 0.95rem; line-height: 1.9; color: var(--text-muted); max-width: 600px; margin-bottom: 1.8rem; }
 
-    /* ───────── Gallery: two columns of photographs, nothing around them ───────── */
-    .gallery { list-style: none; counter-reset: photo; display: grid; grid-template-columns: repeat(2, 1fr); gap: 2.2rem 1.6rem; margin-top: 2.8rem; }
-    .gallery li { counter-increment: photo; }
-    .gallery a { display: block; cursor: zoom-in; }
-    .gallery img { display: block; width: 100%; height: auto; background: var(--bg-subtle); transition: opacity 0.25s ease; }
-    .gallery a:hover img { opacity: 0.9; }
-    .gallery a:focus-visible { outline-offset: 5px; }
-    .gallery li::after {
-      content: counter(photo, decimal-leading-zero); display: block; margin-top: 0.6rem;
-      font-family: var(--font-mono); font-size: 0.72rem; font-weight: 500; letter-spacing: 0.08em; color: var(--accent-ink);
+    /* Backdrop: the photograph's own colours, softened towards the page colour so text stays readable */
+    .ambient { position: absolute; inset: 0; overflow: hidden; }
+    .ambient img {
+      position: absolute; inset: -8%; width: 116%; height: 116%; object-fit: cover; opacity: 0;
+      filter: blur(42px) saturate(1.15);
+      translate: calc(var(--mx, 0) * 26px) calc(var(--my, 0) * 26px);
+      transition: translate 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
     }
-    .rights { font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-muted); text-align: center; margin-top: 3.4rem; }
+    .ambient img:first-child { opacity: 1; }
+    .ambient::after { content: ''; position: absolute; inset: 0; background: var(--bg); opacity: 0.56; }
 
-    /* ───────── Viewer: one photograph at a time on a dark ground, in both themes ───────── */
-    .viewer {
-      width: 100vw; height: 100vh; height: 100dvh; max-width: none; max-height: none; margin: 0; padding: 0; border: 0;
-      background: #0d0c0b; color: #f2efea; overflow: hidden;
+    /* Title, over the first photograph */
+    /* It lives in the margin to the left of the photograph (50vw - 30vh wide) and is sized to fit there */
+    .intro {
+      position: absolute; z-index: 3; top: 0; left: 0; height: 100vh; height: 100svh; width: calc(50vw - 30vh);
+      padding: 0 1.5rem 11vh 4vw; display: flex; flex-direction: column; justify-content: flex-end; pointer-events: none;
     }
-    .viewer::backdrop { background: #0d0c0b; }
-    .viewer[open] { display: flex; align-items: center; justify-content: center; }
-    .viewer img { display: block; width: auto; height: auto; max-width: min(92vw, 1066px); max-height: 86vh; max-height: 86dvh; cursor: pointer; }
-    .viewer button {
-      position: absolute; font-family: var(--font-mono); font-size: 0.85rem; color: #aaa49c; background: none; border: 0;
-      border-bottom: 1px solid transparent; padding: 0.4rem 0.5rem; cursor: pointer; transition: color 0.2s ease, border-color 0.2s ease;
-    }
-    .viewer button:hover { color: #fff; border-bottom-color: var(--accent); }
-    .viewer button:focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 3px; }
-    .viewer-close { top: 1.2rem; right: 1.5rem; }
-    .viewer-prev, .viewer-next { top: 50%; transform: translateY(-50%); font-size: 1.35rem !important; padding: 0.7rem 0.8rem !important; }
-    .viewer-prev { left: 1.2rem; }
-    .viewer-next { right: 1.2rem; }
-    .viewer-count { position: absolute; bottom: 1.1rem; left: 0; right: 0; text-align: center; font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.12em; color: #aaa49c; }
-    html:has(.viewer[open]) { overflow: hidden; }
+    .page-title { font-family: var(--font-display); font-size: clamp(1.9rem, calc((50vw - 30vh - 4vw - 2.5rem) / 5.9), 4.5rem); font-weight: 700; line-height: 1; margin-bottom: 1rem; }
+    .lede { font-family: var(--font-mono); font-size: 0.9rem; line-height: 1.9; color: var(--text-muted); }
 
-    @media (max-width: 560px) {
-      .gallery { grid-template-columns: 1fr; gap: 1.8rem; }
-      .viewer-prev, .viewer-next { top: auto; bottom: 0.35rem; transform: none; }
-      .viewer img { max-width: 100vw; max-height: 82dvh; }
+    /* One screen per photograph */
+    .reel { position: relative; z-index: 1; }
+    .frames { list-style: none; }
+    .frame { height: 100vh; height: 100svh; scroll-snap-align: start; scroll-snap-stop: always; }
+    .pin { height: 100%; display: grid; place-items: center; }
+    .hold { display: block; }
+    .shot {
+      display: block; width: auto; height: auto; max-width: 92vw; max-height: 90vh; max-height: 90svh;
+      box-shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.45);
+      translate: calc(var(--mx, 0) * -14px) calc(var(--my, 0) * -14px);
+      transition: translate 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
     }
-    @media (prefers-reduced-motion: reduce) { .gallery img { transition: none; } }
-    .nav-foot { text-align: center; margin-top: 3rem; }
-    @media (max-width: 480px) { .page { padding-top: 5.5rem; } .back-link { top: 1rem; left: 1rem; } }
+
+    /* With JavaScript every photograph is pinned to the screen and moved by the scroll position */
+    .reel-on .intro { position: fixed; }
+    .reel-on .pin { position: fixed; inset: 0; height: auto; visibility: hidden; will-change: transform; cursor: pointer; }
+    .reel-on .pin:not(.near) { display: none; }   /* far photographs are not rendered, so not downloaded */
+    .reel-on .hold { will-change: transform, opacity; }
+    .reel-on .ambient img { opacity: 0; }
+
+    /* Last screen: the usual foot of a page */
+    .outro {
+      position: relative; z-index: 2; height: 100vh; height: 100svh; scroll-snap-align: start;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2.6rem; padding: 2rem 1.5rem;
+    }
+    .rights { font-family: var(--font-mono); font-size: 0.82rem; color: var(--text-muted); text-align: center; }
+
+    /* Counter and scroll hint */
+    .count, .hint {
+      position: fixed; z-index: 5; right: 1.5rem; font-family: var(--font-mono); font-size: 0.78rem;
+      letter-spacing: 0.12em; color: var(--text-muted); pointer-events: none; transition: opacity 0.4s ease;
+    }
+    .count { bottom: 1.4rem; color: var(--text); }
+    .hint { bottom: 3.3rem; text-transform: uppercase; font-size: 0.7rem; }
+    .hint::after { content: ''; display: block; width: 1px; height: 26px; margin: 0.5rem 0 0 auto; background: var(--accent); transform-origin: top; animation: hint 1.8s ease-in-out infinite; }
+    @keyframes hint { 0% { transform: scaleY(0); } 50% { transform: scaleY(1); } 100% { transform: scaleY(1); opacity: 0; } }
+    html:not(.reel-on) .count, html:not(.reel-on) .hint { display: none; }
+
+    @media (max-aspect-ratio: 4/5) {
+      .intro { width: 100%; justify-content: flex-start; padding: 3.9rem 1.5rem 0; }
+      .page-title { font-size: 2.1rem; margin-bottom: 0; }
+      .lede { display: none; }
+      .shot { max-height: 66vh; max-height: 66svh; }
+      .pin { padding-top: 5.6rem; }
+      .hint { right: auto; left: 1.5rem; bottom: 1.4rem; }
+      .hint::after { display: none; }
+    }
+    @media (max-width: 480px) { .back-link { top: 1rem; left: 1rem; } .count { right: 1rem; } .hint { left: 1rem; } }
+    @media (prefers-reduced-motion: reduce) {
+      .shot, .ambient img { translate: none; transition: none; }
+      .hint::after { animation: none; }
+    }
   </style>
 </head>
 <body>
@@ -95,97 +129,140 @@
   <div class="bg-animation" aria-hidden="true">
     <div class="bg-texture"></div>
     <div class="bg-grid"></div>
+    <!-- tiny colour-only copies of the photographs, in the same order -->
+    <div class="ambient">
+      <img src="photography/01-a.webp" alt="">
+      <img src="photography/02-a.webp" alt="">
+      <img src="photography/03-a.webp" alt="">
+      <img src="photography/04-a.webp" alt="">
+      <img src="photography/05-a.webp" alt="">
+    </div>
     <canvas id="nn-canvas"></canvas>
     <div class="bg-glow"></div>
   </div>
 
   <a href="index.html" class="back-link">← bb.style</a>
 
-  <main class="page">
-    <div class="kicker">Off work</div>
-    <h1 class="page-title">Photography<span class="accent">.</span></h1>
-    <p class="lede">Capturing moments, chasing light, and finding beauty in the everyday.</p>
+  <main class="reel">
+    <header class="intro">
+      <div class="kicker">Off work</div>
+      <h1 class="page-title">Photography<span class="accent">.</span></h1>
+      <p class="lede">Capturing moments, chasing light, and finding beauty in the everyday.</p>
+    </header>
 
     <!-- Only web-size, watermarked copies live in this repository. Make them with tools/prepare-photos.py. -->
-    <ol class="gallery">
-      <li><a href="photography/01-l.webp" data-w="1066" data-h="1600">
-        <img src="photography/01-s.webp" srcset="photography/01-s.webp 720w, photography/01-l.webp 1066w"
-             sizes="(max-width: 560px) calc(100vw - 3rem), 343px" width="720" height="1080"
-             decoding="async" alt="The upturned corner of a tiled temple roof with small ridge figures, and a forested peak rising out of cloud behind it.">
-      </a></li>
-      <li><a href="photography/02-l.webp" data-w="1066" data-h="1600">
-        <img src="photography/02-s.webp" srcset="photography/02-s.webp 720w, photography/02-l.webp 1066w"
-             sizes="(max-width: 560px) calc(100vw - 3rem), 343px" width="720" height="1080"
-             decoding="async" alt="Mountain tops surfacing from a sea of cloud under a grey sky, with a pale band of light on the horizon.">
-      </a></li>
-      <li><a href="photography/03-l.webp" data-w="1066" data-h="1600">
-        <img src="photography/03-s.webp" srcset="photography/03-s.webp 720w, photography/03-l.webp 1066w"
-             sizes="(max-width: 560px) calc(100vw - 3rem), 343px" width="720" height="1080"
-             loading="lazy" decoding="async" alt="A single tall conifer standing above a forested ridge in fog, framed by out-of-focus leaves.">
-      </a></li>
-      <li><a href="photography/04-l.webp" data-w="1066" data-h="1600">
-        <img src="photography/04-s.webp" srcset="photography/04-s.webp 720w, photography/04-l.webp 1066w"
-             sizes="(max-width: 560px) calc(100vw - 3rem), 343px" width="720" height="1080"
-             loading="lazy" decoding="async" alt="Bare branches heavy with orange and red persimmons against green leaves.">
-      </a></li>
-      <li><a href="photography/05-l.webp" data-w="1066" data-h="1600">
-        <img src="photography/05-s.webp" srcset="photography/05-s.webp 720w, photography/05-l.webp 1066w"
-             sizes="(max-width: 560px) calc(100vw - 3rem), 343px" width="720" height="1080"
-             loading="lazy" decoding="async" alt="Yellow stonecrop flowers and purple-green leaves growing from cracks in grey rock.">
-      </a></li>
+    <ol class="frames">
+      <li class="frame"><figure class="pin near"><span class="hold">
+        <img class="shot" src="photography/01-s.webp" srcset="photography/01-s.webp 720w, photography/01-l.webp 1066w"
+             sizes="(max-aspect-ratio: 2/3) 92vw, 60vh" width="1066" height="1600" fetchpriority="high" decoding="async"
+             alt="The upturned corner of a tiled temple roof with small ridge figures, and a forested peak rising out of cloud behind it.">
+      </span></figure></li>
+      <li class="frame"><figure class="pin"><span class="hold">
+        <img class="shot" src="photography/02-s.webp" srcset="photography/02-s.webp 720w, photography/02-l.webp 1066w"
+             sizes="(max-aspect-ratio: 2/3) 92vw, 60vh" width="1066" height="1600" loading="lazy" decoding="async"
+             alt="Mountain tops surfacing from a sea of cloud under a grey sky, with a pale band of light on the horizon.">
+      </span></figure></li>
+      <li class="frame"><figure class="pin"><span class="hold">
+        <img class="shot" src="photography/03-s.webp" srcset="photography/03-s.webp 720w, photography/03-l.webp 1066w"
+             sizes="(max-aspect-ratio: 2/3) 92vw, 60vh" width="1066" height="1600" loading="lazy" decoding="async"
+             alt="A single tall conifer standing above a forested ridge in fog, framed by out-of-focus leaves.">
+      </span></figure></li>
+      <li class="frame"><figure class="pin"><span class="hold">
+        <img class="shot" src="photography/04-s.webp" srcset="photography/04-s.webp 720w, photography/04-l.webp 1066w"
+             sizes="(max-aspect-ratio: 2/3) 92vw, 60vh" width="1066" height="1600" loading="lazy" decoding="async"
+             alt="Bare branches heavy with orange and red persimmons against green leaves.">
+      </span></figure></li>
+      <li class="frame"><figure class="pin"><span class="hold">
+        <img class="shot" src="photography/05-s.webp" srcset="photography/05-s.webp 720w, photography/05-l.webp 1066w"
+             sizes="(max-aspect-ratio: 2/3) 92vw, 60vh" width="1066" height="1600" loading="lazy" decoding="async"
+             alt="Yellow stonecrop flowers and purple-green leaves growing from cracks in grey rock.">
+      </span></figure></li>
     </ol>
 
-    <p class="rights">All photographs © Bihan Qian.</p>
-
-    <nav class="links nav-foot">
-      <a href="index.html">Home</a>
-    </nav>
+    <section class="outro">
+      <p class="rights">All photographs © Bihan Qian.</p>
+      <nav class="links">
+        <a href="index.html">Home</a>
+      </nav>
+    </section>
   </main>
 
-  <dialog class="viewer" id="viewer" aria-label="Photograph viewer">
-    <button type="button" class="viewer-close">Close</button>
-    <button type="button" class="viewer-prev" aria-label="Previous photograph">←</button>
-    <img alt="">
-    <button type="button" class="viewer-next" aria-label="Next photograph">→</button>
-    <p class="viewer-count" aria-live="polite"></p>
-  </dialog>
+  <p class="count" aria-hidden="true"></p>
+  <p class="hint" aria-hidden="true">Scroll</p>
 
   <script src="script.js"></script>
   <script>
-    /* Viewer. Without it, each photograph is still a plain link to its larger copy. */
+    /* The reel: pin each photograph to the screen and place it from the scroll position.
+       The next photograph rises over the current one, which steps back and fades. */
     (function () {
-      var links = [].slice.call(document.querySelectorAll('.gallery a'));
-      var dlg = document.getElementById('viewer');
-      if (!dlg || !dlg.showModal) return;
-      var img = dlg.querySelector('img'), count = dlg.querySelector('.viewer-count'), at = 0;
-      function two(n) { return (n < 10 ? '0' : '') + n; }
-      function show(n) {
-        at = (n + links.length) % links.length;
-        var a = links[at];
-        img.width = a.getAttribute('data-w'); img.height = a.getAttribute('data-h');
-        img.alt = a.querySelector('img').alt;
-        img.src = a.href;
-        count.textContent = two(at + 1) + ' / ' + two(links.length);
+      var root = document.documentElement;
+      var frames = [].slice.call(document.querySelectorAll('.frame'));
+      var ambient = [].slice.call(document.querySelectorAll('.ambient img'));
+      var intro = document.querySelector('.intro'), count = document.querySelector('.count'), hint = document.querySelector('.hint');
+      if (!frames.length) return;
+      var pins = frames.map(function (f) { return f.querySelector('.pin'); });
+      var holds = frames.map(function (f) { return f.querySelector('.hold'); });
+      var calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var n = frames.length, queued = false;
+
+      function two(v) { return (v < 10 ? '0' : '') + v; }
+      function clamp(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
+
+      function place() {
+        queued = false;
+        var h = frames[0].offsetHeight || window.innerHeight;
+        var pos = (window.scrollY - frames[0].offsetTop) / h;          // 0 = first photograph, n = the last screen
+        for (var i = 0; i < n; i++) {
+          var d = pos - i;                                             // < 0 still to come, > 0 already passed
+          var pin = pins[i], hold = holds[i];
+          pin.classList.toggle('near', Math.abs(d) <= 1.6);            // only the current photograph and its neighbours exist
+          if (d <= -1 || d >= 1) { pin.style.visibility = 'hidden'; continue; }
+          pin.style.visibility = 'visible';
+          pin.style.zIndex = i + 1;
+          if (d < 0) {                                                 // arriving: rises from below, settling in size
+            var t = -d;
+            pin.style.transform = 'translate3d(0,' + (t * h * 0.82).toFixed(1) + 'px,0)';
+            hold.style.transform = calm ? '' : 'scale(' + (1 + t * 0.1).toFixed(4) + ')';
+            hold.style.opacity = '';
+          } else {                                                     // leaving: steps back and fades
+            pin.style.transform = calm ? '' : 'translate3d(0,' + (-d * h * 0.06).toFixed(1) + 'px,0)';
+            hold.style.transform = calm ? '' : 'scale(' + (1 - d * 0.08).toFixed(4) + ')';
+            hold.style.opacity = (1 - clamp(d * 1.15)).toFixed(3);
+          }
+        }
+        for (var k = 0; k < ambient.length; k++) ambient[k].style.opacity = clamp(1 - Math.abs(pos - k)).toFixed(3);
+        var shown = Math.min(n, Math.max(1, Math.round(pos) + 1));
+        count.textContent = two(shown) + ' / ' + two(n);
+        count.style.opacity = clamp(1 - (pos - (n - 1)) * 2).toFixed(2);
+        intro.style.opacity = clamp(1 - pos * 2.2).toFixed(2);
+        intro.style.visibility = pos > 0.5 ? 'hidden' : 'visible';
+        hint.style.opacity = pos > 0.08 ? '0' : '1';
       }
-      links.forEach(function (a, n) {
-        a.addEventListener('click', function (e) { e.preventDefault(); show(n); dlg.showModal(); });
+      function queue() { if (!queued) { queued = true; requestAnimationFrame(place); } }
+      window.addEventListener('scroll', queue, { passive: true });
+      window.addEventListener('resize', queue);
+      place();
+
+      // Move one photograph at a time with the keyboard or by clicking the photograph.
+      function go(step) {
+        var h = frames[0].offsetHeight;
+        var at = Math.round((window.scrollY - frames[0].offsetTop) / h);
+        window.scrollTo({ top: frames[0].offsetTop + Math.max(0, Math.min(n, at + step)) * h, behavior: calm ? 'auto' : 'smooth' });
+      }
+      pins.forEach(function (pin) { pin.addEventListener('click', function () { go(1); }); });
+      document.addEventListener('keydown', function (e) {
+        if (e.target.closest && e.target.closest('button, a, input')) return;
+        if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); go(1); }
+        if (e.key === 'ArrowUp' || e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); go(-1); }
       });
-      dlg.querySelector('.viewer-prev').addEventListener('click', function () { show(at - 1); });
-      dlg.querySelector('.viewer-next').addEventListener('click', function () { show(at + 1); });
-      dlg.querySelector('.viewer-close').addEventListener('click', function () { dlg.close(); });
-      img.addEventListener('click', function () { show(at + 1); });
-      dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });   // the dark ground closes it
-      dlg.addEventListener('keydown', function (e) {
-        if (e.key === 'ArrowRight') show(at + 1);
-        if (e.key === 'ArrowLeft') show(at - 1);
-      });
-      var x0 = null;                                                                        // swipe on touch screens
-      dlg.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; }, { passive: true });
-      dlg.addEventListener('touchend', function (e) {
-        if (x0 === null) return;
-        var dx = e.changedTouches[0].clientX - x0; x0 = null;
-        if (Math.abs(dx) > 45) show(at + (dx < 0 ? 1 : -1));
-      }, { passive: true });
+
+      // The photograph and its backdrop lean a little with the pointer, in opposite directions.
+      if (!calm && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+        window.addEventListener('pointermove', function (e) {
+          root.style.setProperty('--mx', (e.clientX / window.innerWidth - 0.5).toFixed(3));
+          root.style.setProperty('--my', (e.clientY / window.innerHeight - 0.5).toFixed(3));
+        }, { passive: true });
+      }
     })();
   </script>
 </body>
