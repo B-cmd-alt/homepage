@@ -1,0 +1,198 @@
+{
+  "seeds": [
+    101,
+    102,
+    103,
+    104,
+    105
+  ],
+  "hours": 3,
+  "dt": 0.05,
+  "config": {
+    "width": 1440,
+    "height": 900,
+    "cap": 28,
+    "birthEvery": 1.6,
+    "birthLight": [
+      0.3,
+      1
+    ],
+    "sight": 320,
+    "reach": 72,
+    "spacing": 30,
+    "fadeAlone": 0.14,
+    "fadeCompany": 0.03,
+    "giveRate": 0.08,
+    "dark": 0.04,
+    "low": 0.15,
+    "approachSpeed": 22,
+    "driftSpeed": 5,
+    "lookEvery": 0.5,
+    "hold": 3,
+    "alpha": 0.2,
+    "gamma": 0.97,
+    "explore": 0.06,
+    "copyNoise": 0.01,
+    "copyTrust": 12,
+    "reward": "near",
+    "learn": true,
+    "copy": true,
+    "policy": null,
+    "seed": 1
+  },
+  "variants": {
+    "learning + copying, reward: own light": {
+      "lifetimeMean": 71.68,
+      "lifetimeSd": 0.76,
+      "lifetimeBySeed": [
+        73.11,
+        71.67,
+        70.96,
+        71.52,
+        71.12
+      ],
+      "alive": 26.4,
+      "generation": 9.67,
+      "approachInCompany": 0.61,
+      "approachAlone": 0.71,
+      "giveWhenFine": 0.19,
+      "giveWhenLow": 0.55
+    },
+    "learning + copying, reward: own + nearby light": {
+      "lifetimeMean": 79.82,
+      "lifetimeSd": 0.68,
+      "lifetimeBySeed": [
+        78.99,
+        79.03,
+        80.27,
+        80.19,
+        80.64
+      ],
+      "alive": 26.33,
+      "generation": 6.62,
+      "approachInCompany": 0.6,
+      "approachAlone": 0.68,
+      "giveWhenFine": 0.67,
+      "giveWhenLow": 0.73
+    },
+    "copying only (no learning in life)": {
+      "lifetimeMean": 70.92,
+      "lifetimeSd": 0.56,
+      "lifetimeBySeed": [
+        70.97,
+        70.56,
+        70.22,
+        70.95,
+        71.88
+      ],
+      "alive": 26.4,
+      "generation": 7.12,
+      "approachInCompany": 0.5,
+      "approachAlone": 0.5,
+      "giveWhenFine": 0.5,
+      "giveWhenLow": 0.5
+    },
+    "learning only (no copying)": {
+      "lifetimeMean": 75.54,
+      "lifetimeSd": 0.42,
+      "lifetimeBySeed": [
+        76.08,
+        76.01,
+        75.26,
+        75.14,
+        75.2
+      ],
+      "alive": 26.37,
+      "generation": 0,
+      "approachInCompany": 0.52,
+      "approachAlone": 0.56,
+      "giveWhenFine": 0.63,
+      "giveWhenLow": 0.74
+    },
+    "baseline: random choices": {
+      "lifetimeMean": 71.45,
+      "lifetimeSd": 0.83,
+      "lifetimeBySeed": [
+        70.71,
+        72.69,
+        72.18,
+        71.04,
+        70.64
+      ],
+      "alive": 26.47,
+      "generation": 0,
+      "approachInCompany": 0.5,
+      "approachAlone": 0.5,
+      "giveWhenFine": 0.5,
+      "giveWhenLow": 0.5
+    },
+    "baseline: never approach": {
+      "lifetimeMean": 25.29,
+      "lifetimeSd": 0.19,
+      "lifetimeBySeed": [
+        25.34,
+        25.21,
+        25.48,
+        24.96,
+        25.46
+      ],
+      "alive": 15.85,
+      "generation": 0,
+      "approachInCompany": 0,
+      "approachAlone": 0,
+      "giveWhenFine": 0,
+      "giveWhenLow": 0
+    },
+    "baseline: approach, never give": {
+      "lifetimeMean": 72.69,
+      "lifetimeSd": 0.38,
+      "lifetimeBySeed": [
+        71.97,
+        73,
+        72.65,
+        72.82,
+        73.01
+      ],
+      "alive": 27.35,
+      "generation": 0,
+      "approachInCompany": 1,
+      "approachAlone": 1,
+      "giveWhenFine": 0,
+      "giveWhenLow": 0
+    },
+    "baseline: approach, always give": {
+      "lifetimeMean": 91.89,
+      "lifetimeSd": 0.57,
+      "lifetimeBySeed": [
+        92.13,
+        90.78,
+        91.98,
+        92.23,
+        92.33
+      ],
+      "alive": 25.71,
+      "generation": 0,
+      "approachInCompany": 1,
+      "approachAlone": 1,
+      "giveWhenFine": 1,
+      "giveWhenLow": 1
+    },
+    "baseline: approach, give when light is fine": {
+      "lifetimeMean": 91.07,
+      "lifetimeSd": 0.52,
+      "lifetimeBySeed": [
+        91.82,
+        90.79,
+        90.85,
+        90.4,
+        91.5
+      ],
+      "alive": 26.69,
+      "generation": 0,
+      "approachInCompany": 1,
+      "approachAlone": 1,
+      "giveWhenFine": 1,
+      "giveWhenLow": 0
+    }
+  }
+}
