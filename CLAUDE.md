@@ -46,6 +46,8 @@ Static site served by GitHub Pages from `main`. Plain HTML, CSS and JS: no build
 
 ## Projects (`projects.html`)
 
+- Under the lede, one link per project (`nav.cta.pick`) jumps straight to it, so nobody has to scroll to find a
+  project. A new project gets an `id` and a link there.
 - Each project is told in this order: kicker, title, one-line tagline, **links** (live thing first, then evidence,
   then GitHub), **one picture**, four numbers, then at most two short paragraphs (the question, what it shows).
 - The long write-up is not on this page. It lives in the project's GitHub README, which the page links to.
