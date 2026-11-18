@@ -22,10 +22,12 @@ const DT = 1 / 20;
 // policy(rule, second, rng): `second` is true when alone (chasing) or when light is low (giving)
 const approach = (give) => (rule, second, rng) => (rule === 'chase' ? 1 : give(second, rng));
 const VARIANTS = {
-  'learning + copying, reward: own light':            { reward: 'self' },
-  'learning + copying, reward: own + nearby light':   { reward: 'near' },
-  'copying only (no learning in life)':               { reward: 'near', learn: false },
-  'learning only (no copying)':                       { reward: 'near', copy: false },
+  'learning + copying (the page)':                    {},
+  'copying only (no learning in life)':               { learn: false },
+  'learning only (no copying)':                       { copy: false },
+  'born alone starts empty (earlier rule)':           { copyFar: false },
+  'reward: own + nearby light, pooled (earlier)':     { reward: 'near' },
+  'reward: own light only':                           { reward: 'self' },
   'baseline: random choices':                         { learn: false, copy: false, policy: (rule, second, rng) => (rng() < 0.5 ? 1 : 0) },
   'baseline: never approach':                         { learn: false, copy: false, policy: () => 0 },
   'baseline: approach, never give':                   { learn: false, copy: false, policy: approach(() => 0) },

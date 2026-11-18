@@ -3,8 +3,8 @@
  *
  * What is on screen:
  *   - A point's size and glow are its light. Its colour is its family: a newborn takes the colour
- *     of the point whose notebook it copied, slightly shifted; a point born alone starts a new one.
- *     Colours blend when light is passed.
+ *     of the point whose notebook it copied, shifted toward a fresh one. Colours blend when light
+ *     is passed.
  *   - A faint line joins points that are within reach of each other (company).
  *   - A brighter line with moving pulses is light being given, in the direction it flows.
  *   - A ring is a birth; a point that goes out shrinks and fades.

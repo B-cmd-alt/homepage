@@ -9,16 +9,19 @@
  *   - A point loses a share of its light every second, so a brighter light burns faster.
  *     With another lit point within reach it loses several times less.
  *   - Light flows only from a brighter point to a dimmer one, and only when the brighter one gives.
- *   - A point is born at a random place. It copies the notebook of the nearest point it can see,
- *     with small changes, or starts empty if it sees nobody.
+ *   - A point is born at a random place. It copies the notebook of the nearest point, with small
+ *     changes. Only the first points of a world start with an empty notebook.
  *   - Points keep a minimum distance, and births stop at a cap.
  *
  * Learned (two rules, each a 2 × 2 Q-table, updated by Q-learning from the point's own life):
  *   - chasing: when it sees a light, drift or approach.        Situations: in company / alone.
  *   - giving:  when a dimmer one is in reach, keep or give.    Situations: my light is fine / low.
  * A choice is kept for a few seconds and judged when the next one is made. The reward is how
- * fast light is being lost, as a share: the point's own light ('self'), or its own together with
- * the light within its reach ('near').
+ * fast light is burning out, as a share per second:
+ *   'life'  the point and each point within its reach, counted equally (the default). Because a
+ *           dim point's share moves more than a bright one's, passing light to it pays at once.
+ *   'near'  the point's light and the light within reach, pooled. Indifferent to who holds it.
+ *   'self'  the point's own light only.
  */
 (function (root, factory) {
   if (typeof module === 'object' && module.exports) module.exports = factory();
@@ -52,8 +55,9 @@
     explore: 0.06,           // chance of trying a random choice
     copyNoise: 0.01,         // size of the small changes when a notebook is copied
     copyTrust: 12,           // a copied entry counts as this many own experiences at most
+    copyFar: true,           // with nobody in sight, copy the nearest notebook anyway (false: start empty)
 
-    reward: 'near',          // 'self' or 'near' (see the header)
+    reward: 'life',          // 'life', 'near' or 'self' (see the header)
     learn: true,             // Q-learning within a life
     copy: true,              // newborns copy the nearest notebook
     policy: null,            // fixed behaviour for baselines: function (rule, second, rng) -> 0 or 1,
@@ -124,7 +128,7 @@
       give: { s: 0, a: 0, open: false, sum: 0, disc: 1, until: 0 },
     };
     if (c.copy) {
-      var teacher = null, best = c.sight;
+      var teacher = null, best = c.copyFar ? Infinity : c.sight;
       for (var i = 0; i < this.points.length; i++) {
         var o = this.points[i], d = Math.hypot(o.x - x, o.y - y);
         if (d < best) { best = d; teacher = o; }
@@ -263,13 +267,20 @@
       delta[i] -= amount; delta[r.index] += amount;
       this.flows.push({ from: p, to: r, amount: amount });
     }
+    var rel = new Float64Array(count), nearRel = new Float64Array(count), nearCount = new Float64Array(count);
+    for (i = 0; i < count; i++) rel[i] = delta[i] / pts[i].light;
     for (i = 0; i < pairsA.length; i++) {
-      nearDelta[pairsA[i]] += delta[pairsB[i]]; nearDelta[pairsB[i]] += delta[pairsA[i]];
+      var pa = pairsA[i], pb = pairsB[i];
+      nearDelta[pa] += delta[pb]; nearDelta[pb] += delta[pa];
+      nearRel[pa] += rel[pb]; nearRel[pb] += rel[pa];
+      nearCount[pa]++; nearCount[pb]++;
     }
     var discount = Math.pow(c.gamma, dt);
     for (i = 0; i < count; i++) {
       p = pts[i];
-      var reward = c.reward === 'near' ? (delta[i] + nearDelta[i]) / (p.light + p.near) : delta[i] / p.light;
+      var reward = c.reward === 'near' ? (delta[i] + nearDelta[i]) / (p.light + p.near)
+        : c.reward === 'life' ? (rel[i] + nearRel[i]) / (1 + nearCount[i])
+        : rel[i];
       p.light = Math.min(1, p.light + delta[i]);
       p.age += dt;
       p.chase.sum += p.chase.disc * reward; p.chase.disc *= discount;
